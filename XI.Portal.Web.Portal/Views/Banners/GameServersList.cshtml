@@ -1,0 +1,22 @@
+﻿@model IEnumerable<XI.Portal.Data.Core.Models.GameServer>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<table style="margin: auto">
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td style="padding: 2px;">
+                <div style="text-align: center;">
+                    @Html.Raw(item.HtmlBanner)
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

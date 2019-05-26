@@ -1,0 +1,64 @@
+﻿@model List<XI.Portal.Data.Core.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox">
+                <div class="ibox-content">
+
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.Label("Username")
+                            </th>
+                            <th>
+                                @Html.Label("Email")
+                            </th>
+                            <th>
+                                @Html.Label("Primary Group")
+                            </th>
+                            <th>
+                                @Html.Label("Profile")
+                            </th>
+                            <th>
+                                @Html.Label("Actions")
+                            </th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.Raw(item.XtremeIdiotsFormattedName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.Raw(item.XtremeIdiotsPrimaryGroupIdFormattedName)
+                                </td>
+                                <td>
+                                    <a href="https://www.xtremeidiots.com/profile/@item.XtremeIdiotsId-@item.UserName/" target="_blank">Link</a>
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Reset", "SetToRegisteredUser", new {id = item.Id}) | @Html.ActionLink("Lock", "LockUser", new {id = item.Id}) | @Html.ActionLink("Unlock", "UnlockUser", new {id = item.Id})
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

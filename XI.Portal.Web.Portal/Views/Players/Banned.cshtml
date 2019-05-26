@@ -1,0 +1,107 @@
+﻿@using XI.Portal.Web.Portal.Extensions
+@model XI.Portal.Library.CommonTypes.GameType
+
+@{
+    ViewBag.Title = "Banned Player List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="jqGrid_wrapper">
+                <table id="playerList"></table>
+                <div id="playerListPager"></div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/jqGrid/jqGridStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/jqGrid")
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            function formatPlayerUrl(cellValue, options, rowObject) {
+                return "<a href='/Players/Details/" + rowObject.PlayerId + "'>" + cellValue + "</a>";
+            }
+
+            jQuery("#playerList").jqGrid({
+                url: '/Players/GetBannedPlayersAjax/@Model',
+                datatype: 'json',
+                mType: 'GET',
+                colNames: ['PlayerId', 'Username', 'Guid', 'Type', 'Expires'],
+                colModel: [
+                    {
+                        name: 'PlayerId',
+                        index: 'PlayerId',
+                        hidden: true,
+                        editable: false,
+                        sortable: false,
+                        search: false
+                    },
+                    {
+                        name: 'Username',
+                        index: 'Username',
+                        editable: false,
+                        sortable: false,
+                        search: true,
+                        searchoptions: { sopt: ["eq", "cn"] },
+                        formatter: formatPlayerUrl
+                    },
+                    {
+                        name: 'Guid',
+                        index: 'Guid',
+                        editable: false,
+                        sortable: false,
+                        search: true,
+                        searchoptions: { sopt: ["eq", "cn"] }
+                    },
+                    {
+                        name: 'Type',
+                        index: 'Type',
+                        editable: false,
+                        sortable: false,
+                        search: false
+                    },
+                    {
+                        name: 'Expires',
+                        index: 'Expires',
+                        editable: false,
+                        sortable: false,
+                        search: false
+                    }
+                ],
+                pager: '#playerListPager',
+                rowNum: 20,
+                height: 700,
+                autowidth: true,
+                caption: '@Model.DisplayName() - Player List',
+                guiStyle: "bootstrap4",
+                icons: "fontAwesome",
+                hidegrid: false
+            }).navGrid('#playerListPager',
+                {
+                    edit: false,
+                    add: false,
+                    del: false,
+                    search: true,
+                    refresh: true,
+
+                    searchtext: "Search",
+                    refreshtext: "Refresh"
+                });
+
+        });
+    </script>
+}

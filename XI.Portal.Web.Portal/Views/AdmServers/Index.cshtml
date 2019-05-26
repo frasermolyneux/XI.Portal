@@ -1,0 +1,98 @@
+﻿@using XI.Portal.Web.Portal.Extensions
+@model IEnumerable<XI.Portal.Data.Core.Models.GameServer>
+
+@{
+    ViewBag.Title = "Game Servers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox">
+                <div class="ibox-content">
+
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.Label("Position")
+                            </th>
+                            <th>
+                                @Html.Label("Game")
+                            </th>
+                            <th>
+                                @Html.Label("Title")
+                            </th>
+                            <th>
+                                @Html.Label("Hostname")
+                            </th>
+                            <th>
+                                @Html.Label("Portal Server List")
+                            </th>
+                            <th>
+                                @Html.Label("Banner Server List")
+                            </th>
+                            <th>
+                                @Html.Label("Chat Log")
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BannerServerListPosition)
+                                </td>
+                                <td>
+                                    @Html.GameTypeIcon(item.GameType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Title)
+                                </td>
+                                <td>
+                                    @Html.ServerHostAndPort(item.Hostname, item.QueryPort)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ShowOnPortalServerList)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ShowOnBannerServerList)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ShowChatLog)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new {id = item.ServerId}) |
+                                    @Html.ActionLink("Delete", "Delete", new {id = item.ServerId})
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Preview</h5>
+                </div>
+
+                <div class="ibox-content">
+                    @{ Html.RenderAction("GameServersList", "Banners"); }
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

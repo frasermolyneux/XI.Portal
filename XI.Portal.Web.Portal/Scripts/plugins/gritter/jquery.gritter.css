@@ -1,0 +1,145 @@
+/* the norm */
+#gritter-notice-wrapper {
+    -webkit-animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    -webkit-animation-name: bounceIn;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+
+    animation-name: bounceIn;
+    position: fixed;
+    right: 20px;
+    top: 40px;
+
+    width: 301px;
+    z-index: 9999;
+}
+
+@keyframes bounceIn {
+    0% {
+        -ms-transform: scale(.3);
+        -webkit-transform: scale(.3);
+        opacity: 0;
+        transform: scale(.3);
+    }
+
+    50% {
+        -ms-transform: scale(1.05);
+        -webkit-transform: scale(1.05);
+        opacity: 1;
+        transform: scale(1.05);
+    }
+
+    70% {
+        -ms-transform: scale(.9);
+        -webkit-transform: scale(.9);
+        transform: scale(.9);
+    }
+
+    100% {
+        -ms-transform: scale(1);
+        -webkit-transform: scale(1);
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#gritter-notice-wrapper.top-left {
+    left: 20px;
+    right: auto;
+}
+
+#gritter-notice-wrapper.bottom-right {
+    bottom: 20px;
+    left: auto;
+    right: 20px;
+    top: auto;
+}
+
+#gritter-notice-wrapper.bottom-left {
+    bottom: 20px;
+    left: 20px;
+    right: auto;
+    top: auto;
+}
+
+.gritter-item-wrapper {
+    background: url('images/ie-spacer.gif'); /* ie7/8 fix */
+    margin: 0 0 10px 0;
+    position: relative;
+}
+
+.hover .gritter-top { /*background-position:right -30px;*/ }
+
+.gritter-bottom {
+    height: 8px;
+    margin: 0;
+}
+
+.gritter-item {
+    background-color: rgba(39, 58, 75, 0.8);
+    border-radius: 4px;
+    color: #eee;
+    display: block;
+    font-size: 11px;
+    padding: 10px 11px 10px 11px;
+}
+
+.hover .gritter-item { background-position: right -40px; }
+
+.gritter-item p {
+    margin: 0;
+    padding: 0;
+    word-wrap: break-word;
+}
+
+.gritter-item a:hover {
+    color: #f8ac59;
+    text-decoration: underline;
+}
+
+.gritter-close {
+    background: url(images/gritter.png) no-repeat left top;
+    cursor: pointer;
+    display: none;
+    height: 30px;
+    position: absolute;
+    right: 3px;
+    text-indent: -9999em;
+    top: 5px;
+    width: 30px;
+}
+
+.gritter-title {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0 0 7px 0;
+    text-transform: uppercase;
+}
+
+.gritter-image {
+    float: left;
+    height: 48px;
+    width: 48px;
+}
+
+.gritter-with-image,
+.gritter-without-image { padding: 0; }
+
+.gritter-with-image {
+    float: right;
+    width: 220px;
+}
+
+/* for the light (white) version of the gritter notice */
+
+.gritter-light .gritter-item,
+.gritter-light .gritter-bottom,
+.gritter-light .gritter-top,
+.gritter-light .gritter-close {
+    background-image: url(images/gritter-light.png);
+    color: #222;
+}
+
+.gritter-light .gritter-title { text-shadow: none; }

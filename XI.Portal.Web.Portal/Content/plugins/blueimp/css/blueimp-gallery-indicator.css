@@ -1,0 +1,74 @@
+@charset "UTF-8";
+
+/*
+ * blueimp Gallery Indicator CSS 1.1.0
+ * https://github.com/blueimp/Gallery
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+.blueimp-gallery > .indicator {
+    bottom: 15px;
+    display: none;
+    left: 15px;
+    line-height: 10px;
+    list-style: none;
+    margin: 0 40px;
+    padding: 0;
+    position: absolute;
+    right: 15px;
+    text-align: center;
+    top: auto;
+}
+
+.blueimp-gallery > .indicator > li {
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    background: #ccc;
+    background: rgba(255, 255, 255, 0.25) center no-repeat;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    box-shadow: 0 0 2px #000;
+    box-sizing: content-box;
+    cursor: pointer;
+    display: inline-block;
+    height: 9px;
+    margin: 6px 3px 0 3px;
+    opacity: 0.5;
+    width: 9px;
+}
+
+.blueimp-gallery > .indicator > li:hover,
+.blueimp-gallery > .indicator > .active {
+    background-color: #fff;
+    border-color: #fff;
+    opacity: 1;
+}
+
+.blueimp-gallery-controls > .indicator {
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    /* Fix z-index issues (controls behind slide element) on Android: */
+    -webkit-transform: translateZ(0);
+    display: block;
+    transform: translateZ(0);
+}
+
+.blueimp-gallery-single > .indicator { display: none; }
+
+.blueimp-gallery > .indicator {
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* IE7 fixes */
+
+* + html .blueimp-gallery > .indicator > li { display: inline; }

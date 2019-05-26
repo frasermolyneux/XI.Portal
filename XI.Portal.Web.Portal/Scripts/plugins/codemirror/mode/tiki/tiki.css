@@ -1,0 +1,21 @@
+.cm-tw-syntaxerror {
+    background-color: #900;
+    color: #FFF;
+}
+
+.cm-tw-deleted { text-decoration: line-through; }
+
+.cm-tw-header5 { font-weight: bold; }
+
+.cm-tw-listitem:first-child { /*Added first child to fix duplicate padding when highlighting*/
+    padding-left: 10px;
+}
+
+.cm-tw-box {
+    border-color: inherit;
+    border-style: solid;
+    border-top-width: 0px ! important;
+    border-width: 1px;
+}
+
+.cm-tw-underline { text-decoration: underline; }

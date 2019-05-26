@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "System Logs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="jqGrid_wrapper">
+                <table id="logsList"></table>
+                <div id="logsListPager"></div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/jqGrid/jqGridStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/jqGrid")
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            jQuery("#logsList").jqGrid({
+                url: '/AdmLogs/GetSystemLogsAjax',
+                datatype: 'json',
+                mType: 'GET',
+                colNames: ['Level', 'Message', 'Error', 'Timestamp'],
+                colModel: [
+                    {
+                        name: 'Level',
+                        index: 'Level',
+                        editable: false,
+                        width: 15,
+                        sortable: false,
+                        search: false
+                    },
+                    {
+                        name: 'Message',
+                        index: 'Message',
+                        editable: false,
+                        sortable: false,
+                        search: false
+                    },
+                    {
+                        name: 'Error',
+                        index: 'Error',
+                        editable: false,
+                        sortable: false,
+                        search: false
+                    },
+                    {
+                        name: 'Timestamp',
+                        index: 'Timestamp',
+                        editable: false,
+                        width: 30,
+                        sortable: false,
+                        search: false
+                    }
+                ],
+                pager: '#logsListPager',
+                rowNum: 20,
+                height: 700,
+                autowidth: true,
+                caption: 'System Logs',
+                guiStyle: "bootstrap4",
+                icons: "fontAwesome",
+                hidegrid: false
+            }).navGrid('#logsListPager',
+                {
+                    edit: false,
+                    add: false,
+                    del: false,
+                    search: false,
+                    refresh: true,
+
+                    searchtext: "Search",
+                    refreshtext: "Refresh"
+                });
+
+        });
+    </script>
+}

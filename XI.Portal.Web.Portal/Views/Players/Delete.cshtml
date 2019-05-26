@@ -1,0 +1,43 @@
+﻿@model XI.Portal.Data.Core.Models.Player2
+
+@{
+    ViewBag.Title = $"Delete Player - {Model.Username}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="ibox-content">
+
+                    <h4>Are you sure you want to delete this?</h4>
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            @Html.HiddenFor(model => model.PlayerId)
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Delete" class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

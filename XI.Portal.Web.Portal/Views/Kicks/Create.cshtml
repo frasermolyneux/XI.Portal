@@ -1,0 +1,74 @@
+﻿@model XI.Portal.Web.Portal.ViewModels.Kicks.CreateKickViewModel
+
+@{
+    ViewBag.Title = $"Create Kick - {Model.Player.Username}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="ibox-content">
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.PlayerId)
+
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.TextAreaFor(model => model.Text, new {@class = "form-control"})
+                                    @Html.ValidationMessageFor(model => model.Text, "", new {@class = "text-danger"})
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Create" class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Styles {
+    @Styles.Render("~/plugins/summernoteStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/summernote")
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $('#Text').summernote({
+                focus: true,
+                styleWithSpan: false,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol']],
+                    ['insert', ['link']]
+                ],
+                height: 350
+            });
+        });
+    </script>
+}

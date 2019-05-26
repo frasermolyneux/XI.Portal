@@ -1,0 +1,86 @@
+@charset "UTF-8";
+
+/*
+ * blueimp Gallery Video Factory CSS 1.3.0
+ * https://github.com/blueimp/Gallery
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+.blueimp-gallery > .slides > .slide > .video-content > img {
+    /* Prevent artifacts in Mozilla Firefox: */
+    -moz-backface-visibility: hidden;
+    bottom: 0;
+    height: auto;
+    left: 0;
+    margin: auto;
+    max-height: 100%;
+    max-width: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+}
+
+.blueimp-gallery > .slides > .slide > .video-content > video {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.blueimp-gallery > .slides > .slide > .video-content > iframe {
+    border: none;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+}
+
+.blueimp-gallery > .slides > .slide > .video-playing > iframe { top: 0; }
+
+.blueimp-gallery > .slides > .slide > .video-content > a {
+    background: url(../img/video-play.png) center no-repeat;
+    cursor: pointer;
+    height: 128px;
+    left: 0;
+    margin: -64px auto 0;
+    opacity: 0.8;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 128px;
+}
+
+.blueimp-gallery > .slides > .slide > .video-content > a:hover { opacity: 1; }
+
+.blueimp-gallery > .slides > .slide > .video-playing > a,
+.blueimp-gallery > .slides > .slide > .video-playing > img { display: none; }
+
+.blueimp-gallery > .slides > .slide > .video-content > video { display: none; }
+
+.blueimp-gallery > .slides > .slide > .video-playing > video { display: block; }
+
+.blueimp-gallery > .slides > .slide > .video-loading > a {
+    background: url(../img/loading.gif) center no-repeat;
+    background-size: 64px 64px;
+}
+
+/* Replace PNGs with SVGs for capable browsers (excluding IE<9) */
+
+body:last-child .blueimp-gallery > .slides > .slide > .video-content:not(.video-loading) > a { background-image: url(../img/video-play.svg); }
+
+/* IE7 fixes */
+
+* + html .blueimp-gallery > .slides > .slide > .video-content { height: 100%; }
+
+* + html .blueimp-gallery > .slides > .slide > .video-content > a {
+    left: 50%;
+    margin-left: -64px;
+}

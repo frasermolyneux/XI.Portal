@@ -1,0 +1,74 @@
+﻿@using XI.Portal.Web.Portal.Extensions
+@model IEnumerable<XI.Portal.Data.Core.Models.BanFileMonitor>
+
+@{
+    ViewBag.Title = "Ban File Monitors";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox">
+                <div class="ibox-content">
+
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.Label("Game")
+                            </th>
+                            <th>
+                                @Html.Label("Server")
+                            </th>
+                            <th>
+                                @Html.Label("File Path")
+                            </th>
+                            <th>
+                                @Html.Label("Last Read")
+                            </th>
+                            <th>
+                                @Html.Label("Has Error")
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.GameTypeIcon(item.GameServer.GameType)
+                                </td>
+                                <td>
+                                    @Html.ServerName(item.GameServer)
+                                </td>
+                                <td>
+                                    @{
+                                        var ftpUrl = $"ftp://{item.GameServer.FtpHostname}{item.FilePath}";
+                                    }
+
+                                    @ftpUrl
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LastSync)
+                                </td>
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(item.LastError) ? Html.Label("No") : Html.Label("Yes"))
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new {id = item.BanFileMonitorId}) |
+                                    @Html.ActionLink("Delete", "Delete", new {id = item.BanFileMonitorId})
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
