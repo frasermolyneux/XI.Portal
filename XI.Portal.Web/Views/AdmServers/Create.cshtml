@@ -1,0 +1,188 @@
+﻿@model XI.Portal.Web.ViewModels.AdmServers.CreateGameServerViewModel
+
+@{
+    ViewBag.Title = "Create Game Server";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>General</h5>
+                    </div>
+
+                    <div class="ibox-content">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.GameType, new {@class = "control-label col-md-2"})
+                            <div class="col-md-12">
+                                @Html.EnumDropDownListFor(model => model.GameType, "Select Game Type", new {@class = "form-control"})
+                                @Html.ValidationMessageFor(model => model.GameType, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Title, new {@class = "control-label col-md-2"})
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Title, new {htmlAttributes = new {@class = "form-control"}})
+                                @Html.ValidationMessageFor(model => model.Title, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Hostname, new {@class = "control-label col-md-2"})
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Hostname, new {htmlAttributes = new {@class = "form-control"}})
+                                @Html.ValidationMessageFor(model => model.Hostname, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.QueryPort, new {@class = "control-label col-md-2"})
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.QueryPort, new {htmlAttributes = new {@class = "form-control"}})
+                                @Html.ValidationMessageFor(model => model.QueryPort, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>Credentials</h5>
+                    </div>
+
+                    <div class="ibox-content">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FtpHostname, new {@class = "control-label col-md-2"})
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.FtpHostname, new {htmlAttributes = new {@class = "form-control"}})
+                                @Html.ValidationMessageFor(model => model.FtpHostname, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FtpUsername, new {@class = "control-label col-md-2"})
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.FtpUsername, new {htmlAttributes = new {@class = "form-control"}})
+                                @Html.ValidationMessageFor(model => model.FtpUsername, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FtpPassword, new {@class = "control-label col-md-2"})
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.FtpPassword, new {htmlAttributes = new {@class = "form-control"}})
+                                @Html.ValidationMessageFor(model => model.FtpPassword, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.RconPassword, new {@class = "control-label col-md-2"})
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.RconPassword, new {htmlAttributes = new {@class = "form-control"}})
+                                @Html.ValidationMessageFor(model => model.RconPassword, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>Display Options</h5>
+                    </div>
+
+                    <div class="ibox-content">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ShowOnBannerServerList, new {@class = "control-label col-md-2"})
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.ShowOnBannerServerList, new {htmlAttributes = new {@class = "form-control"}})
+                                @Html.ValidationMessageFor(model => model.ShowOnBannerServerList, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ServerListPosition, new {@class = "control-label col-md-2"})
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.ServerListPosition, new {htmlAttributes = new {@class = "form-control"}})
+                                @Html.ValidationMessageFor(model => model.ServerListPosition, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.HtmlBanner, new {@class = "control-label col-md-2"})
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.HtmlBanner, new {htmlAttributes = new {@class = "form-control", style = "height:200px"}})
+                                @Html.ValidationMessageFor(model => model.HtmlBanner, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ShowOnPortalServerList, new {@class = "control-label col-md-2"})
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.ShowOnPortalServerList, new {htmlAttributes = new {@class = "form-control"}})
+                                @Html.ValidationMessageFor(model => model.ShowOnPortalServerList, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ShowChatLog, new {@class = "control-label col-md-2"})
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.ShowChatLog, new {htmlAttributes = new {@class = "form-control"}})
+                                @Html.ValidationMessageFor(model => model.ShowChatLog, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>@ViewBag.Title</h5>
+                    </div>
+
+                    <div class="ibox-content">
+
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Create" class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,73 @@
+﻿@model XI.Portal.Web.ViewModels.AdmRconMonitor.CreateRconMonitorViewModel
+
+@{
+    ViewBag.Title = "Create Rcon Monitor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="ibox-content">
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+
+                            <div class="form-group">
+                                @Html.Label("Game Server", new {@class = "control-label col-md-2"})
+                                <div class="col-md-12">
+                                    @Html.DropDownListFor(model => model.GameServerId, new SelectList(Model.GameServers, "ServerId", "Title"), new {@class = "form-control"})
+                                    @Html.ValidationMessageFor(model => model.GameServerId, "", new {@class = "text-danger"})
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MonitorMapRotation, new {@class = "control-label col-md-2"})
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.MonitorMapRotation, new {htmlAttributes = new {@class = "form-control"}})
+                                    @Html.ValidationMessageFor(model => model.MonitorMapRotation, "", new {@class = "text-danger"})
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MonitorPlayers, new {@class = "control-label col-md-2"})
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.MonitorPlayers, new {htmlAttributes = new {@class = "form-control"}})
+                                    @Html.ValidationMessageFor(model => model.MonitorPlayers, "", new {@class = "text-danger"})
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MonitorPlayerIPs, new {@class = "control-label col-md-2"})
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.MonitorPlayerIPs, new {htmlAttributes = new {@class = "form-control"}})
+                                    @Html.ValidationMessageFor(model => model.MonitorPlayerIPs, "", new {@class = "text-danger"})
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Create" class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

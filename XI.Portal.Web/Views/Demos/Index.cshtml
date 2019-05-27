@@ -1,0 +1,123 @@
+﻿@using XI.Portal.Library.Auth.Extensions
+@using Microsoft.AspNet.Identity
+@using XI.Portal.Web.Extensions
+@model XI.Portal.Web.ViewModels.Demos.DemoIndexViewModel
+
+@{
+    ViewBag.Title = "Game Servers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Demo Manager Client Auth Key</h5>
+                </div>
+
+                <div class="ibox-content">
+                    @Html.Label(Model.DemoManagerAuthKey)
+                    @using (Html.BeginForm("GenerateDemoManagerAuthKey", "Demos", FormMethod.Post))
+                    {
+                        <input type="submit" value="Regenerate" class="btn btn-primary"/>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    @{
+        var games = Model.Demos.Select(demo => demo.Game).Distinct();
+
+        foreach (var gameType in games.OrderBy(gt => gt.DisplayName()))
+        {
+            <div class="row">
+                <div class="col-sm-12">
+
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5>Demos for @gameType.DisplayName()</h5>
+                        </div>
+
+                        <div class="ibox-content">
+
+                            <table class="table">
+                                <tr>
+                                    <th>
+                                        @Html.Label("Name")
+                                    </th>
+                                    <th>
+                                        @Html.Label("Date")
+                                    </th>
+                                    <th>
+                                        @Html.Label("Map")
+                                    </th>
+                                    <th>
+                                        @Html.Label("Mod")
+                                    </th>
+                                    <th>
+                                        @Html.Label("GameType")
+                                    </th>
+                                    <th>
+                                        @Html.Label("Server")
+                                    </th>
+                                    <th>
+                                        @Html.Label("Size")
+                                    </th>
+                                    <th>
+                                        @Html.Label("Uploaded By")
+                                    </th>
+                                    <th></th>
+                                </tr>
+
+                                @foreach (var item in Model.Demos.Where(demo => demo.Game == gameType))
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.ActionLink(item.Name, "Download", new {id = item.DemoId})
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Date)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Map)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Mod)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.GameType)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Server)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Size)
+                                        </td>
+                                        <td>
+                                            @Html.Raw(item.User.XtremeIdiotsFormattedName)
+                                        </td>
+                                        <td>
+                                            @if (User.Identity.IsInSeniorAdminRole() || User.Identity.GetUserId() == item.User.Id)
+                                            {
+                                                @Html.ActionLink("Delete", "Delete", new {id = item.DemoId})
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    }
+
+</div>

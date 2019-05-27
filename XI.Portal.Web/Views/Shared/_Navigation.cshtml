@@ -1,0 +1,71 @@
+﻿@using XI.Portal.Library.Auth.Extensions
+@using XI.Portal.Web.Extensions
+@using XI.Portal.Web.Navigation
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+
+                <div class="dropdown profile-element">
+
+                    <img alt="image" class="rounded-circle" src="@User.Identity.XtremeIdiotsPhotoUrl()" style="max-height: 170px; max-width: 170px"/>
+
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="block m-t-xs font-bold">@Html.Raw(User.Identity.XtremeIdiotsFormattedName())</span>
+                        <span class="text-muted text-xs block">
+                            @Html.Raw(User.Identity.XtremeIdiotsPrimaryGroupIdFormattedName())
+                            <b class="caret"></b>
+                        </span>
+                    </a>
+
+                    <ul class="dropdown-menu animated fadeInRight m-t-xs" style="left: 0px; position: absolute; top: 91px; will-change: top, left;">
+                        <li>
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm"}))
+                            {
+                                @Html.AntiForgeryToken()
+                            }
+
+                            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                        </li>
+                    </ul>
+
+                </div>
+
+                <div class="logo-element">
+                    >XI<
+                </div>
+
+            </li>
+
+            @{
+                var navigationHelper = DependencyResolver.Current.GetService<INavigationMenu>();
+                var menuItems = navigationHelper.GetMenu(User.Identity);
+
+                foreach (var menuItem in menuItems)
+                {
+                    <li class="@Html.IsSelected(menuItem.Controller, additionalValues: menuItem.RouteValues)">
+                        <a href="@Url.Action(menuItem.ActionName, menuItem.Controller, menuItem.RouteValues)">
+                            <i class="fa fa-@menuItem.Icon"></i> <span class="nav-label" data-i18n="nav.animations">@menuItem.Text</span>
+                        </a>
+
+                        @if (menuItem.SubMenuItems.Count > 0)
+                        {
+                            <ul class="nav nav-second-level collapse @Html.IsSelected(menuItem.Controller, additionalValues: menuItem.RouteValues, cssClass: "in")">
+
+                                @foreach (var subMenuItem in menuItem.SubMenuItems)
+                                {
+                                    <li class="@Html.IsSelected(subMenuItem.Controller, subMenuItem.ActionName, subMenuItem.RouteValues)">
+                                        <a href="@Url.Action(subMenuItem.ActionName, subMenuItem.Controller, subMenuItem.RouteValues)">@subMenuItem.Text</a>
+                                    </li>
+                                }
+
+                            </ul>
+                        }
+                    </li>
+                }
+            }
+
+        </ul>
+    </div>
+</nav>

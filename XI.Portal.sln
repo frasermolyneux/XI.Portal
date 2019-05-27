@@ -47,7 +47,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XI.Portal.Services.ServerMo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XI.Portal.Services.SyncService", "XI.Portal.Services.SyncService\XI.Portal.Services.SyncService.csproj", "{B8C56B1E-D9B5-4AA4-8F2F-CAC189025DF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XI.Portal.Web.Portal", "XI.Portal.Web.Portal\XI.Portal.Web.Portal.csproj", "{86CADB26-5817-46B6-88C7-76D5753722C3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XI.Portal.Web", "XI.Portal.Web\XI.Portal.Web.csproj", "{86CADB26-5817-46B6-88C7-76D5753722C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

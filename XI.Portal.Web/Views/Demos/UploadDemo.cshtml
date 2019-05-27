@@ -1,0 +1,57 @@
+﻿@using XI.Portal.Web.Extensions
+@model XI.Portal.Web.ViewModels.Demos.UploadDemoViewModel
+
+@{
+    ViewBag.Title = "Upload Demo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="ibox-content">
+
+                    @using (Html.BeginForm("UploadDemo", "Demos", FormMethod.Post, new {enctype = "multipart/form-data"}))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(false, "", new {@class = "text-danger"})
+
+                            <div class="form-group">
+                                @Html.Label("Game", new {@class = "control-label col-md-2"})
+                                <div class="col-md-12">
+                                    @*@Html.EnumDropDownListFor(model => model.Game, "Select Game", new { @class = "form-control" })*@
+                                    @Html.DropDownListFor(m => m.Game, Html.DemoManagerSupportedGames(), new {@class = "form-control"})
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Demo File", new {@class = "control-label col-md-2"})
+                                <div class="col-md-12">
+                                    <input type="file" name="file" id="file"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Upload Demo" class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

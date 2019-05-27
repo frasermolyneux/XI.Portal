@@ -1,0 +1,96 @@
+﻿@using XI.Portal.Web.Extensions
+@model XI.Portal.Web.ViewModels.Players.PlayersIndexViewModel
+
+@{
+    ViewBag.Title = "Player Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+
+        <div class="col-lg-3">
+            <div class="widget style1 navy-bg">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <i class="fa fa-users fa-5x"></i>
+                    </div>
+                    <div class="col-lg-8 text-right">
+                        <span> Total Players </span>
+                        <h2 class="font-bold">@Model.TotalTrackedPlayers</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="widget style1 navy-bg">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <i class="fa fa-clock-o fa-5x"></i>
+                    </div>
+                    <div class="col-lg-8 text-right">
+                        <span> Online Players </span>
+                        <h2 class="font-bold">@Model.TotalOnlinePlayers</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="widget style1 navy-bg">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <i class="fa fa-shield fa-5x"></i>
+                    </div>
+                    <div class="col-lg-8 text-right">
+                        <span> Banned Players </span>
+                        <h2 class="font-bold">@Model.TotalBannedPlayers</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="widget style1 yellow-bg">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <i class="fa fa-exclamation fa-5x"></i>
+                    </div>
+                    <div class="col-lg-8 text-right">
+                        <span> Unclaimed Bans </span>
+                        <h2 class="font-bold">@Model.TotalUnclaimedBans</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @foreach (var item in Model.GameIndexViewModels)
+        {
+            <div class="col-lg-4">
+                <div class="widget lazur-bg p-xl">
+
+                    <h2>
+                        @Html.GameTypeIcon(item.GameType) @Html.ActionLink(item.GameType.DisplayName(), "Index", "Players", new {id = item.GameType}, new {})
+                    </h2>
+                    <ul class="list-unstyled m-t-md">
+                        <li>
+                            <span class="fa fa-server m-r-xs"></span>
+                            <label>Total Players:</label>
+                            @item.TrackedPlayers
+                        </li>
+                        <li>
+                            <span class="fa fa-server m-r-xs"></span>
+                            <label>Ban List:</label>
+                            @Html.ActionLink($"{item.BannedPlayers} Banned Players", "Banned", "Players", new {id = item.GameType}, new {})
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        }
+
+    </div>
+
+</div>
