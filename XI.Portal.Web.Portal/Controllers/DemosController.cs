@@ -387,7 +387,7 @@ namespace XI.Portal.Web.Portal.Controllers
         private void SaveToS3(string filePath, GameType gameType)
         {
             var s3BucketName = "demomanager-prd";
-            var client = new AmazonS3Client(new BasicAWSCredentials("AKIAJ4TMXDNLOC4DA7JQ", "Y48IbyCQcJo84g9EFWl9wmRXo4X3LKDTC4+BHadk"));
+            var client = new AmazonS3Client(new BasicAWSCredentials("TODO-SECRETMANGEMENTCONFIG", "TODO-SECRETMANGEMENTCONFIG"));
 
             var fileInfo = new FileInfo(filePath);
             var key = $"demos/{gameType}/{fileInfo.Name}";
