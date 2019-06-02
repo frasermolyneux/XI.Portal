@@ -50,7 +50,7 @@ namespace XI.Portal.Library.Auth.XtremeIdiots
                     return new AuthenticationTicket(null, properties);
 
                 var requestPrefix = "https://" + Request.Host;
-                var redirectUri = requestPrefix + Request.PathBase + Options.CallbackPath;
+                var redirectUri = requestPrefix + Options.CallbackPath;
 
                 var tokenResponse = await httpClient.PostAsync(Options.TokenEndpoint, new FormUrlEncodedContent(
                     new List<KeyValuePair<string, string>>
