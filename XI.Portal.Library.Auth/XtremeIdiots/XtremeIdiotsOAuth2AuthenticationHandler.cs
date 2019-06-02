@@ -136,7 +136,7 @@ namespace XI.Portal.Library.Auth.XtremeIdiots
             if (responseChallenge == null)
                 return Task.FromResult((object) null);
 
-            var str1 = "https://" + Request.Host + Request.PathBase;
+            var str1 = "https://" + Request.Host;
             var str2 = str1 + Request.Path + Request.QueryString;
             var str3 = str1 + Options.CallbackPath;
             var properties = responseChallenge.Properties;
