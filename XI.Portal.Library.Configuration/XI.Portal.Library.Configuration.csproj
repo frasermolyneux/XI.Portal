@@ -56,6 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AppSettingConfigurationProvider.cs" />
     <Compile Include="Providers\AwsSecretConfigurationProvider.cs" />
+    <Compile Include="XtremeIdiotsForumsConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

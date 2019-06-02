@@ -10,19 +10,20 @@ using Newtonsoft.Json;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.CommonTypes;
+using XI.Portal.Library.Configuration;
 
 namespace XI.Portal.Library.Forums
 {
     public class ManageTopics : IManageTopics
     {
         private readonly IContextProvider contextProvider;
+        private readonly XtremeIdiotsForumsConfiguration xtremeIdiotsForumsConfiguration;
 
-        public ManageTopics(IContextProvider contextProvider)
+        public ManageTopics(XtremeIdiotsForumsConfiguration xtremeIdiotsForumsConfiguration, IContextProvider contextProvider)
         {
+            this.xtremeIdiotsForumsConfiguration = xtremeIdiotsForumsConfiguration ?? throw new ArgumentNullException(nameof(xtremeIdiotsForumsConfiguration));
             this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
         }
-
-        public string ApiKey { get; set; } = "TODO-SECRETANDMANAGEMENT";
 
         public async Task CreateTopicForAdminAction(Guid id)
         {
@@ -96,7 +97,7 @@ namespace XI.Portal.Library.Forums
             {
                 var requestParams = new NameValueCollection
                 {
-                    {"key", ApiKey},
+                    {"key", xtremeIdiotsForumsConfiguration.XtremeIdiotsForumsApiKey},
                     {"forum", forumId.ToString()},
                     {"author", authorId.ToString()},
                     {"title", title},
@@ -122,7 +123,7 @@ namespace XI.Portal.Library.Forums
             {
                 var requestParams = new NameValueCollection
                 {
-                    {"key", ApiKey},
+                    {"key", xtremeIdiotsForumsConfiguration.XtremeIdiotsForumsApiKey},
                     {"author", authorId.ToString()},
                     {"post", post}
                 };

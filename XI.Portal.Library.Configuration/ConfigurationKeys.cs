@@ -8,5 +8,9 @@
         public static string AwsPortalSecretName { get; } = "AwsPortalSecretName";
 
         public static string DbConnectionString { get; } = "DbConnectionString";
+
+        public static string XtremeIdiotsForumsApiKey { get; } = "XtremeIdiotsForumsApiKey";
+        public static string XtremeIdiotsOAuthClientId { get; } = "XtremeIdiotsOAuthClientId";
+        public static string XtremeIdiotsOAuthClientSecret { get; } = "XtremeIdiotsOAuthClientSecret";
     }
 }
