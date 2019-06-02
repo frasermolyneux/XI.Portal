@@ -55,7 +55,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\PortalContext.cs" />
-    <Compile Include="Context\ContextOptions.cs" />
     <Compile Include="Context\ContextProvider.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdminAction.cs" />
@@ -86,6 +85,10 @@
     <ProjectReference Include="..\XI.Portal.Library.CommonTypes\XI.Portal.Library.CommonTypes.csproj">
       <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
       <Name>XI.Portal.Library.CommonTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Library.Configuration\XI.Portal.Library.Configuration.csproj">
+      <Project>{48248EAE-811C-4361-9051-3EB705C50C9C}</Project>
+      <Name>XI.Portal.Library.Configuration</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

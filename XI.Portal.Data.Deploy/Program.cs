@@ -16,18 +16,7 @@ namespace XI.Portal.Data.Deploy
 
             Log.Information("Ensuring that database has been deployed");
 
-            var connectionString = ConfigurationManager.ConnectionStrings["PortalContext"];
-
-            if (connectionString == null || connectionString.ConnectionString == "__ConnectionString__")
-            {
-                Log.Error("Connection string has not been configured correctly in app settings");
-                Environment.Exit(-1);
-            }
-
-            var contextProvider = new ContextProvider(new ContextOptions
-            {
-                ConnectionString = connectionString.Name
-            });
+            var contextProvider = new ContextProvider(new Da);
 
             using (var context = contextProvider.GetContext())
             {

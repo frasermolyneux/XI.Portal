@@ -1729,10 +1729,6 @@
     <Content Include="Views\Shared\_Navigation.cshtml" />
     <Content Include="Views\Shared\_TopNavbar.cshtml" />
     <Content Include="Views\Landing\Index.cshtml" />
-    <Content Include="Web.config.token">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -1819,6 +1815,10 @@
     <ProjectReference Include="..\XI.Portal.Library.CommonTypes\XI.Portal.Library.CommonTypes.csproj">
       <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
       <Name>XI.Portal.Library.CommonTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Library.Configuration\XI.Portal.Library.Configuration.csproj">
+      <Project>{48248EAE-811C-4361-9051-3EB705C50C9C}</Project>
+      <Name>XI.Portal.Library.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.DemoManager\XI.Portal.Library.DemoManager.csproj">
       <Project>{92948eb3-e964-4106-9c9f-d1651786bc26}</Project>

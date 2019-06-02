@@ -17,6 +17,8 @@ using Unity.Lifetime;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.CommonTypes;
+using XI.Portal.Library.Configuration;
+using XI.Portal.Library.Configuration.Providers;
 using XI.Portal.Library.Logging;
 
 namespace XI.Portal.Services.FileMonitor
@@ -25,25 +27,20 @@ namespace XI.Portal.Services.FileMonitor
     {
         private static void Main()
         {
+            var container = new UnityContainer();
+
             var logger = new LoggerConfiguration()
                 .ReadFrom.AppSettings()
                 .WriteTo.ColoredConsole()
                 .CreateLogger();
             Log.Logger = logger;
 
-            var connectionString = ConfigurationManager.ConnectionStrings["PortalContext"];
+            container.RegisterType<AppSettingConfigurationProvider>();
+            container.RegisterType<AwsSecretConfigurationProvider>();
+            container.RegisterType<AwsConfiguration>();
+            container.RegisterType<DatabaseConfiguration>();
 
-            if (connectionString == null || connectionString.ConnectionString == "__ConnectionString__")
-                throw new Exception("Connection string has not been configured correctly in app settings");
-
-            var container = new UnityContainer();
-            container.RegisterType<ILogger>(new ContainerControlledLifetimeManager(),
-                new InjectionFactory((ctr, type, name) => logger));
-            container.RegisterType<ContextOptions>(new ContainerControlledLifetimeManager(), new InjectionFactory(
-                (ctr, type, name) => new ContextOptions
-                {
-                    ConnectionString = connectionString.Name
-                }));
+            container.RegisterType<ILogger>(new ContainerControlledLifetimeManager(), new InjectionFactory((ctr, type, name) => logger));
             container.RegisterType<IContextProvider, ContextProvider>();
             container.RegisterType<IDatabaseLogger, DatabaseLogger>();
 

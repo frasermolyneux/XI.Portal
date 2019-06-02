@@ -6,8 +6,9 @@ namespace XI.Portal.Data.Core.Context
 {
     public class PortalContext : IdentityDbContext<ApplicationUser>
     {
-        public PortalContext() : base("name=PortalContext")
+        public PortalContext()
         {
+            //Requires empty constructor
         }
 
         public PortalContext(string connectionString) : base(connectionString)

@@ -16,8 +16,11 @@ using Unity.Lifetime;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.CommonTypes;
+using XI.Portal.Library.Configuration;
+using XI.Portal.Library.Configuration.Providers;
 using XI.Portal.Library.GeoLocation.Extensions;
 using XI.Portal.Library.GeoLocation.Repository;
+using XI.Portal.Library.Logging;
 using XI.Portal.Library.Logging.Sinks;
 using XI.Portal.Library.Rcon.Client;
 using XI.Portal.Library.Rcon.Source;
@@ -28,32 +31,22 @@ namespace XI.Portal.Services.RconMonitor
     {
         private static void Main()
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["PortalContext"];
-
-            if (connectionString == null || connectionString.ConnectionString == "__ConnectionString__")
-                throw new Exception("Connection string has not been configured correctly in app settings");
-
             var container = new UnityContainer();
-
-            container.RegisterType<ContextOptions>(new ContainerControlledLifetimeManager(), new InjectionFactory(
-                (ctr, type, name) => new ContextOptions
-                {
-                    ConnectionString = connectionString.Name
-                }));
-            container.RegisterType<IContextProvider, ContextProvider>();
-
-            var contextProvider = container.Resolve<IContextProvider>();
 
             var logger = new LoggerConfiguration()
                 .ReadFrom.AppSettings()
                 .WriteTo.ColoredConsole()
-                .WriteTo.DatabaseSink(contextProvider, LogEventLevel.Warning)
                 .CreateLogger();
-
             Log.Logger = logger;
 
-            container.RegisterType<ILogger>(new ContainerControlledLifetimeManager(),
-                new InjectionFactory((ctr, type, name) => logger));
+            container.RegisterType<AppSettingConfigurationProvider>();
+            container.RegisterType<AwsSecretConfigurationProvider>();
+            container.RegisterType<AwsConfiguration>();
+            container.RegisterType<DatabaseConfiguration>();
+
+            container.RegisterType<ILogger>(new ContainerControlledLifetimeManager(), new InjectionFactory((ctr, type, name) => logger));
+            container.RegisterType<IContextProvider, ContextProvider>();
+            container.RegisterType<IDatabaseLogger, DatabaseLogger>();
 
             container.RegisterType<IGeoLocationApiRepository, GeoLocationApiRepository>();
 

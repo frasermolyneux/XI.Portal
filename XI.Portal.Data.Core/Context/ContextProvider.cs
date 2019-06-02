@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 using XI.Portal.Data.Core.Migrations;
+using XI.Portal.Library.Configuration;
 
 namespace XI.Portal.Data.Core.Context
 {
@@ -11,19 +12,19 @@ namespace XI.Portal.Data.Core.Context
 
     public class ContextProvider : IContextProvider
     {
-        private readonly ContextOptions contextOptions;
+        private readonly DatabaseConfiguration databaseConfiguration;
 
         private bool disposed;
 
-        public ContextProvider(ContextOptions contextOptions)
+        public ContextProvider(DatabaseConfiguration databaseConfiguration)
         {
-            this.contextOptions = contextOptions;
+            this.databaseConfiguration = databaseConfiguration;
         }
 
         public PortalContext GetContext()
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<PortalContext, Configuration>());
-            var portalContext = new PortalContext(contextOptions.ConnectionString);
+            var portalContext = new PortalContext(databaseConfiguration.DbConnectionString);
             portalContext.Database.CreateIfNotExists();
 
             return portalContext;
