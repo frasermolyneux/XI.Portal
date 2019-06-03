@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="DemoMessage.cs" />
     <Compile Include="DemoReader.cs" />
-    <Compile Include="DemoRepositoryConfig.cs" />
     <Compile Include="Extensions\GameTypeExtensions.cs" />
     <Compile Include="HuffmanFrequencies.cs" />
     <Compile Include="HuffmanTree.cs" />

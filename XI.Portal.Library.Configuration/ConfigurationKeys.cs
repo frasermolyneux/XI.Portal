@@ -12,5 +12,7 @@
         public static string XtremeIdiotsForumsApiKey { get; } = "XtremeIdiotsForumsApiKey";
         public static string XtremeIdiotsOAuthClientId { get; } = "XtremeIdiotsOAuthClientId";
         public static string XtremeIdiotsOAuthClientSecret { get; } = "XtremeIdiotsOAuthClientSecret";
+
+        public static string DemoManagerBucketName { get; } = "DemoManagerBucketName";
     }
 }

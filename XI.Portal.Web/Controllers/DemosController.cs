@@ -18,7 +18,7 @@ using XI.Portal.Library.Auth;
 using XI.Portal.Library.Auth.Extensions;
 using XI.Portal.Library.Auth.XtremeIdiots;
 using XI.Portal.Library.CommonTypes;
-using XI.Portal.Library.DemoManager;
+using XI.Portal.Library.Configuration;
 using XI.Portal.Library.DemoManager.Extensions;
 using XI.Portal.Library.DemoManager.Models;
 using XI.Portal.Library.Logging;
@@ -32,17 +32,14 @@ namespace XI.Portal.Web.Controllers
         private readonly ApplicationUserManager applicationUserManager;
         private readonly IContextProvider contextProvider;
         private readonly IDatabaseLogger databaseLogger;
-        private readonly DemoRepositoryConfig demoRepositoryConfig;
+        private readonly DemoManagerConfiguration demoManagerConfiguration;
 
-        public DemosController(IContextProvider contextProvider, ApplicationUserManager applicationUserManager,
-            DemoRepositoryConfig demoRepositoryConfig, IDatabaseLogger databaseLogger)
+        public DemosController(IContextProvider contextProvider, ApplicationUserManager applicationUserManager, IDatabaseLogger databaseLogger, DemoManagerConfiguration demoManagerConfiguration)
         {
             this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
-            this.applicationUserManager = applicationUserManager ??
-                                          throw new ArgumentNullException(nameof(applicationUserManager));
-            this.demoRepositoryConfig =
-                demoRepositoryConfig ?? throw new ArgumentNullException(nameof(demoRepositoryConfig));
+            this.applicationUserManager = applicationUserManager ?? throw new ArgumentNullException(nameof(applicationUserManager));
             this.databaseLogger = databaseLogger ?? throw new ArgumentNullException(nameof(databaseLogger));
+            this.demoManagerConfiguration = demoManagerConfiguration ?? throw new ArgumentNullException(nameof(demoManagerConfiguration));
         }
 
         [HttpGet]
@@ -290,7 +287,7 @@ namespace XI.Portal.Web.Controllers
 
                 using (var client = new WebClient())
                 {
-                    var uri = $"https://s3.us-east-2.amazonaws.com/demomanager-prd/demos/{demo.Game}/{demo.FileName}";
+                    var uri = $"https://s3.us-east-2.amazonaws.com/{demoManagerConfiguration.DemoBucketName}/demos/{demo.Game}/{demo.FileName}";
                     var file = client.DownloadData(uri);
 
                     var cd = new ContentDisposition
@@ -319,7 +316,7 @@ namespace XI.Portal.Web.Controllers
 
                 using (var client = new WebClient())
                 {
-                    var uri = $"https://s3.us-east-2.amazonaws.com/demomanager-prd/demos/{demo.Game}/{demo.FileName}";
+                    var uri = $"https://s3.us-east-2.amazonaws.com/{demoManagerConfiguration.DemoBucketName}/demos/{demo.Game}/{demo.FileName}";
                     var file = client.DownloadData(uri);
 
                     var cd = new ContentDisposition
@@ -386,8 +383,8 @@ namespace XI.Portal.Web.Controllers
 
         private void SaveToS3(string filePath, GameType gameType)
         {
-            var s3BucketName = "demomanager-prd";
-            var client = new AmazonS3Client(new BasicAWSCredentials("TODO-SECRETMANGEMENTCONFIG", "TODO-SECRETMANGEMENTCONFIG"));
+            var s3BucketName = demoManagerConfiguration.DemoBucketName;
+            var client = new AmazonS3Client(new BasicAWSCredentials(demoManagerConfiguration.AwsAccessKey, demoManagerConfiguration.AwsSecretKey), demoManagerConfiguration.AwsRegion);
 
             var fileInfo = new FileInfo(filePath);
             var key = $"demos/{gameType}/{fileInfo.Name}";

@@ -40,6 +40,7 @@ namespace XI.Portal.Web.Portal
             container.RegisterType<AwsConfiguration>();
             container.RegisterType<DatabaseConfiguration>();
             container.RegisterType<XtremeIdiotsForumsConfiguration>();
+            container.RegisterType<DemoManagerConfiguration>();
 
             container.RegisterType<IContextProvider, ContextProvider>();
             container.RegisterType<INavigationMenu, NavigationMenu>();
