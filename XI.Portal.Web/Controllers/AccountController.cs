@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Auth;
 using XI.Portal.Library.Auth.Extensions;
@@ -14,27 +15,28 @@ using XI.Portal.Web.ViewModels.Account;
 namespace XI.Portal.Web.Controllers
 {
     [Authorize(Roles = XtremeIdiotsRoles.LoggedInUser)]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly ApplicationUserManager applicationUserManager;
         private readonly IAuthenticationManager authenticationManager;
-        private readonly IDatabaseLogger databaseLogger;
 
-        public AccountController(ApplicationUserManager applicationUserManager,
-            IAuthenticationManager authenticationManager, IDatabaseLogger databaseLogger)
+        public AccountController(
+            IContextProvider contextProvider,
+            IDatabaseLogger databaseLogger,
+            ApplicationUserManager applicationUserManager,
+            IAuthenticationManager authenticationManager) : base(contextProvider, databaseLogger)
         {
             this.applicationUserManager = applicationUserManager ??
                                           throw new ArgumentNullException(nameof(applicationUserManager));
             this.authenticationManager = authenticationManager ??
                                          throw new ArgumentNullException(nameof(authenticationManager));
-            this.databaseLogger = databaseLogger ?? throw new ArgumentNullException(nameof(databaseLogger));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> LogOff()
         {
-            await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(), "User has logged off");
+            await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(), "User has logged off");
             authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Landing");
         }
@@ -98,7 +100,7 @@ namespace XI.Portal.Web.Controllers
                     AddRolesToUser(user);
 
                     await SignInAsync(user, true);
-                    await databaseLogger.CreateUserLogAsync(user.Id, "User has logged in");
+                    await DatabaseLogger.CreateUserLogAsync(user.Id, "User has logged in");
 
                     return RedirectToLocal(returnUrl);
                 }
@@ -136,7 +138,7 @@ namespace XI.Portal.Web.Controllers
                     if (result.Succeeded)
                     {
                         await SignInAsync(user, true);
-                        await databaseLogger.CreateUserLogAsync(user.Id, "User has logged in for the first time");
+                        await DatabaseLogger.CreateUserLogAsync(user.Id, "User has logged in for the first time");
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -150,7 +152,7 @@ namespace XI.Portal.Web.Controllers
             }
             catch (Exception ex)
             {
-                await databaseLogger.CreateSystemLogAsync("Error", "ExLoginCallback Error", ex.Message);
+                await DatabaseLogger.CreateSystemLogAsync("Error", "ExLoginCallback Error", ex.Message);
                 throw;
             }
         }

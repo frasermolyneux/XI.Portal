@@ -13,21 +13,18 @@ using XI.Portal.Web.ViewModels.AdmFileMonitor;
 namespace XI.Portal.Web.Controllers
 {
     [Authorize(Roles = XtremeIdiotsRoles.SeniorAdmins)]
-    public class AdmFileMonitorsController : Controller
+    public class AdmFileMonitorsController : BaseController
     {
-        private readonly IContextProvider contextProvider;
-        private readonly IDatabaseLogger databaseLogger;
-
-        public AdmFileMonitorsController(IContextProvider contextProvider, IDatabaseLogger databaseLogger)
+        public AdmFileMonitorsController(
+            IContextProvider contextProvider,
+            IDatabaseLogger databaseLogger) : base(contextProvider, databaseLogger)
         {
-            this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
-            this.databaseLogger = databaseLogger ?? throw new ArgumentNullException(nameof(databaseLogger));
         }
 
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var fileMonitors =
                     await context.FileMonitors.Include(server => server.GameServer).ToListAsync();
@@ -38,7 +35,7 @@ namespace XI.Portal.Web.Controllers
         [HttpGet]
         public async Task<ActionResult> Create()
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var gameServers = await context.GameServers.ToListAsync();
                 return View(new CreateFileMonitorViewModel
@@ -55,7 +52,7 @@ namespace XI.Portal.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var fileMonitor = new FileMonitor
                 {
@@ -66,7 +63,7 @@ namespace XI.Portal.Web.Controllers
 
                 context.FileMonitors.Add(fileMonitor);
                 await context.SaveChangesAsync();
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                     $"User has created a new file monitor: {fileMonitor.FileMonitorId}");
 
                 return RedirectToAction("Index");
@@ -79,7 +76,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var fileMonitor =
                     await context.FileMonitors.SingleOrDefaultAsync(
@@ -104,7 +101,7 @@ namespace XI.Portal.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(EditFileMonitorViewModel model)
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 if (!ModelState.IsValid)
                 {
@@ -121,7 +118,7 @@ namespace XI.Portal.Web.Controllers
                 fileMonitor.FilePath = model.FilePath;
 
                 await context.SaveChangesAsync();
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                     $"User has updated a file monitor: {fileMonitor.FileMonitorId}");
 
                 return RedirectToAction("Index");
@@ -134,7 +131,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var fileMonitor =
                     await context.FileMonitors.SingleOrDefaultAsync(
@@ -155,7 +152,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var fileMonitor =
                     await context.FileMonitors.SingleOrDefaultAsync(
@@ -166,7 +163,7 @@ namespace XI.Portal.Web.Controllers
 
                 context.FileMonitors.Remove(fileMonitor);
                 await context.SaveChangesAsync();
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                     $"User has deleted a file monitor: {id}");
 
                 return RedirectToAction("Index");

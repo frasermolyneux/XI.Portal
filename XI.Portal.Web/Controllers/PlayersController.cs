@@ -16,23 +16,22 @@ using XI.Portal.Web.ViewModels.Players;
 namespace XI.Portal.Web.Controllers
 {
     [Authorize(Roles = XtremeIdiotsRoles.AdminAndModerators)]
-    public class PlayersController : Controller
+    public class PlayersController : BaseController
     {
-        private readonly IContextProvider contextProvider;
-        private readonly IDatabaseLogger databaseLogger;
         private readonly IGeoLocationApiRepository geoLocationApiRepository;
 
-        public PlayersController(IContextProvider contextProvider, IGeoLocationApiRepository geoLocationApiRepository, IDatabaseLogger databaseLogger)
+        public PlayersController(
+            IContextProvider contextProvider,
+            IDatabaseLogger databaseLogger,
+            IGeoLocationApiRepository geoLocationApiRepository) : base(contextProvider, databaseLogger)
         {
-            this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
             this.geoLocationApiRepository = geoLocationApiRepository ?? throw new ArgumentNullException(nameof(geoLocationApiRepository));
-            this.databaseLogger = databaseLogger ?? throw new ArgumentNullException(nameof(databaseLogger));
         }
 
         [HttpGet]
         public async Task<ActionResult> Home()
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var model = new PlayersIndexViewModel
                 {
@@ -74,7 +73,7 @@ namespace XI.Portal.Web.Controllers
             // ReSharper disable once InconsistentNaming
             bool _search, string searchField, string searchString, string searchOper)
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var players = context.Players.Where(p => p.GameType == id)
                     .OrderByDescending(cl => cl.LastSeen).AsQueryable();
@@ -129,7 +128,7 @@ namespace XI.Portal.Web.Controllers
             // ReSharper disable once InconsistentNaming
             bool _search, string searchField, string searchString, string searchOper)
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var adminActions = context.AdminActions.Include(aa => aa.Player)
                     .Where(aa => aa.Player.GameType == id
@@ -185,7 +184,7 @@ namespace XI.Portal.Web.Controllers
                 if (!Guid.TryParse(id, out var idAsGuid))
                     return RedirectToAction("Home");
 
-                using (var context = contextProvider.GetContext())
+                using (var context = ContextProvider.GetContext())
                 {
                     var player = await context.Players.SingleOrDefaultAsync(p => p.PlayerId == idAsGuid);
 
@@ -215,7 +214,7 @@ namespace XI.Portal.Web.Controllers
             }
             catch (Exception ex)
             {
-                await databaseLogger.CreateSystemLogAsync("Error", "[Portal] Unhandled Error", ex);
+                await DatabaseLogger.CreateSystemLogAsync("Error", "[Portal] Unhandled Error", ex);
                 throw;
             }
         }
@@ -227,7 +226,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Home");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var player = await context.Players.SingleOrDefaultAsync(p => p.PlayerId == idAsGuid);
 
@@ -247,7 +246,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Home");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var player = await context.Players.SingleOrDefaultAsync(p => p.PlayerId == idAsGuid);
 
@@ -261,7 +260,7 @@ namespace XI.Portal.Web.Controllers
                 context.Players.Remove(player);
 
                 await context.SaveChangesAsync();
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(), $"User has deleted a player: {id}");
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(), $"User has deleted a player: {id}");
 
                 return RedirectToAction("Home");
             }
@@ -270,7 +269,7 @@ namespace XI.Portal.Web.Controllers
         [HttpGet]
         public async Task<ActionResult> MyActions()
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var currentUserId = User.Identity.GetUserId();
                 var adminActions = await context.AdminActions
@@ -286,7 +285,7 @@ namespace XI.Portal.Web.Controllers
         [HttpGet]
         public async Task<ActionResult> Unclaimed()
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var adminActions = await context.AdminActions
                     .Include(aa => aa.Player)

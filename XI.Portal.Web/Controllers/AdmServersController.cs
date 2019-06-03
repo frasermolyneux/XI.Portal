@@ -13,21 +13,18 @@ using XI.Portal.Web.ViewModels.AdmServers;
 namespace XI.Portal.Web.Controllers
 {
     [Authorize(Roles = XtremeIdiotsRoles.SeniorAdmins)]
-    public class AdmServersController : Controller
+    public class AdmServersController : BaseController
     {
-        private readonly IContextProvider contextProvider;
-        private readonly IDatabaseLogger databaseLogger;
-
-        public AdmServersController(IContextProvider contextProvider, IDatabaseLogger databaseLogger)
+        public AdmServersController(
+            IContextProvider contextProvider,
+            IDatabaseLogger databaseLogger) : base(contextProvider, databaseLogger)
         {
-            this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
-            this.databaseLogger = databaseLogger ?? throw new ArgumentNullException(nameof(databaseLogger));
         }
 
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var gameServers = await context.GameServers.OrderBy(s => s.BannerServerListPosition).ToListAsync();
                 return View(gameServers);
@@ -47,7 +44,7 @@ namespace XI.Portal.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var gameServer = new GameServer
                 {
@@ -69,7 +66,7 @@ namespace XI.Portal.Web.Controllers
 
                 context.GameServers.Add(gameServer);
                 await context.SaveChangesAsync();
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                     $"User has created a new server: {gameServer.ServerId}");
 
                 return RedirectToAction("Index");
@@ -82,7 +79,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var gameServer = await context.GameServers.SingleOrDefaultAsync(s => s.ServerId == idAsGuid);
 
@@ -118,7 +115,7 @@ namespace XI.Portal.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var gameServer = await context.GameServers.SingleOrDefaultAsync(s => s.ServerId == model.ServerId);
 
@@ -140,7 +137,7 @@ namespace XI.Portal.Web.Controllers
                 gameServer.ShowChatLog = model.ShowChatLog;
 
                 await context.SaveChangesAsync();
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                     $"User has updated a server: {gameServer.ServerId}");
 
                 return RedirectToAction("Index");
@@ -153,7 +150,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var gameServer = await context.GameServers.SingleOrDefaultAsync(s => s.ServerId == idAsGuid);
 
@@ -172,7 +169,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var gameServer = await context.GameServers.SingleOrDefaultAsync(s => s.ServerId == idAsGuid);
 
@@ -184,7 +181,7 @@ namespace XI.Portal.Web.Controllers
                 context.LivePlayers.RemoveRange(livePlayers);
                 context.GameServers.Remove(gameServer);
                 await context.SaveChangesAsync();
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                     $"User has deleted a server: {id}");
 
                 return RedirectToAction("Index");

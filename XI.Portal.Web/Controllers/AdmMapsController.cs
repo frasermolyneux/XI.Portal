@@ -15,23 +15,22 @@ using XI.Portal.Library.MapRedirect;
 namespace XI.Portal.Web.Controllers
 {
     [Authorize(Roles = XtremeIdiotsRoles.SeniorAdmins)]
-    public class AdmMapsController : Controller
+    public class AdmMapsController : BaseController
     {
-        private readonly IContextProvider contextProvider;
-        private readonly IDatabaseLogger databaseLogger;
         private readonly IMapRedirectRepository mapRedirectRepository;
 
-        public AdmMapsController(IContextProvider contextProvider, IDatabaseLogger databaseLogger, IMapRedirectRepository mapRedirectRepository)
+        public AdmMapsController(
+            IContextProvider contextProvider,
+            IDatabaseLogger databaseLogger,
+            IMapRedirectRepository mapRedirectRepository) : base(contextProvider, databaseLogger)
         {
-            this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
-            this.databaseLogger = databaseLogger ?? throw new ArgumentNullException(nameof(databaseLogger));
             this.mapRedirectRepository = mapRedirectRepository ?? throw new ArgumentNullException(nameof(mapRedirectRepository));
         }
 
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var maps = await context.Maps.Include(map => map.MapFiles).ToListAsync();
                 return View(maps);
@@ -47,9 +46,9 @@ namespace XI.Portal.Web.Controllers
                 {GameType.CallOfDuty5, "cod5"}
             };
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                     $"User has executed the maps sync process");
 
                 var allMapFiles = await context.Maps.Include(m => m.MapFiles).ToListAsync();
