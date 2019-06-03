@@ -38,7 +38,8 @@ namespace XI.Portal.Services.SyncService
             container.RegisterType<AwsConfiguration>();
             container.RegisterType<DatabaseConfiguration>();
 
-            container.RegisterType<ILogger>(new ContainerControlledLifetimeManager(), new InjectionFactory((ctr, type, name) => logger));
+            container.RegisterFactory<ILogger>((ctr, type, name) => logger, new ContainerControlledLifetimeManager());
+
             container.RegisterType<IContextProvider, ContextProvider>();
             container.RegisterType<IDatabaseLogger, DatabaseLogger>();
 
