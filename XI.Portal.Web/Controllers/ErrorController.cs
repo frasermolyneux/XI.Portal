@@ -1,10 +1,18 @@
 ﻿using System;
 using System.Web.Mvc;
+using XI.Portal.Data.Core.Context;
+using XI.Portal.Library.Logging;
 
 namespace XI.Portal.Web.Controllers
 {
-    public class ErrorController : Controller
+    public class ErrorController : BaseController
     {
+        public ErrorController(
+            IContextProvider contextProvider,
+            IDatabaseLogger databaseLogger) : base(contextProvider, databaseLogger)
+        {
+        }
+
         public ActionResult Error()
         {
             return View();

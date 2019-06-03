@@ -10,20 +10,17 @@ using XI.Portal.Library.Logging;
 namespace XI.Portal.Web.Controllers
 {
     [Authorize(Roles = XtremeIdiotsRoles.SeniorAdmins)]
-    public class AdmUsersController : Controller
+    public class AdmUsersController : BaseController
     {
-        private readonly IContextProvider contextProvider;
-        private readonly IDatabaseLogger databaseLogger;
-
-        public AdmUsersController(IContextProvider contextProvider, IDatabaseLogger databaseLogger)
+        public AdmUsersController(
+            IContextProvider contextProvider,
+            IDatabaseLogger databaseLogger) : base(contextProvider, databaseLogger)
         {
-            this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
-            this.databaseLogger = databaseLogger ?? throw new ArgumentNullException(nameof(databaseLogger));
         }
 
         public async Task<ActionResult> Index()
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var users = await context.Users.ToListAsync();
                 return View(users);
@@ -35,7 +32,7 @@ namespace XI.Portal.Web.Controllers
             if (string.IsNullOrWhiteSpace(id))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var user = await context.Users.SingleAsync(u => u.Id == id);
 
@@ -49,7 +46,7 @@ namespace XI.Portal.Web.Controllers
 
                 context.SaveChanges();
 
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                     $"User has set {user.UserName} to be a registered user");
             }
 
@@ -61,7 +58,7 @@ namespace XI.Portal.Web.Controllers
             if (string.IsNullOrWhiteSpace(id))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var user = await context.Users.SingleAsync(u => u.Id == id);
 
@@ -70,7 +67,7 @@ namespace XI.Portal.Web.Controllers
 
                 context.SaveChanges();
 
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                     $"User has locked {user.UserName} account");
             }
 
@@ -82,7 +79,7 @@ namespace XI.Portal.Web.Controllers
             if (string.IsNullOrWhiteSpace(id))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var user = await context.Users.SingleAsync(u => u.Id == id);
 
@@ -91,7 +88,7 @@ namespace XI.Portal.Web.Controllers
 
                 context.SaveChanges();
 
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                     $"User has unlocked {user.UserName} account");
             }
 

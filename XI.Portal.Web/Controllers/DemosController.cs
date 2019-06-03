@@ -27,18 +27,18 @@ using XI.Portal.Web.ViewModels.Demos;
 namespace XI.Portal.Web.Controllers
 {
     [Authorize(Roles = XtremeIdiotsRoles.LoggedInUser)]
-    public class DemosController : Controller
+    public class DemosController : BaseController
     {
         private readonly ApplicationUserManager applicationUserManager;
-        private readonly IContextProvider contextProvider;
-        private readonly IDatabaseLogger databaseLogger;
         private readonly DemoManagerConfiguration demoManagerConfiguration;
 
-        public DemosController(IContextProvider contextProvider, ApplicationUserManager applicationUserManager, IDatabaseLogger databaseLogger, DemoManagerConfiguration demoManagerConfiguration)
+        public DemosController(
+            IContextProvider contextProvider,
+            IDatabaseLogger databaseLogger,
+            ApplicationUserManager applicationUserManager,
+            DemoManagerConfiguration demoManagerConfiguration) : base(contextProvider, databaseLogger)
         {
-            this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
             this.applicationUserManager = applicationUserManager ?? throw new ArgumentNullException(nameof(applicationUserManager));
-            this.databaseLogger = databaseLogger ?? throw new ArgumentNullException(nameof(databaseLogger));
             this.demoManagerConfiguration = demoManagerConfiguration ?? throw new ArgumentNullException(nameof(demoManagerConfiguration));
         }
 
@@ -47,7 +47,7 @@ namespace XI.Portal.Web.Controllers
         {
             var user = await applicationUserManager.FindByNameAsync(User.Identity.Name);
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var demoIndexViewModel = new DemoIndexViewModel
                 {
@@ -70,7 +70,7 @@ namespace XI.Portal.Web.Controllers
             var user = await applicationUserManager.FindByNameAsync(User.Identity.Name);
             user.DemoManagerAuthKey = Guid.NewGuid().ToString();
             await applicationUserManager.UpdateAsync(user);
-            await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+            await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                 "User has regenerated their demo manager auth key");
 
             return RedirectToAction("Index");
@@ -110,7 +110,7 @@ namespace XI.Portal.Web.Controllers
 
             var localDemo = new LocalDemo(path, model.Game);
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var user = await context.Users.SingleOrDefaultAsync(u => u.UserName == User.Identity.Name);
 
@@ -130,7 +130,7 @@ namespace XI.Portal.Web.Controllers
 
                 context.Demos.Add(demo);
                 await context.SaveChangesAsync();
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                     $"User has uploaded a new demo: {demo.DemoId}");
 
                 return RedirectToAction("Index");
@@ -150,17 +150,17 @@ namespace XI.Portal.Web.Controllers
 
             if (string.IsNullOrWhiteSpace(authKey))
             {
-                await databaseLogger.CreateSystemLogAsync("Security", $"ClientDemoList - Auth key header supplied but invalid - {authKey}");
+                await DatabaseLogger.CreateSystemLogAsync("Security", $"ClientDemoList - Auth key header supplied but invalid - {authKey}");
                 return Content("AuthError: Auth key header supplied but invalid");
             }
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var user = await context.Users.SingleOrDefaultAsync(u => u.DemoManagerAuthKey == authKey);
 
                 if (user == null)
                 {
-                    await databaseLogger.CreateSystemLogAsync("Security", $"ClientDemoList - Auth key supplied but invalid - {authKey}");
+                    await DatabaseLogger.CreateSystemLogAsync("Security", $"ClientDemoList - Auth key supplied but invalid - {authKey}");
                     return Content("AuthError: Auth key supplied but invalid. Try re-entering the auth key on your client");
                 }
 
@@ -218,17 +218,17 @@ namespace XI.Portal.Web.Controllers
 
             if (string.IsNullOrWhiteSpace(authKey))
             {
-                await databaseLogger.CreateSystemLogAsync("Security", $"ClientUploadDemo - Auth key header supplied but invalid - {authKey}");
+                await DatabaseLogger.CreateSystemLogAsync("Security", $"ClientUploadDemo - Auth key header supplied but invalid - {authKey}");
                 return Content("AuthError: Auth key header supplied but invalid");
             }
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var user = await context.Users.SingleOrDefaultAsync(u => u.DemoManagerAuthKey == authKey);
 
                 if (user == null)
                 {
-                    await databaseLogger.CreateSystemLogAsync("Security", $"ClientUploadDemo - Auth key supplied but invalid - {authKey}");
+                    await DatabaseLogger.CreateSystemLogAsync("Security", $"ClientUploadDemo - Auth key supplied but invalid - {authKey}");
                     return Content("AuthError: Auth key supplied but invalid. Try re-entering the auth key on your client");
                 }
 
@@ -266,7 +266,7 @@ namespace XI.Portal.Web.Controllers
 
                 context.Demos.Add(demo);
                 await context.SaveChangesAsync();
-                await databaseLogger.CreateUserLogAsync(user.Id,
+                await DatabaseLogger.CreateUserLogAsync(user.Id,
                     $"User has uploaded a new demo through the client: {demo.DemoId}");
 
                 return new HttpStatusCodeResult(HttpStatusCode.OK);
@@ -279,7 +279,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var demo = await context.Demos.SingleOrDefaultAsync(d => d.DemoId == idAsGuid);
 
@@ -308,7 +308,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var demo = await context.Demos.SingleOrDefaultAsync(d => d.DemoId == idAsGuid);
 
@@ -337,7 +337,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var demo = await context.Demos.SingleOrDefaultAsync(d => d.DemoId == idAsGuid);
 
@@ -346,7 +346,7 @@ namespace XI.Portal.Web.Controllers
 
                 if (!User.Identity.IsInSeniorAdminRole() && User.Identity.GetUserId() != demo.User.Id)
                 {
-                    await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                    await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                         $"User attempted to delete a demo they do not have permissions to {demo.DemoId}");
                     return RedirectToAction("Index");
                 }
@@ -363,7 +363,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var demo = await context.Demos.SingleOrDefaultAsync(d => d.DemoId == idAsGuid);
 
@@ -375,7 +375,7 @@ namespace XI.Portal.Web.Controllers
 
                 context.Demos.Remove(demo);
                 await context.SaveChangesAsync();
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(), $"User has deleted a demo: {id}");
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(), $"User has deleted a demo: {id}");
 
                 return RedirectToAction("Index");
             }

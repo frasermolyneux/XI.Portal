@@ -213,6 +213,7 @@
     <Compile Include="Controllers\AdmRconMonitorsController.cs" />
     <Compile Include="Controllers\BannersController.cs" />
     <Compile Include="Controllers\AdmFileMonitorsController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ExternalController.cs" />
     <Compile Include="Controllers\ForumsController.cs" />

@@ -6,25 +6,25 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Auth.XtremeIdiots;
+using XI.Portal.Library.Logging;
 using XI.Portal.Web.Extensions;
 using XI.Portal.Web.ViewModels.Servers;
 
 namespace XI.Portal.Web.Controllers
 {
     [Authorize(Roles = XtremeIdiotsRoles.LoggedInUser)]
-    public class ServersController : Controller
+    public class ServersController : BaseController
     {
-        private readonly IContextProvider contextProvider;
-
-        public ServersController(IContextProvider contextProvider)
+        public ServersController(
+            IContextProvider contextProvider,
+            IDatabaseLogger databaseLogger) : base(contextProvider, databaseLogger)
         {
-            this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
         }
 
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var model = new ServersIndexViewModel
                 {
@@ -42,7 +42,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var gameServer = await context.GameServers
                     .SingleOrDefaultAsync(server => server.ServerId == idAsGuid);
@@ -78,7 +78,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var gameServer = await context.GameServers
                     .SingleOrDefaultAsync(server => server.ServerId == idAsGuid);
@@ -99,7 +99,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return Json("Invalid Request", JsonRequestBehavior.AllowGet);
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var gameServer = await context.GameServers
                     .SingleOrDefaultAsync(server => server.ServerId == idAsGuid);
@@ -155,7 +155,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var chatLog = await context.ChatLogs.Include(cl => cl.Player).Include(cl => cl.GameServer).SingleAsync(cl => cl.ChatLogId == idAsGuid);
                 return View(chatLog);
@@ -175,7 +175,7 @@ namespace XI.Portal.Web.Controllers
             // ReSharper disable once InconsistentNaming
             bool _search, string searchField, string searchString, string searchOper)
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var chatLogs = context.ChatLogs.Include(cl => cl.Player)
                     .OrderByDescending(cl => cl.Timestamp).AsQueryable();

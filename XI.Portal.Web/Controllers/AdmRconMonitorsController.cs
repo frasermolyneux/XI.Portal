@@ -13,21 +13,18 @@ using XI.Portal.Web.ViewModels.AdmRconMonitor;
 namespace XI.Portal.Web.Controllers
 {
     [Authorize(Roles = XtremeIdiotsRoles.SeniorAdmins)]
-    public class AdmRconMonitorsController : Controller
+    public class AdmRconMonitorsController : BaseController
     {
-        private readonly IContextProvider contextProvider;
-        private readonly IDatabaseLogger databaseLogger;
-
-        public AdmRconMonitorsController(IContextProvider contextProvider, IDatabaseLogger databaseLogger)
+        public AdmRconMonitorsController(
+            IContextProvider contextProvider,
+            IDatabaseLogger databaseLogger) : base(contextProvider, databaseLogger)
         {
-            this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
-            this.databaseLogger = databaseLogger ?? throw new ArgumentNullException(nameof(databaseLogger));
         }
 
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var rconMonitors =
                     await context.RconMonitors.Include(server => server.GameServer).ToListAsync();
@@ -38,7 +35,7 @@ namespace XI.Portal.Web.Controllers
         [HttpGet]
         public async Task<ActionResult> Create()
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var gameServers = await context.GameServers.ToListAsync();
                 return View(new CreateRconMonitorViewModel
@@ -55,7 +52,7 @@ namespace XI.Portal.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var rconMonitor = new RconMonitor
                 {
@@ -69,7 +66,7 @@ namespace XI.Portal.Web.Controllers
 
                 context.RconMonitors.Add(rconMonitor);
                 await context.SaveChangesAsync();
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                     $"User has created a new rcon monitor: {rconMonitor.RconMonitorId}");
 
                 return RedirectToAction("Index");
@@ -82,7 +79,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var rconMonitor =
                     await context.RconMonitors.SingleOrDefaultAsync(
@@ -109,7 +106,7 @@ namespace XI.Portal.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(EditRconMonitorViewModel model)
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 if (!ModelState.IsValid)
                 {
@@ -128,7 +125,7 @@ namespace XI.Portal.Web.Controllers
                 rconMonitor.MonitorPlayerIPs = model.MonitorPlayerIPs;
 
                 await context.SaveChangesAsync();
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                     $"User has updated a rcon monitor: {rconMonitor.RconMonitorId}");
 
                 return RedirectToAction("Index");
@@ -141,7 +138,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var rconMonitor =
                     await context.RconMonitors.SingleOrDefaultAsync(
@@ -162,7 +159,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var rconMonitor =
                     await context.RconMonitors.SingleOrDefaultAsync(
@@ -173,7 +170,7 @@ namespace XI.Portal.Web.Controllers
 
                 context.RconMonitors.Remove(rconMonitor);
                 await context.SaveChangesAsync();
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                     $"User has deleted a rcon monitor: {id}");
 
                 return RedirectToAction("Index");

@@ -1,22 +1,21 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Auth.XtremeIdiots;
+using XI.Portal.Library.Logging;
 
 namespace XI.Portal.Web.Controllers
 {
     [Authorize(Roles = XtremeIdiotsRoles.SeniorAdmins)]
-    public class AdmLogsController : Controller
+    public class AdmLogsController : BaseController
     {
-        private readonly IContextProvider contextProvider;
-
-        public AdmLogsController(IContextProvider contextProvider)
+        public AdmLogsController(
+            IContextProvider contextProvider,
+            IDatabaseLogger databaseLogger) : base(contextProvider, databaseLogger)
         {
-            this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
         }
 
         [HttpGet]
@@ -28,7 +27,7 @@ namespace XI.Portal.Web.Controllers
         [HttpGet]
         public async Task<ActionResult> GetUserLogsAjax(string sidx, string sord, int page, int rows)
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var logs = context.UserLogs.OrderByDescending(l => l.Timestamp).AsQueryable();
 
@@ -63,7 +62,7 @@ namespace XI.Portal.Web.Controllers
         [HttpGet]
         public async Task<ActionResult> GetSystemLogsAjax(string sidx, string sord, int page, int rows)
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var logs = context.SystemLogs.OrderByDescending(l => l.Timestamp).AsQueryable();
 

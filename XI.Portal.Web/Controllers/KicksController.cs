@@ -16,16 +16,15 @@ using XI.Portal.Web.ViewModels.Kicks;
 namespace XI.Portal.Web.Controllers
 {
     [Authorize(Roles = XtremeIdiotsRoles.Admins)]
-    public class KicksController : Controller
+    public class KicksController : BaseController
     {
-        private readonly IContextProvider contextProvider;
-        private readonly IDatabaseLogger databaseLogger;
         private readonly IManageTopics manageTopics;
 
-        public KicksController(IContextProvider contextProvider, IDatabaseLogger databaseLogger, IManageTopics manageTopics)
+        public KicksController(
+            IContextProvider contextProvider,
+            IDatabaseLogger databaseLogger,
+            IManageTopics manageTopics) : base(contextProvider, databaseLogger)
         {
-            this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
-            this.databaseLogger = databaseLogger ?? throw new ArgumentNullException(nameof(databaseLogger));
             this.manageTopics = manageTopics ?? throw new ArgumentNullException(nameof(manageTopics));
         }
 
@@ -35,7 +34,7 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index", "Players");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var player = await context.Players.Where(p => p.PlayerId == idAsGuid).SingleAsync();
 
@@ -53,7 +52,7 @@ namespace XI.Portal.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(CreateKickViewModel model)
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 if (!ModelState.IsValid)
                 {
@@ -75,7 +74,7 @@ namespace XI.Portal.Web.Controllers
                 context.AdminActions.Add(adminAction);
                 await context.SaveChangesAsync();
                 await manageTopics.CreateTopicForAdminAction(adminAction.AdminActionId);
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(), $"Added a {adminAction.Type} to {adminAction.Player.Username} ({adminAction.Player.PlayerId})");
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(), $"Added a {adminAction.Type} to {adminAction.Player.Username} ({adminAction.Player.PlayerId})");
 
                 return RedirectToAction("Details", "Players", new {id = model.PlayerId});
             }
@@ -87,13 +86,13 @@ namespace XI.Portal.Web.Controllers
             if (!Guid.TryParse(id, out var idAsGuid))
                 return RedirectToAction("Index", "Players");
 
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var adminAction = await context.AdminActions.Include(a => a.Player).Where(a => a.AdminActionId == idAsGuid).SingleAsync();
 
                 if (!User.Identity.IsInSeniorAdminRole() && User.Identity.GetUserId() != adminAction.Admin.Id)
                 {
-                    await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                    await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                         $"User attempted to edit an admin action they do not have permissions to {adminAction.AdminActionId}");
                     return RedirectToAction("Index", "Players");
                 }
@@ -112,13 +111,13 @@ namespace XI.Portal.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(EditKickViewModel model)
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var adminAction = await context.AdminActions.Include(a => a.Player).Where(a => a.AdminActionId == model.AdminActionId).SingleAsync();
 
                 if (!User.Identity.IsInSeniorAdminRole() && User.Identity.GetUserId() != adminAction.Admin.Id)
                 {
-                    await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
+                    await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(),
                         $"User attempted to edit an admin action they do not have permissions to {adminAction.AdminActionId}");
                     return RedirectToAction("Index", "Players");
                 }
@@ -133,7 +132,7 @@ namespace XI.Portal.Web.Controllers
 
                 await context.SaveChangesAsync();
                 await manageTopics.UpdateTopicForAdminAction(model.AdminActionId);
-                await databaseLogger.CreateUserLogAsync(User.Identity.GetUserId(), $"Updated a {adminAction.Type} ({adminAction.AdminActionId}) on {adminAction.Player.Username} ({adminAction.Player.PlayerId})");
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(), $"Updated a {adminAction.Type} ({adminAction.AdminActionId}) on {adminAction.Player.Username} ({adminAction.Player.PlayerId})");
 
                 return RedirectToAction("Details", "Players", new {id = adminAction.Player.PlayerId});
             }

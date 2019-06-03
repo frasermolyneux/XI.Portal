@@ -1,26 +1,25 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Auth.XtremeIdiots;
+using XI.Portal.Library.Logging;
 
 namespace XI.Portal.Web.Controllers
 {
     [Authorize(Roles = XtremeIdiotsRoles.LoggedInUser)]
-    public class ExternalController : Controller
+    public class ExternalController : BaseController
     {
-        private readonly IContextProvider contextProvider;
-
-        public ExternalController(IContextProvider contextProvider)
+        public ExternalController(
+            IContextProvider contextProvider,
+            IDatabaseLogger databaseLogger) : base(contextProvider, databaseLogger)
         {
-            this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
         }
 
         [AllowAnonymous]
         public ActionResult LatestAdminActions()
         {
-            using (var context = contextProvider.GetContext())
+            using (var context = ContextProvider.GetContext())
             {
                 var latestActions = context.AdminActions.Include(aa => aa.Player).Include(aa => aa.Admin).OrderByDescending(aa => aa.Created).Take(15).ToList();
                 return View(latestActions);
