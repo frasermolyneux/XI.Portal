@@ -14,5 +14,7 @@
         public static string XtremeIdiotsOAuthClientSecret { get; } = "XtremeIdiotsOAuthClientSecret";
 
         public static string DemoManagerBucketName { get; } = "DemoManagerBucketName";
+
+        public static string GeoLocationServiceUrl { get; } = "GeoLocationServiceUrl";
     }
 }

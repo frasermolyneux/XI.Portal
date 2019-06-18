@@ -41,6 +41,7 @@ namespace XI.Portal.Web.Portal
             container.RegisterType<DatabaseConfiguration>();
             container.RegisterType<XtremeIdiotsForumsConfiguration>();
             container.RegisterType<DemoManagerConfiguration>();
+            container.RegisterType<GeoLocationConfiguration>();
 
             container.RegisterType<IContextProvider, ContextProvider>();
             container.RegisterType<INavigationMenu, NavigationMenu>();

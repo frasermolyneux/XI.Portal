@@ -1,16 +1,21 @@
 ﻿using System;
-using System.Configuration;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using XI.Portal.Library.Configuration;
 using XI.Portal.Library.GeoLocation.Models;
 
 namespace XI.Portal.Library.GeoLocation.Repository
 {
     public class GeoLocationApiRepository : IGeoLocationApiRepository
     {
-        private static string GeoLocationUrlService => ConfigurationManager.AppSettings["GeoLocationServiceUrl"];
+        private readonly GeoLocationConfiguration geoLocationConfiguration;
+
+        public GeoLocationApiRepository(GeoLocationConfiguration geoLocationConfiguration)
+        {
+            this.geoLocationConfiguration = geoLocationConfiguration ?? throw new ArgumentNullException(nameof(geoLocationConfiguration));
+        }
 
         public async Task<LocationDto> GetLocation(string address)
         {
@@ -23,7 +28,7 @@ namespace XI.Portal.Library.GeoLocation.Repository
             {
                 using (var wc = new WebClient())
                 {
-                    var locationString = await wc.DownloadStringTaskAsync($"{GeoLocationUrlService}/{encodedAddress}");
+                    var locationString = await wc.DownloadStringTaskAsync($"{geoLocationConfiguration.GeoLocationServiceUrl}/api/geo/location/{encodedAddress}");
                     return JsonConvert.DeserializeObject<LocationDto>(locationString);
                 }
             }
