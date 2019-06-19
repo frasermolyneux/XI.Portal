@@ -55,6 +55,7 @@
     <Compile Include="DatabaseConfiguration.cs" />
     <Compile Include="DemoManagerConfiguration.cs" />
     <Compile Include="GeoLocationConfiguration.cs" />
+    <Compile Include="MapRedirectConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AppSettingConfigurationProvider.cs" />
     <Compile Include="Providers\AwsSecretConfigurationProvider.cs" />
