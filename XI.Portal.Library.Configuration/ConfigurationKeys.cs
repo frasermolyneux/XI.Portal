@@ -16,5 +16,8 @@
         public static string DemoManagerBucketName { get; } = "DemoManagerBucketName";
 
         public static string GeoLocationServiceUrl { get; } = "GeoLocationServiceUrl";
+
+        public static string MapRedirectBaseUrl { get; } = "MapRedirectBaseUrl";
+        public static string MapRedirectKey { get; } = "MapRedirectKey";
     }
 }
