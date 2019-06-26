@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using XI.Portal.Data.Core.Context;
+using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Auth.XtremeIdiots;
 using XI.Portal.Library.CommonTypes;
 using XI.Portal.Library.GeoLocation.Extensions;
@@ -118,6 +120,52 @@ namespace XI.Portal.Web.Controllers
         }
 
         [HttpGet]
+        public ActionResult IPSearch()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetPlayersIPSearchAjax(string sidx, string sord, int page, int rows,
+            // ReSharper disable once InconsistentNaming
+            bool _search, string searchField, string searchString, string searchOper)
+        {
+            using (var context = ContextProvider.GetContext())
+            {
+                var ipAddresses = context.PlayerIpAddresses.OrderByDescending(ip => ip.LastUsed).AsQueryable();
+
+                if (_search && !string.IsNullOrWhiteSpace(searchString))
+                    switch (searchField)
+                    {
+                        case "Address":
+                            ipAddresses = ipAddresses.Where(ip => ip.Address.Contains(searchString)).AsQueryable();
+                            break;
+                    }
+
+                var totalRecords = ipAddresses.Count();
+                var skip = (page - 1) * rows;
+
+                var playerIpAddresses = await ipAddresses.Skip(skip).Take(rows).Include(p => p.Player).ToListAsync();
+
+                var playersToReturn = playerIpAddresses.Select(ip => new
+                {
+                    GameType = ip.Player.GameType.ToString(),
+                    ip.Player.PlayerId,
+                    ip.Player.Username,
+                    ip.Address
+                });
+
+                return Json(new
+                {
+                    total = totalRecords / rows,
+                    page,
+                    records = totalRecords,
+                    rows = playersToReturn
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
         public ActionResult Banned(GameType id)
         {
             return View(id);
@@ -203,6 +251,13 @@ namespace XI.Portal.Web.Controllers
                         AdminActions = await context.AdminActions.Include(aa => aa.Admin).Where(aa => aa.Player.PlayerId == player.PlayerId)
                             .OrderByDescending(aa => aa.Created).ToListAsync()
                     };
+
+                    model.RelatedIpAddresses = new List<PlayerIpAddress>();
+                    foreach (var playerIpAddress in model.IpAddresses)
+                    {
+                        var relatedPlayersFromIp = await context.PlayerIpAddresses.Include(ip => ip.Player).Where(ip => ip.Address == playerIpAddress.Address && ip.Player.PlayerId != idAsGuid).ToListAsync();
+                        model.RelatedIpAddresses.AddRange(relatedPlayersFromIp);
+                    }
 
                     var playerLocation = await geoLocationApiRepository.GetLocation(player.IpAddress);
 

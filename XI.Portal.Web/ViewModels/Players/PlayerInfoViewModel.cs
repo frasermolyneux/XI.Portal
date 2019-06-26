@@ -11,5 +11,6 @@ namespace XI.Portal.Web.ViewModels.Players
         public List<PlayerAlias> Aliases { get; set; }
         public List<PlayerIpAddress> IpAddresses { get; set; }
         public List<AdminAction> AdminActions { get; set; }
+        public List<PlayerIpAddress> RelatedIpAddresses { get; set; }
     }
 }

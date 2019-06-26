@@ -104,6 +104,9 @@
                         <li class="">
                             <a data-toggle="tab" href="#tab-2"><i class="fa fa-list"></i> IP Addresses</a>
                         </li>
+                        <li class="">
+                            <a data-toggle="tab" href="#tab-3"><i class="fa fa-list"></i> Related Players</a>
+                        </li>
                     </ul>
                     <div class="tab-content">
 
@@ -169,6 +172,35 @@
                                                 </td>
                                                 <td>
                                                     @item.LastUsed
+                                                </td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="tab-3" class="tab-pane">
+                            <div>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <tr>
+                                            <th>
+                                                Player Name
+                                            </th>
+                                            <th>
+                                                Connected By IP
+                                            </th>
+                                        </tr>
+
+                                        @foreach (var item in Model.RelatedIpAddresses)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.ActionLink(item.Player.Username, "Details", "Players", new {}, new {id = item.Player.PlayerId})
+                                                </td>
+                                                <td>
+                                                    @item.Address
                                                 </td>
                                             </tr>
                                         }

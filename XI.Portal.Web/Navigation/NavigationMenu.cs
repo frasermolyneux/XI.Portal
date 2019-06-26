@@ -119,6 +119,7 @@ namespace XI.Portal.Web.Navigation
             playersMenu.SubMenuItems.Add(new SubMenuItemModel("Home", "Players", "Home"));
             playersMenu.SubMenuItems.Add(new SubMenuItemModel("My Actions", "Players", "MyActions"));
             playersMenu.SubMenuItems.Add(new SubMenuItemModel("Unclaimed Bans", "Players", "Unclaimed"));
+            playersMenu.SubMenuItems.Add(new SubMenuItemModel("IP Search", "Players", "IPSearch"));
             using (var context = contextProvider.GetContext())
             {
                 var games = context.Players.Select(p => p.GameType).Distinct();
