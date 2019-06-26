@@ -118,6 +118,52 @@ namespace XI.Portal.Web.Controllers
         }
 
         [HttpGet]
+        public ActionResult IPSearch()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetPlayersIPSearchAjax(string sidx, string sord, int page, int rows,
+            // ReSharper disable once InconsistentNaming
+            bool _search, string searchField, string searchString, string searchOper)
+        {
+            using (var context = ContextProvider.GetContext())
+            {
+                var ipAddresses = context.PlayerIpAddresses.OrderByDescending(ip => ip.LastUsed).AsQueryable();
+
+                if (_search && !string.IsNullOrWhiteSpace(searchString))
+                    switch (searchField)
+                    {
+                        case "Address":
+                            ipAddresses = ipAddresses.Where(ip => ip.Address.Contains(searchString)).AsQueryable();
+                            break;
+                    }
+
+                var totalRecords = ipAddresses.Count();
+                var skip = (page - 1) * rows;
+
+                var playerIpAddresses = await ipAddresses.Skip(skip).Take(rows).Include(p => p.Player).ToListAsync();
+
+                var playersToReturn = playerIpAddresses.Select(ip => new
+                {
+                    GameType = ip.Player.GameType.ToString(),
+                    ip.Player.PlayerId,
+                    ip.Player.Username,
+                    ip.Address
+                });
+
+                return Json(new
+                {
+                    total = totalRecords / rows,
+                    page,
+                    records = totalRecords,
+                    rows = playersToReturn
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
         public ActionResult Banned(GameType id)
         {
             return View(id);

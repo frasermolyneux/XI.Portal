@@ -1790,6 +1790,7 @@
     <Content Include="Views\AdmBanFileMonitors\Index.cshtml" />
     <Content Include="Views\External\LatestAdminActions.cshtml" />
     <Content Include="Views\Shared\NoAuth.cshtml" />
+    <Content Include="Views\Players\IPSearch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
