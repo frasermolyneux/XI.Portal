@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using XI.Portal.Data.Core.Context;
+using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Auth.XtremeIdiots;
 using XI.Portal.Library.CommonTypes;
 using XI.Portal.Library.GeoLocation.Extensions;
@@ -249,6 +251,13 @@ namespace XI.Portal.Web.Controllers
                         AdminActions = await context.AdminActions.Include(aa => aa.Admin).Where(aa => aa.Player.PlayerId == player.PlayerId)
                             .OrderByDescending(aa => aa.Created).ToListAsync()
                     };
+
+                    model.RelatedIpAddresses = new List<PlayerIpAddress>();
+                    foreach (var playerIpAddress in model.IpAddresses)
+                    {
+                        var relatedPlayersFromIp = await context.PlayerIpAddresses.Include(ip => ip.Player).Where(ip => ip.Address == playerIpAddress.Address && ip.Player.PlayerId != idAsGuid).ToListAsync();
+                        model.RelatedIpAddresses.AddRange(relatedPlayersFromIp);
+                    }
 
                     var playerLocation = await geoLocationApiRepository.GetLocation(player.IpAddress);
 
