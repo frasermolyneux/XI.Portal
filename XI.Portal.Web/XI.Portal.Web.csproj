@@ -1248,6 +1248,7 @@
     <Content Include="Images\icons\hlsw.png" />
     <Content Include="Images\icons\Insurgency.png" />
     <Content Include="Images\icons\Left4Dead2.png" />
+    <Content Include="Images\icons\Minecraft.png" />
     <Content Include="Images\icons\Rust.png" />
     <Content Include="Images\icons\steam.png" />
     <Content Include="Images\icons\Unknown.png">

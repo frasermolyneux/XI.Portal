@@ -78,11 +78,11 @@ namespace XI.Portal.Library.Logging
             {
                 var user = context.Users.SingleOrDefault(u => u.Id == applicationUserId);
 
-                if (user == null)
-                {
-                    await CreateSystemLogAsync("Error", $"Failed to create user log as user not found for {applicationUserId}", message);
-                    return;
-                }
+                //if (user == null)
+                //{
+                //    await CreateSystemLogAsync("Error", $"Failed to create user log as user not found for {applicationUserId}", message);
+                //    return;
+                //}
 
                 context.UserLogs.Add(new UserLog
                 {
