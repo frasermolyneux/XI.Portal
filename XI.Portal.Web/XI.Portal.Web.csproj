@@ -1796,6 +1796,7 @@
     <Content Include="Views\AdmMaintenance\FtpCredentialCheck.cshtml" />
     <Content Include="Views\AdmMaintenance\BanFileMonitorCheck.cshtml" />
     <Content Include="Views\AdmMaintenance\RconMonitorCheck.cshtml" />
+    <Content Include="Views\AdmMaintenance\FileMonitorCheck.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

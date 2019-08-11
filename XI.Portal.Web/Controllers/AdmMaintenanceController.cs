@@ -127,5 +127,33 @@ namespace XI.Portal.Web.Controllers
 
             return View(results);
         }
+
+        public async Task<ActionResult> FileMonitorCheck()
+        {
+            var results = new Dictionary<string, string>();
+
+            using (var context = ContextProvider.GetContext())
+            {
+                var fileMonitors = await context.FileMonitors.Include(bfm => bfm.GameServer).ToListAsync();
+
+                foreach (var fileMonitor in fileMonitors)
+                    try
+                    {
+                        var request = (FtpWebRequest)WebRequest.Create($"ftp://{fileMonitor.GameServer.FtpHostname}/{fileMonitor.FilePath}");
+                        request.Method = WebRequestMethods.Ftp.GetFileSize;
+                        request.Credentials = new NetworkCredential(fileMonitor.GameServer.FtpUsername, fileMonitor.GameServer.FtpPassword);
+
+                        var fileSize = ((FtpWebResponse)request.GetResponse()).ContentLength;
+
+                        results.Add($"{fileMonitor.GameServer.Title} - {fileMonitor.FilePath}", $"Success, file size: {fileSize}");
+                    }
+                    catch (Exception ex)
+                    {
+                        results.Add($"{fileMonitor.GameServer.Title} - {fileMonitor.FilePath}", ex.Message);
+                    }
+            }
+
+            return View(results);
+        }
     }
 }
