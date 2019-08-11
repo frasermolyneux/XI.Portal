@@ -192,6 +192,7 @@ namespace XI.Portal.Web.Navigation
             maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("Tasks", "AdmMaintenance", "Index"));
             maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("FTP Credential Check", "AdmMaintenance", "FtpCredentialCheck"));
             maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("Ban File Monitor Check", "AdmMaintenance", "BanFileMonitorCheck"));
+            maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("Rcon Monitor Check", "AdmMaintenance", "RconMonitorCheck"));
             menuItems.Add(maintenanceMenu);
         }
     }

@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Polly;
 using Serilog;
-using Serilog.Events;
 using Topshelf;
 using Topshelf.Unity;
 using Unity;
-using Unity.Injection;
 using Unity.Lifetime;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
@@ -21,7 +18,6 @@ using XI.Portal.Library.Configuration.Providers;
 using XI.Portal.Library.GeoLocation.Extensions;
 using XI.Portal.Library.GeoLocation.Repository;
 using XI.Portal.Library.Logging;
-using XI.Portal.Library.Logging.Sinks;
 using XI.Portal.Library.Rcon.Client;
 using XI.Portal.Library.Rcon.Source;
 

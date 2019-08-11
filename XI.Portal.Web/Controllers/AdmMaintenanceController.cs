@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Auth.XtremeIdiots;
+using XI.Portal.Library.CommonTypes;
 using XI.Portal.Library.Logging;
+using XI.Portal.Library.Rcon.Client;
 
 namespace XI.Portal.Web.Controllers
 {
@@ -88,6 +90,39 @@ namespace XI.Portal.Web.Controllers
                     {
                         results.Add($"{banFileMonitor.GameServer.Title} - {banFileMonitor.FilePath}", ex.Message);
                     }
+            }
+
+            return View(results);
+        }
+
+        public async Task<ActionResult> RconMonitorCheck()
+        {
+            var results = new Dictionary<string, string>();
+
+            using (var context = ContextProvider.GetContext())
+            {
+                var rconMonitors = await context.RconMonitors.Include(bfm => bfm.GameServer).ToListAsync();
+
+                foreach (var rconMonitor in rconMonitors)
+                {
+                    if (rconMonitor.GameServer.GameType == GameType.Insurgency)
+                    {
+                        results.Add(rconMonitor.GameServer.Title, "Skipping Insurgency");
+                        continue;
+                    }
+
+                    try
+                    {
+                        var rconClient = new RconClient(rconMonitor.GameServer.Hostname, rconMonitor.GameServer.QueryPort, rconMonitor.GameServer.RconPassword);
+                        var commandResult = rconClient.StatusCommand();
+
+                        results.Add(rconMonitor.GameServer.Title, commandResult);
+                    }
+                    catch (Exception ex)
+                    {
+                        results.Add(rconMonitor.GameServer.Title, ex.Message);
+                    }
+                }
             }
 
             return View(results);
