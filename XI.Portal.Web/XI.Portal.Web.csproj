@@ -217,6 +217,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ExternalController.cs" />
     <Compile Include="Controllers\ForumsController.cs" />
+    <Compile Include="Controllers\AdmMaintenanceController.cs" />
     <Compile Include="Extensions\UserCheckExtension.cs" />
     <Compile Include="ViewModels\AdmBanFileMonitor\CreateBanFileMonitorViewModel.cs" />
     <Compile Include="ViewModels\AdmBanFileMonitor\EditBanFileMonitorViewModel.cs" />
@@ -1791,6 +1792,8 @@
     <Content Include="Views\External\LatestAdminActions.cshtml" />
     <Content Include="Views\Shared\NoAuth.cshtml" />
     <Content Include="Views\Players\IPSearch.cshtml" />
+    <Content Include="Views\AdmMaintenance\Index.cshtml" />
+    <Content Include="Views\AdmMaintenance\FtpCredentialCheck.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
