@@ -1793,6 +1793,7 @@
     <Content Include="Views\Shared\NoAuth.cshtml" />
     <Content Include="Views\Players\IPSearch.cshtml" />
     <Content Include="Views\AdmMaintenance\Index.cshtml" />
+    <Content Include="Views\AdmMaintenance\FtpCredentialCheck.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

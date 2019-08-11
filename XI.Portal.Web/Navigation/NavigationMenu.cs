@@ -190,6 +190,7 @@ namespace XI.Portal.Web.Navigation
         {
             var maintenanceMenu = new MenuItemModel("AdmMaintenance", "AdmMaintenance", "Index", "cog");
             maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("Tasks", "AdmMaintenance", "Index"));
+            maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("FTP Credential Check", "AdmMaintenance", "FtpCredentialCheck"));
             menuItems.Add(maintenanceMenu);
         }
     }
