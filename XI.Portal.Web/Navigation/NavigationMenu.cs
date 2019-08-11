@@ -48,6 +48,7 @@ namespace XI.Portal.Web.Navigation
                     AdmMapsMenu(menuItems);
                     AdmUsersMenu(menuItems);
                     AdmLogsMenu(menuItems);
+                    AdmMaintenanceMenu(menuItems);
                     break;
                 case XtremeIdiotsGroups.Cod2Admin:
                 case XtremeIdiotsGroups.Cod4Admin:
@@ -183,6 +184,13 @@ namespace XI.Portal.Web.Navigation
             logsMenu.SubMenuItems.Add(new SubMenuItemModel("User Logs", "AdmLogs", "UserLogs"));
             logsMenu.SubMenuItems.Add(new SubMenuItemModel("System Logs", "AdmLogs", "SystemLogs"));
             menuItems.Add(logsMenu);
+        }
+
+        private static void AdmMaintenanceMenu(List<MenuItemModel> menuItems)
+        {
+            var maintenanceMenu = new MenuItemModel("AdmMaintenance", "AdmMaintenance", "Index", "cog");
+            maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("Tasks", "AdmMaintenance", "Index"));
+            menuItems.Add(maintenanceMenu);
         }
     }
 }
