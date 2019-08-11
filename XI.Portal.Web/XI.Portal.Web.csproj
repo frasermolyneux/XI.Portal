@@ -1794,6 +1794,9 @@
     <Content Include="Views\Players\IPSearch.cshtml" />
     <Content Include="Views\AdmMaintenance\Index.cshtml" />
     <Content Include="Views\AdmMaintenance\FtpCredentialCheck.cshtml" />
+    <Content Include="Views\AdmMaintenance\BanFileMonitorCheck.cshtml" />
+    <Content Include="Views\AdmMaintenance\RconMonitorCheck.cshtml" />
+    <Content Include="Views\AdmMaintenance\FileMonitorCheck.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1848,6 +1851,10 @@
     <ProjectReference Include="..\XI.Portal.Library.MapRedirect\XI.Portal.Library.MapRedirect.csproj">
       <Project>{1bb932a2-734b-495f-87d6-133d22c1e110}</Project>
       <Name>XI.Portal.Library.MapRedirect</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Library.Rcon\XI.Portal.Library.Rcon.csproj">
+      <Project>{4DF50DC6-1FDE-4D75-B557-42EABCF4728C}</Project>
+      <Name>XI.Portal.Library.Rcon</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

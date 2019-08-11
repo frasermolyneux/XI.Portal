@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Auth.XtremeIdiots;
+using XI.Portal.Library.CommonTypes;
 using XI.Portal.Library.Logging;
+using XI.Portal.Library.Rcon.Client;
 
 namespace XI.Portal.Web.Controllers
 {
@@ -59,6 +61,95 @@ namespace XI.Portal.Web.Controllers
                     catch (Exception ex)
                     {
                         results.Add(gameServer.Title, ex.Message);
+                    }
+            }
+
+            return View(results);
+        }
+
+        public async Task<ActionResult> BanFileMonitorCheck()
+        {
+            var results = new Dictionary<string, string>();
+
+            using (var context = ContextProvider.GetContext())
+            {
+                var banFileMonitors = await context.BanFileMonitors.Include(bfm => bfm.GameServer).ToListAsync();
+
+                foreach (var banFileMonitor in banFileMonitors)
+                    try
+                    {
+                        var request = (FtpWebRequest) WebRequest.Create($"ftp://{banFileMonitor.GameServer.FtpHostname}/{banFileMonitor.FilePath}");
+                        request.Method = WebRequestMethods.Ftp.GetFileSize;
+                        request.Credentials = new NetworkCredential(banFileMonitor.GameServer.FtpUsername, banFileMonitor.GameServer.FtpPassword);
+
+                        var fileSize = ((FtpWebResponse) request.GetResponse()).ContentLength;
+
+                        results.Add($"{banFileMonitor.GameServer.Title} - {banFileMonitor.FilePath}", $"Success, file size: {fileSize}");
+                    }
+                    catch (Exception ex)
+                    {
+                        results.Add($"{banFileMonitor.GameServer.Title} - {banFileMonitor.FilePath}", ex.Message);
+                    }
+            }
+
+            return View(results);
+        }
+
+        public async Task<ActionResult> RconMonitorCheck()
+        {
+            var results = new Dictionary<string, string>();
+
+            using (var context = ContextProvider.GetContext())
+            {
+                var rconMonitors = await context.RconMonitors.Include(bfm => bfm.GameServer).ToListAsync();
+
+                foreach (var rconMonitor in rconMonitors)
+                {
+                    if (rconMonitor.GameServer.GameType == GameType.Insurgency)
+                    {
+                        results.Add(rconMonitor.GameServer.Title, "Skipping Insurgency");
+                        continue;
+                    }
+
+                    try
+                    {
+                        var rconClient = new RconClient(rconMonitor.GameServer.Hostname, rconMonitor.GameServer.QueryPort, rconMonitor.GameServer.RconPassword);
+                        var commandResult = rconClient.StatusCommand();
+
+                        results.Add(rconMonitor.GameServer.Title, commandResult);
+                    }
+                    catch (Exception ex)
+                    {
+                        results.Add(rconMonitor.GameServer.Title, ex.Message);
+                    }
+                }
+            }
+
+            return View(results);
+        }
+
+        public async Task<ActionResult> FileMonitorCheck()
+        {
+            var results = new Dictionary<string, string>();
+
+            using (var context = ContextProvider.GetContext())
+            {
+                var fileMonitors = await context.FileMonitors.Include(bfm => bfm.GameServer).ToListAsync();
+
+                foreach (var fileMonitor in fileMonitors)
+                    try
+                    {
+                        var request = (FtpWebRequest)WebRequest.Create($"ftp://{fileMonitor.GameServer.FtpHostname}/{fileMonitor.FilePath}");
+                        request.Method = WebRequestMethods.Ftp.GetFileSize;
+                        request.Credentials = new NetworkCredential(fileMonitor.GameServer.FtpUsername, fileMonitor.GameServer.FtpPassword);
+
+                        var fileSize = ((FtpWebResponse)request.GetResponse()).ContentLength;
+
+                        results.Add($"{fileMonitor.GameServer.Title} - {fileMonitor.FilePath}", $"Success, file size: {fileSize}");
+                    }
+                    catch (Exception ex)
+                    {
+                        results.Add($"{fileMonitor.GameServer.Title} - {fileMonitor.FilePath}", ex.Message);
                     }
             }
 
