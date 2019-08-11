@@ -38,7 +38,7 @@ namespace XI.Portal.Web.Controllers
 
                 var logsToReturn = logList.Select(l => new
                 {
-                    Username = l.ApplicationUser.UserName,
+                    Username = l.ApplicationUser?.UserName ?? "Anon",
                     l.Message,
                     Timestamp = l.Timestamp.ToString(CultureInfo.InvariantCulture)
                 });
