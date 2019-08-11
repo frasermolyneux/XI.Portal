@@ -64,5 +64,33 @@ namespace XI.Portal.Web.Controllers
 
             return View(results);
         }
+
+        public async Task<ActionResult> BanFileMonitorCheck()
+        {
+            var results = new Dictionary<string, string>();
+
+            using (var context = ContextProvider.GetContext())
+            {
+                var banFileMonitors = await context.BanFileMonitors.Include(bfm => bfm.GameServer).ToListAsync();
+
+                foreach (var banFileMonitor in banFileMonitors)
+                    try
+                    {
+                        var request = (FtpWebRequest) WebRequest.Create($"ftp://{banFileMonitor.GameServer.FtpHostname}/{banFileMonitor.FilePath}");
+                        request.Method = WebRequestMethods.Ftp.GetFileSize;
+                        request.Credentials = new NetworkCredential(banFileMonitor.GameServer.FtpUsername, banFileMonitor.GameServer.FtpPassword);
+
+                        var fileSize = ((FtpWebResponse) request.GetResponse()).ContentLength;
+
+                        results.Add($"{banFileMonitor.GameServer.Title} - {banFileMonitor.FilePath}", $"Success, file size: {fileSize}");
+                    }
+                    catch (Exception ex)
+                    {
+                        results.Add($"{banFileMonitor.GameServer.Title} - {banFileMonitor.FilePath}", ex.Message);
+                    }
+            }
+
+            return View(results);
+        }
     }
 }

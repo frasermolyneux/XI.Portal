@@ -1794,6 +1794,7 @@
     <Content Include="Views\Players\IPSearch.cshtml" />
     <Content Include="Views\AdmMaintenance\Index.cshtml" />
     <Content Include="Views\AdmMaintenance\FtpCredentialCheck.cshtml" />
+    <Content Include="Views\AdmMaintenance\BanFileMonitorCheck.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
