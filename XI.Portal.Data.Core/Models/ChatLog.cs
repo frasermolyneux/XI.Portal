@@ -22,6 +22,7 @@ namespace XI.Portal.Data.Core.Models
 
         public string Message { get; set; }
 
+        [Index]
         public DateTime Timestamp { get; set; } = DateTime.MinValue;
     }
 }
