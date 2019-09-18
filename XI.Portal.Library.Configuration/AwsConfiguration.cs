@@ -17,49 +17,15 @@ namespace XI.Portal.Library.Configuration
         {
             get
             {
-#if DEBUG
-                var regionAsStr = Environment.GetEnvironmentVariable(ConfigurationKeys.AwsRegion);
-#else
-                var regionAsStr = appSettingConfigurationProvider.GetConfigurationItem(ConfigurationKeys.AwsRegion);
-#endif
+                var regionAsStr = Environment.GetEnvironmentVariable(ConfigurationKeys.AwsRegion) ?? appSettingConfigurationProvider.GetConfigurationItem(ConfigurationKeys.AwsRegion);
                 return RegionEndpoint.GetBySystemName(regionAsStr);
             }
         }
 
-        public string AwsAccessKey
-        {
-            get
-            {
-#if DEBUG
-                return Environment.GetEnvironmentVariable(ConfigurationKeys.AwsAccessKey);
-#else
-                return appSettingConfigurationProvider.GetConfigurationItem(ConfigurationKeys.AwsAccessKey);
-#endif
-            }
-        }
+        public string AwsAccessKey => Environment.GetEnvironmentVariable(ConfigurationKeys.AwsAccessKey) ?? appSettingConfigurationProvider.GetConfigurationItem(ConfigurationKeys.AwsAccessKey);
 
-        public string AwsSecretKey
-        {
-            get
-            {
-#if DEBUG
-                return Environment.GetEnvironmentVariable(ConfigurationKeys.AwsSecretKey);
-#else
-                return appSettingConfigurationProvider.GetConfigurationItem(ConfigurationKeys.AwsSecretKey);
-#endif
-            }
-        }
+        public string AwsSecretKey => Environment.GetEnvironmentVariable(ConfigurationKeys.AwsSecretKey) ?? appSettingConfigurationProvider.GetConfigurationItem(ConfigurationKeys.AwsSecretKey);
 
-        public string AwsSecretName
-        {
-            get
-            {
-#if DEBUG
-                return Environment.GetEnvironmentVariable(ConfigurationKeys.AwsPortalSecretName);
-#else
-                return appSettingConfigurationProvider.GetConfigurationItem(ConfigurationKeys.AwsPortalSecretName);
-#endif
-            }
-        }
+        public string AwsSecretName => Environment.GetEnvironmentVariable(ConfigurationKeys.AwsPortalSecretName) ?? appSettingConfigurationProvider.GetConfigurationItem(ConfigurationKeys.AwsPortalSecretName);
     }
 }
