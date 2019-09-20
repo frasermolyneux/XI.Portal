@@ -57,6 +57,11 @@ namespace XI.Portal.Library.Rcon.Client
             return ExecuteCommand("sv_maprotation");
         }
 
+        public string SayCommand(string message)
+        {
+            return ExecuteCommand($"say \"{message}\"");
+        }
+
         private string ExecuteCommand(string rconCommand)
         {
             var client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)
@@ -66,7 +71,7 @@ namespace XI.Portal.Library.Rcon.Client
             };
             client.Connect(IPAddress.Parse(hostname), queryPort);
 
-            var command = "rcon " + rconPassword + " " + rconCommand;
+            var command = $"rcon {rconPassword} {rconCommand}";
             var bufferTemp = Encoding.ASCII.GetBytes(command);
             var bufferSend = new byte[bufferTemp.Length + 4];
 

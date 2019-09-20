@@ -93,13 +93,36 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FtpFileMonitor\FtpFileMonitor.cs" />
+    <Compile Include="FtpFileMonitor\FtpFileMonitorFactory.cs" />
+    <Compile Include="Interfaces\IFtpFileMonitorFactory.cs" />
+    <Compile Include="Events\LineReadEventArgs.cs" />
+    <Compile Include="Parsers\BaseParser.cs" />
+    <Compile Include="Parsers\Cod2Parser.cs" />
+    <Compile Include="Parsers\Cod5Parser.cs" />
+    <Compile Include="Parsers\Cod4Parser.cs" />
+    <Compile Include="Parsers\CodBaseParser.cs" />
+    <Compile Include="Interfaces\IParser.cs" />
+    <Compile Include="Interfaces\IParserFactory.cs" />
+    <Compile Include="Events\OnActionEventArgs.cs" />
+    <Compile Include="Events\OnChatMessageEventArgs.cs" />
+    <Compile Include="Events\OnDamageEventArgs.cs" />
+    <Compile Include="Events\OnKillEventArgs.cs" />
+    <Compile Include="Events\OnPlayerConnectedEventArgs.cs" />
+    <Compile Include="Events\OnPlayerDisconnectedEventArgs.cs" />
+    <Compile Include="Events\OnRoundStartEventArgs.cs" />
+    <Compile Include="Events\OnSuicideEventArgs.cs" />
+    <Compile Include="Events\OnTeamKillEventArgs.cs" />
+    <Compile Include="Parsers\ParserFactory.cs" />
+    <Compile Include="Plugins\ChatMonitorPlugin.cs" />
+    <Compile Include="Plugins\FuckYouPlugin.cs" />
+    <Compile Include="Interfaces\IPlugin.cs" />
+    <Compile Include="Plugins\PlayerCorePlugin.cs" />
+    <Compile Include="Plugins\StatsLogProxyPlugin.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="XI.Portal.Services.FileMonitor.exe.config.token">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -120,6 +143,11 @@
       <Project>{38c09894-2c92-4517-9332-35415375e62a}</Project>
       <Name>XI.Portal.Library.Logging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Library.Rcon\XI.Portal.Library.Rcon.csproj">
+      <Project>{4df50dc6-1fde-4d75-b557-42eabcf4728c}</Project>
+      <Name>XI.Portal.Library.Rcon</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -19,5 +19,7 @@
 
         public static string MapRedirectBaseUrl { get; } = "MapRedirectBaseUrl";
         public static string MapRedirectKey { get; } = "MapRedirectKey";
+
+        public static string StatsLogBaseDirectory { get; } = "StatsLogBaseDirectory";
     }
 }
