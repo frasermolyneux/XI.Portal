@@ -28,8 +28,30 @@ namespace XI.Portal.Plugins.MapRotationPlugin
 
         private void Events_MapRotationRconResponse(object sender, EventArgs e)
         {
-            var mapRotationRconResponse = (OnMapRotationRconResponse) e;
+            var mapRotationRconResponse = (OnMapRotationRconResponse)e;
 
+            logger.Debug(mapRotationRconResponse.ResponseData);
+
+            switch (mapRotationRconResponse.GameType)
+            {
+                case GameType.CallOfDuty2:
+                case GameType.CallOfDuty4:
+                case GameType.CallOfDuty5:
+                    HandleCodMapRotationResponse(mapRotationRconResponse);
+                    break;
+                case GameType.Insurgency:
+                    HandleSourceMapRotationResponse(mapRotationRconResponse);
+                    break;
+            }
+        }
+
+        private void HandleSourceMapRotationResponse(OnMapRotationRconResponse mapRotationRconResponse)
+        {
+            
+        }
+
+        private void HandleCodMapRotationResponse(OnMapRotationRconResponse mapRotationRconResponse)
+        {
             // gametype ftag map mp_cgc_bog gametype ftag map mp_cgc_citystreets gametype ftag map mp_strike gametype ftag map mp_carentan gametype ftag
             // map mp_coldfront gametype ftag map mp_vac_2 gametype ftag map mp_cgc_crossfire gametype ftag map mp_overgrown gametype ftag map mp_crash gametype ftag
             // map mp_convoy gametype ftag map mp_4t4hangar gametype ftag map mp_farm gametype ftag map mp_pipeline gametype ftag map mp_shipment gametype ftag
@@ -41,8 +63,6 @@ namespace XI.Portal.Plugins.MapRotationPlugin
             //map mp_kwai map mp_stalingrad map mp_drum map mp_bgate map mp_vodka"
 
             var line = mapRotationRconResponse.ResponseData;
-
-            logger.Debug(line);
 
             line = line.Replace("\"sv_mapRotation\" is: \"", "");
             line = line.Replace("^7\" default: \"^7\"", "");

@@ -8,17 +8,19 @@ using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Auth.XtremeIdiots;
 using XI.Portal.Library.CommonTypes;
 using XI.Portal.Library.Logging;
-using XI.Portal.Library.Rcon.Client;
+using XI.Portal.Library.Rcon.Interfaces;
 
 namespace XI.Portal.Web.Controllers
 {
     [Authorize(Roles = XtremeIdiotsRoles.SeniorAdmins)]
     public class AdmMaintenanceController : BaseController
     {
+        private readonly IRconClientFactory rconClientFactory;
+
         public AdmMaintenanceController(
-            IContextProvider contextProvider,
-            IDatabaseLogger databaseLogger) : base(contextProvider, databaseLogger)
+            IContextProvider contextProvider, IDatabaseLogger databaseLogger, IRconClientFactory rconClientFactory) : base(contextProvider, databaseLogger)
         {
+            this.rconClientFactory = rconClientFactory ?? throw new ArgumentNullException(nameof(rconClientFactory));
         }
 
         public async Task<ActionResult> Index()
@@ -105,16 +107,15 @@ namespace XI.Portal.Web.Controllers
 
                 foreach (var rconMonitor in rconMonitors)
                 {
-                    if (rconMonitor.GameServer.GameType == GameType.Insurgency)
-                    {
-                        results.Add(rconMonitor.GameServer.Title, "Skipping Insurgency");
-                        continue;
-                    }
-
                     try
                     {
-                        var rconClient = new RconClient(rconMonitor.GameServer.Hostname, rconMonitor.GameServer.QueryPort, rconMonitor.GameServer.RconPassword);
-                        var commandResult = rconClient.StatusCommand();
+                        var rconClient = rconClientFactory.CreateInstance(
+                            rconMonitor.GameServer.GameType,
+                            rconMonitor.GameServer.Hostname,
+                            rconMonitor.GameServer.QueryPort,
+                            rconMonitor.GameServer.RconPassword);
+
+                        var commandResult = rconClient.PlayerStatus();
 
                         results.Add(rconMonitor.GameServer.Title, commandResult);
                     }
@@ -139,11 +140,11 @@ namespace XI.Portal.Web.Controllers
                 foreach (var fileMonitor in fileMonitors)
                     try
                     {
-                        var request = (FtpWebRequest)WebRequest.Create($"ftp://{fileMonitor.GameServer.FtpHostname}/{fileMonitor.FilePath}");
+                        var request = (FtpWebRequest) WebRequest.Create($"ftp://{fileMonitor.GameServer.FtpHostname}/{fileMonitor.FilePath}");
                         request.Method = WebRequestMethods.Ftp.GetFileSize;
                         request.Credentials = new NetworkCredential(fileMonitor.GameServer.FtpUsername, fileMonitor.GameServer.FtpPassword);
 
-                        var fileSize = ((FtpWebResponse)request.GetResponse()).ContentLength;
+                        var fileSize = ((FtpWebResponse) request.GetResponse()).ContentLength;
 
                         results.Add($"{fileMonitor.GameServer.Title} - {fileMonitor.FilePath}", $"Success, file size: {fileSize}");
                     }

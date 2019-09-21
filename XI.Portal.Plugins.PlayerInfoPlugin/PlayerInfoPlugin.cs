@@ -66,6 +66,9 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                 case GameType.CallOfDuty5:
                     HandleCodStatusRconResponse(onStatusRconResponseEventArgs);
                     break;
+                case GameType.Insurgency:
+                    HandleInsurgencyStatusRconResponse(onStatusRconResponseEventArgs);
+                    break;
                 default:
                     logger.Warning("Invalid game type for Status Rcon Response");
                     break;
@@ -124,6 +127,38 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                 var livePlayerLocationCutOff = DateTime.UtcNow.AddDays(-1);
                 context.LivePlayerLocations.RemoveRange(context.LivePlayerLocations.Where(lpl => lpl.LastSeen < livePlayerLocationCutOff));
                 context.SaveChanges();
+            }
+        }
+
+        private void HandleInsurgencyStatusRconResponse(OnStatusRconResponse onStatusRconResponseEventArgs)
+        {
+            var regex = new Regex("^\\#\\s([0-9]+)\\s([0-9]+)\\s\\\"(.+)\\\"\\s([STEAM0-9:_]+)\\s+([0-9:]+)\\s([0-9]+)\\s([0-9]+)\\s([a-z]+)\\s([0-9]+)\\s((?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])):?(-?[0-9]{1,5})");
+
+            var lines = onStatusRconResponseEventArgs.ResponseData.Split('\n').Where(line => !string.IsNullOrWhiteSpace(line)).ToList();
+
+            using (var context = contextProvider.GetContext())
+            {
+                for (var i = 7; i < lines.Count; i++)
+                {
+                    var line = lines[i];
+                    var match = regex.Match(line);
+
+                    if (!match.Success)
+                        continue;
+
+                    var name = match.Groups[3].ToString();
+                    var guid = match.Groups[4].ToString();
+                    var ipAddress = match.Groups[10].ToString();
+
+                    EnsurePlayerExists(onStatusRconResponseEventArgs.GameType, guid, name);
+                    var player = context.Players.SingleOrDefault(p => p.Guid == guid && p.GameType == onStatusRconResponseEventArgs.GameType);
+                    UpdatePlayerIpAddress(context, ipAddress, player);
+                    UpdateLivePlayerIpAddress(context, ipAddress);
+
+                    var livePlayerLocationCutOff = DateTime.UtcNow.AddDays(-1);
+                    context.LivePlayerLocations.RemoveRange(context.LivePlayerLocations.Where(lpl => lpl.LastSeen < livePlayerLocationCutOff));
+                    context.SaveChanges();
+                }
             }
         }
 

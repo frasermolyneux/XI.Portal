@@ -2,6 +2,7 @@
 using System.Threading;
 using Serilog;
 using XI.Portal.Library.CommonTypes;
+using XI.Portal.Library.Rcon.Interfaces;
 using XI.Portal.Plugins.MapRotationPlugin;
 using XI.Portal.Plugins.PlayerInfoPlugin;
 using XI.Portal.Services.RconMonitorService.Interfaces;
@@ -14,10 +15,12 @@ namespace XI.Portal.Services.RconMonitorService.Factories
         private readonly ILogger logger;
         private readonly MapRotationPlugin mapRotationPlugin;
         private readonly PlayerInfoPlugin playerInfoPlugin;
+        private readonly IRconClientFactory rconClientFactory;
 
-        public RconMonitorFactory(ILogger logger, MapRotationPlugin mapRotationPlugin, PlayerInfoPlugin playerInfoPlugin)
+        public RconMonitorFactory(ILogger logger, IRconClientFactory rconClientFactory, MapRotationPlugin mapRotationPlugin, PlayerInfoPlugin playerInfoPlugin)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.rconClientFactory = rconClientFactory ?? throw new ArgumentNullException(nameof(rconClientFactory));
             this.mapRotationPlugin = mapRotationPlugin ?? throw new ArgumentNullException(nameof(mapRotationPlugin));
             this.playerInfoPlugin = playerInfoPlugin ?? throw new ArgumentNullException(nameof(playerInfoPlugin));
         }
@@ -28,13 +31,16 @@ namespace XI.Portal.Services.RconMonitorService.Factories
             switch (gameType)
             {
                 case GameType.CallOfDuty2:
-                    rconMonitor = new Cod2RconMonitor(logger);
+                    rconMonitor = new Cod2RconMonitor(logger, rconClientFactory);
                     break;
                 case GameType.CallOfDuty4:
-                    rconMonitor = new Cod4RconMonitor(logger);
+                    rconMonitor = new Cod4RconMonitor(logger, rconClientFactory);
                     break;
                 case GameType.CallOfDuty5:
-                    rconMonitor = new Cod5RconMonitor(logger);
+                    rconMonitor = new Cod5RconMonitor(logger, rconClientFactory);
+                    break;
+                case GameType.Insurgency:
+                    rconMonitor = new InsurgencyRconMonitor(logger, rconClientFactory);
                     break;
                 default:
                     throw new Exception("Game type is not supported by the Rcon Monitor");

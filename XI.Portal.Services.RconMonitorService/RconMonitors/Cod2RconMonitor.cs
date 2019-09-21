@@ -1,6 +1,7 @@
 ﻿using System;
 using Serilog;
-using XI.Portal.Library.Rcon.Client;
+using XI.Portal.Library.CommonTypes;
+using XI.Portal.Library.Rcon.Interfaces;
 using XI.Portal.Plugins.Events;
 
 namespace XI.Portal.Services.RconMonitorService.RconMonitors
@@ -8,15 +9,18 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
     internal class Cod2RconMonitor : BaseRconMonitor
     {
         private readonly ILogger logger;
+        private readonly IRconClientFactory rconClientFactory;
 
-        public Cod2RconMonitor(ILogger logger) : base(logger)
+        public Cod2RconMonitor(ILogger logger, IRconClientFactory rconClientFactory) : base(logger, rconClientFactory)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.rconClientFactory = rconClientFactory ?? throw new ArgumentNullException(nameof(rconClientFactory));
         }
+
 
         public override void GetMapRotation()
         {
-            var rconClient = new RconClient(Hostname, Port, RconPassword);
+            var rconClient = rconClientFactory.CreateInstance(GameType.CallOfDuty2, Hostname, Port, RconPassword);
 
             try
             {
@@ -34,11 +38,11 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
 
         public override void GetStatus()
         {
-            var rconClient = new RconClient(Hostname, Port, RconPassword);
+            var rconClient = rconClientFactory.CreateInstance(GameType.CallOfDuty2, Hostname, Port, RconPassword);
 
             try
             {
-                var commandResponse = rconClient.StatusCommand();
+                var commandResponse = rconClient.PlayerStatus();
 
                 OnStatusRconResponse(new OnStatusRconResponse(ServerId, GameType, commandResponse, MonitorPlayers, MonitorPlayerIPs));
             }

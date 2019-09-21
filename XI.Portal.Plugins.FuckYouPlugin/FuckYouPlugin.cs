@@ -2,7 +2,7 @@
 using System.Linq;
 using Serilog;
 using XI.Portal.Data.Core.Context;
-using XI.Portal.Library.Rcon.Client;
+using XI.Portal.Library.Rcon.Interfaces;
 using XI.Portal.Plugins.Events;
 using XI.Portal.Plugins.Interfaces;
 
@@ -12,10 +12,12 @@ namespace XI.Portal.Plugins.FuckYouPlugin
     {
         private readonly ContextProvider contextProvider;
         private readonly ILogger logger;
+        private readonly IRconClientFactory rconClientFactory;
 
-        public FuckYouPlugin(ILogger logger, ContextProvider contextProvider)
+        public FuckYouPlugin(ILogger logger, IRconClientFactory rconClientFactory, ContextProvider contextProvider)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.rconClientFactory = rconClientFactory ?? throw new ArgumentNullException(nameof(rconClientFactory));
             this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
         }
 
@@ -26,7 +28,7 @@ namespace XI.Portal.Plugins.FuckYouPlugin
 
         private void Parser_ChatMessage(object sender, EventArgs e)
         {
-            var onChatMessageEventArgs = (OnChatMessageEventArgs)e;
+            var onChatMessageEventArgs = (OnChatMessageEventArgs) e;
 
             if (!onChatMessageEventArgs.Name.Contains(">XI<") || !onChatMessageEventArgs.Message.ToLower().StartsWith("!fu")) return;
 
@@ -37,8 +39,8 @@ namespace XI.Portal.Plugins.FuckYouPlugin
             using (var context = contextProvider.GetContext())
             {
                 var server = context.GameServers.Single(s => s.ServerId == onChatMessageEventArgs.ServerId);
-                var rconClient = new RconClient(server.Hostname, server.QueryPort, server.RconPassword);
-                rconClient.SayCommand(responseMessage);
+                var rconClient = rconClientFactory.CreateInstance(onChatMessageEventArgs.GameType, server.Hostname, server.QueryPort, server.RconPassword);
+                rconClient.Say(responseMessage);
 
                 logger.Information($"FuckYou: {responseMessage}");
             }

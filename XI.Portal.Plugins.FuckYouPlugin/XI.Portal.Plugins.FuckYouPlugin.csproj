@@ -69,6 +69,10 @@
       <Project>{A667B4A5-35C2-4953-AB21-07DE8FF07CE5}</Project>
       <Name>XI.Portal.Data.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Library.CommonTypes\XI.Portal.Library.CommonTypes.csproj">
+      <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
+      <Name>XI.Portal.Library.CommonTypes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.Rcon\XI.Portal.Library.Rcon.csproj">
       <Project>{4DF50DC6-1FDE-4D75-B557-42EABCF4728C}</Project>
       <Name>XI.Portal.Library.Rcon</Name>
