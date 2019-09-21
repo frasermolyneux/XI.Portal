@@ -21,7 +21,7 @@ using XI.Portal.Library.Logging;
 using XI.Portal.Library.Rcon.Client;
 using XI.Portal.Library.Rcon.Source;
 
-namespace XI.Portal.Services.RconMonitor
+namespace XI.Portal.Services.RconMonitorService
 {
     internal class Program
     {
