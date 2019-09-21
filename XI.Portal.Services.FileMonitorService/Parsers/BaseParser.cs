@@ -28,6 +28,7 @@ namespace XI.Portal.Services.FileMonitorService.Parsers
         public event EventHandler RoundStart;
         public event EventHandler Action;
         public event EventHandler Damage;
+        public event EventHandler MapRotationRconResponse;
 
         protected virtual void OnLineRead(LineReadEventArgs eventArgs)
         {

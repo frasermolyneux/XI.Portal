@@ -134,8 +134,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Factories\RconMonitorFactory.cs" />
+    <Compile Include="Interfaces\IRconMonitor.cs" />
+    <Compile Include="Interfaces\IRconMonitorFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RconMonitorService.cs" />
+    <Compile Include="RconMonitors\BaseRconMonitor.cs" />
+    <Compile Include="RconMonitors\Cod2RconMonitor.cs" />
+    <Compile Include="RconMonitors\Cod4RconMonitor.cs" />
+    <Compile Include="RconMonitors\Cod5RconMonitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -143,9 +151,6 @@
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="XI.Portal.Services.RconMonitor.exe.config.token">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -173,7 +178,16 @@
       <Project>{4df50dc6-1fde-4d75-b557-42eabcf4728c}</Project>
       <Name>XI.Portal.Library.Rcon</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Plugins.MapRotationPlugin\XI.Portal.Plugins.MapRotationPlugin.csproj">
+      <Project>{9e986b37-a07b-4f2f-93b7-561d3ed15cf0}</Project>
+      <Name>XI.Portal.Plugins.MapRotationPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Plugins\XI.Portal.Plugins.csproj">
+      <Project>{deca7c71-871a-43c4-95d1-af7e825acfc3}</Project>
+      <Name>XI.Portal.Plugins</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

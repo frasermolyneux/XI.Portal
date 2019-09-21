@@ -4,6 +4,7 @@ namespace XI.Portal.Plugins.Interfaces
 {
     public interface IPluginEvents
     {
+        //File Monitor Events
         event EventHandler LineRead;
         event EventHandler PlayerConnected;
         event EventHandler PlayerDisconnected;
@@ -14,5 +15,8 @@ namespace XI.Portal.Plugins.Interfaces
         event EventHandler RoundStart;
         event EventHandler Action;
         event EventHandler Damage;
+
+        //RconMonitorEvents
+        event EventHandler MapRotationRconResponse;
     }
 }

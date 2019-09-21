@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DECA7C71-871A-43C4-95D1-AF7E825ACFC3}</ProjectGuid>
+    <ProjectGuid>{9E986B37-A07B-4F2F-93B7-561D3ED15CF0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>XI.Portal.Plugins</RootNamespace>
-    <AssemblyName>XI.Portal.Plugins</AssemblyName>
+    <RootNamespace>XI.Portal.Plugins.MapRotationPlugin</RootNamespace>
+    <AssemblyName>XI.Portal.Plugins.MapRotationPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,7 +31,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.8.0\lib\net46\Serilog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,26 +57,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Events\LineReadEventArgs.cs" />
-    <Compile Include="Events\OnActionEventArgs.cs" />
-    <Compile Include="Events\OnChatMessageEventArgs.cs" />
-    <Compile Include="Events\OnDamageEventArgs.cs" />
-    <Compile Include="Events\OnKillEventArgs.cs" />
-    <Compile Include="Events\OnMapRotationRconResponse.cs" />
-    <Compile Include="Events\OnPlayerConnectedEventArgs.cs" />
-    <Compile Include="Events\OnPlayerDisconnectedEventArgs.cs" />
-    <Compile Include="Events\OnRoundStartEventArgs.cs" />
-    <Compile Include="Events\OnSuicideEventArgs.cs" />
-    <Compile Include="Events\OnTeamKillEventArgs.cs" />
-    <Compile Include="Interfaces\IPlugin.cs" />
-    <Compile Include="Interfaces\IPluginEvents.cs" />
+    <Compile Include="MapRotationPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\XI.Portal.Data.Core\XI.Portal.Data.Core.csproj">
+      <Project>{A667B4A5-35C2-4953-AB21-07DE8FF07CE5}</Project>
+      <Name>XI.Portal.Data.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.CommonTypes\XI.Portal.Library.CommonTypes.csproj">
       <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
       <Name>XI.Portal.Library.CommonTypes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Plugins\XI.Portal.Plugins.csproj">
+      <Project>{DECA7C71-871A-43C4-95D1-AF7E825ACFC3}</Project>
+      <Name>XI.Portal.Plugins</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
