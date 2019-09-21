@@ -1,28 +1,30 @@
 ﻿using System;
 using System.IO;
 using XI.Portal.Library.Configuration;
-using XI.Portal.Services.FileMonitor.Events;
-using XI.Portal.Services.FileMonitor.Interfaces;
+using XI.Portal.Plugins.Events;
+using XI.Portal.Plugins.Interfaces;
 
-namespace XI.Portal.Services.FileMonitor.Plugins
+namespace XI.Portal.Plugins.LogProxyPlugin
 {
-    public class StatsLogProxyPlugin : IPlugin
+    public class LogProxyPlugin : IPlugin
     {
         private readonly StatsLogProxyPluginConfiguration statsLogProxyPluginConfiguration;
 
-        public StatsLogProxyPlugin(StatsLogProxyPluginConfiguration statsLogProxyPluginConfiguration)
+        public LogProxyPlugin(StatsLogProxyPluginConfiguration statsLogProxyPluginConfiguration)
         {
             this.statsLogProxyPluginConfiguration = statsLogProxyPluginConfiguration ?? throw new ArgumentNullException(nameof(statsLogProxyPluginConfiguration));
         }
 
-        public void RegisterEventHandlers(IParser parser)
+        public void RegisterEventHandlers(IPluginEvents events)
         {
-            parser.LineRead += Parser_LineRead;
+            events.LineRead += Parser_LineRead;
         }
 
         private void Parser_LineRead(object sender, EventArgs e)
         {
             var lineReadEventArgs = (LineReadEventArgs) e;
+
+            if (lineReadEventArgs.LineData.ToLower().Contains("!fu")) return; // block !fu command from being proxied, will need to do this with any additional commands
 
             var localLogFilePath = $"{statsLogProxyPluginConfiguration.StatsLogBaseDirectory}\\{lineReadEventArgs.ServerId}\\games_mp.log";
 

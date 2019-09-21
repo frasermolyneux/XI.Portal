@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using Serilog;
 using XI.Portal.Library.CommonTypes;
-using XI.Portal.Services.FileMonitor.Events;
+using XI.Portal.Plugins.Events;
 
 namespace XI.Portal.Services.FileMonitor.FtpFileMonitor
 {

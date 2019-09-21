@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace XI.Portal.Services.FileMonitor.Events
+namespace XI.Portal.Plugins.Events
 {
     public class OnActionEventArgs : EventArgs
     {

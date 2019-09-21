@@ -3,12 +3,12 @@ using System.Linq;
 using Serilog;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
-using XI.Portal.Services.FileMonitor.Events;
-using XI.Portal.Services.FileMonitor.Interfaces;
+using XI.Portal.Plugins.Events;
+using XI.Portal.Plugins.Interfaces;
 
-namespace XI.Portal.Services.FileMonitor.Plugins
+namespace XI.Portal.Plugins.ChatMonitorPlugin
 {
-    internal class ChatMonitorPlugin : IPlugin
+    public class ChatMonitorPlugin : IPlugin
     {
         private readonly IContextProvider contextProvider;
         private readonly ILogger logger;
@@ -19,9 +19,9 @@ namespace XI.Portal.Services.FileMonitor.Plugins
             this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
         }
 
-        public void RegisterEventHandlers(IParser parser)
+        public void RegisterEventHandlers(IPluginEvents events)
         {
-            parser.ChatMessage += Parser_ChatMessage;
+            events.ChatMessage += Parser_ChatMessage;
         }
 
         private void Parser_ChatMessage(object sender, EventArgs e)

@@ -1,6 +1,6 @@
 ﻿using System;
 using Serilog;
-using XI.Portal.Services.FileMonitor.Events;
+using XI.Portal.Plugins.Events;
 using XI.Portal.Services.FileMonitor.Interfaces;
 
 namespace XI.Portal.Services.FileMonitor.Parsers

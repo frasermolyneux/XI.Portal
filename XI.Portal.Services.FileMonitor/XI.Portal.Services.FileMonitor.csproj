@@ -94,9 +94,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FtpFileMonitor\FtpFileMonitor.cs" />
-    <Compile Include="FtpFileMonitor\FtpFileMonitorFactory.cs" />
+    <Compile Include="Factories\FtpFileMonitorFactory.cs" />
     <Compile Include="Interfaces\IFtpFileMonitorFactory.cs" />
-    <Compile Include="Events\LineReadEventArgs.cs" />
     <Compile Include="Parsers\BaseParser.cs" />
     <Compile Include="Parsers\Cod2Parser.cs" />
     <Compile Include="Parsers\Cod5Parser.cs" />
@@ -104,21 +103,7 @@
     <Compile Include="Parsers\CodBaseParser.cs" />
     <Compile Include="Interfaces\IParser.cs" />
     <Compile Include="Interfaces\IParserFactory.cs" />
-    <Compile Include="Events\OnActionEventArgs.cs" />
-    <Compile Include="Events\OnChatMessageEventArgs.cs" />
-    <Compile Include="Events\OnDamageEventArgs.cs" />
-    <Compile Include="Events\OnKillEventArgs.cs" />
-    <Compile Include="Events\OnPlayerConnectedEventArgs.cs" />
-    <Compile Include="Events\OnPlayerDisconnectedEventArgs.cs" />
-    <Compile Include="Events\OnRoundStartEventArgs.cs" />
-    <Compile Include="Events\OnSuicideEventArgs.cs" />
-    <Compile Include="Events\OnTeamKillEventArgs.cs" />
-    <Compile Include="Parsers\ParserFactory.cs" />
-    <Compile Include="Plugins\ChatMonitorPlugin.cs" />
-    <Compile Include="Plugins\FuckYouPlugin.cs" />
-    <Compile Include="Interfaces\IPlugin.cs" />
-    <Compile Include="Plugins\PlayerCorePlugin.cs" />
-    <Compile Include="Plugins\StatsLogProxyPlugin.cs" />
+    <Compile Include="Factories\ParserFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -146,6 +131,26 @@
     <ProjectReference Include="..\XI.Portal.Library.Rcon\XI.Portal.Library.Rcon.csproj">
       <Project>{4df50dc6-1fde-4d75-b557-42eabcf4728c}</Project>
       <Name>XI.Portal.Library.Rcon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Plugins.ChatMonitorPlugin\XI.Portal.Plugins.ChatMonitorPlugin.csproj">
+      <Project>{00C7B73E-5F47-424E-B0EF-0FA2C35EF0B0}</Project>
+      <Name>XI.Portal.Plugins.ChatMonitorPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Plugins.FuckYouPlugin\XI.Portal.Plugins.FuckYouPlugin.csproj">
+      <Project>{1521CC3B-FA83-48BB-93C0-745191940B6F}</Project>
+      <Name>XI.Portal.Plugins.FuckYouPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Plugins.LogProxyPlugin\XI.Portal.Plugins.LogProxyPlugin.csproj">
+      <Project>{8CBE3E34-150E-446F-AB8A-7AC7C2CE199B}</Project>
+      <Name>XI.Portal.Plugins.LogProxyPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Plugins.PlayerInfoPlugin\XI.Portal.Plugins.PlayerInfoPlugin.csproj">
+      <Project>{6B933FE5-82BC-48E1-8170-EB865A24FBD0}</Project>
+      <Name>XI.Portal.Plugins.PlayerInfoPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Plugins\XI.Portal.Plugins.csproj">
+      <Project>{deca7c71-871a-43c4-95d1-af7e825acfc3}</Project>
+      <Name>XI.Portal.Plugins</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
