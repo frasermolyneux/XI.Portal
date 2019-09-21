@@ -2,6 +2,7 @@
 using System.Threading;
 using Serilog;
 using XI.Portal.Library.CommonTypes;
+using XI.Portal.Library.Rcon.Interfaces;
 using XI.Portal.Plugins.Events;
 using XI.Portal.Services.RconMonitorService.Interfaces;
 
@@ -10,10 +11,12 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
     internal class BaseRconMonitor : IRconMonitor
     {
         private readonly ILogger logger;
+        private readonly IRconClientFactory rconClientFactory;
 
-        public BaseRconMonitor(ILogger logger)
+        public BaseRconMonitor(ILogger logger, IRconClientFactory rconClientFactory)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.rconClientFactory = rconClientFactory ?? throw new ArgumentNullException(nameof(rconClientFactory));
         }
 
         public Guid ServerId { get; private set; }

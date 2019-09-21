@@ -18,6 +18,8 @@ using XI.Portal.Library.GameTracker;
 using XI.Portal.Library.GeoLocation.Repository;
 using XI.Portal.Library.Logging;
 using XI.Portal.Library.MapRedirect;
+using XI.Portal.Library.Rcon.Factories;
+using XI.Portal.Library.Rcon.Interfaces;
 using XI.Portal.Web.Navigation;
 
 namespace XI.Portal.Web.Portal
@@ -61,6 +63,7 @@ namespace XI.Portal.Web.Portal
             container.RegisterType<IGeoLocationApiRepository, GeoLocationApiRepository>();
             container.RegisterType<IMapRedirectRepository, MapRedirectRepository>();
             container.RegisterType<IManageTopics, ManageTopics>();
+            container.RegisterType<IRconClientFactory, RconClientFactory>();
 
             var contextProvider = container.Resolve<DatabaseConfiguration>();
             container.RegisterType<DbContext, PortalContext>(new InjectionConstructor(contextProvider.DbConnectionString));

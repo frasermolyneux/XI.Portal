@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.8.0\lib\net46\Serilog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,14 +44,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\SourceRconClient.cs" />
-    <Compile Include="Extensions\GameTypeExtensions.cs" />
-    <Compile Include="Client\IRconClient.cs" />
-    <Compile Include="Models\RconPlayer.cs" />
-    <Compile Include="Parser\IRconParser.cs" />
-    <Compile Include="Parser\RconParser.cs" />
+    <Compile Include="Clients\BaseRconClient.cs" />
+    <Compile Include="Clients\Cod2RconClient.cs" />
+    <Compile Include="Clients\Cod4RconClient.cs" />
+    <Compile Include="Clients\Cod5RconClient.cs" />
+    <Compile Include="Clients\CodBaseRconClient.cs" />
+    <Compile Include="Clients\InsurgencyRconClient.cs" />
+    <Compile Include="Factories\RconClientFactory.cs" />
+    <Compile Include="Interfaces\IRconClientFactory.cs" />
+    <Compile Include="Models\RconPacket.cs" />
+    <Compile Include="Models\RecState.cs" />
+    <Compile Include="Interfaces\IRconClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Client\RconClient.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XI.Portal.Library.CommonTypes\XI.Portal.Library.CommonTypes.csproj">
+      <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
+      <Name>XI.Portal.Library.CommonTypes</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

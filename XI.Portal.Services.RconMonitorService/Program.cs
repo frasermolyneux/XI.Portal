@@ -9,6 +9,8 @@ using XI.Portal.Library.Configuration;
 using XI.Portal.Library.Configuration.Providers;
 using XI.Portal.Library.GeoLocation.Repository;
 using XI.Portal.Library.Logging;
+using XI.Portal.Library.Rcon.Factories;
+using XI.Portal.Library.Rcon.Interfaces;
 using XI.Portal.Services.RconMonitorService.Factories;
 using XI.Portal.Services.RconMonitorService.Interfaces;
 
@@ -35,6 +37,7 @@ namespace XI.Portal.Services.RconMonitorService
 
             container.RegisterType<IContextProvider, ContextProvider>();
             container.RegisterType<IDatabaseLogger, DatabaseLogger>();
+            container.RegisterType<IRconClientFactory, RconClientFactory>();
 
             container.RegisterType<IGeoLocationApiRepository, GeoLocationApiRepository>();
 

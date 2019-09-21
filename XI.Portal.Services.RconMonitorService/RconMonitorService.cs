@@ -36,15 +36,22 @@ namespace XI.Portal.Services.RconMonitorService
                     {
                         logger.Information($"Creating RconMonitor for {rconMonitor.GameServer.Title}");
 
-                        rconMonitorFactory.CreateInstance(rconMonitor.GameServer.GameType, 
-                            rconMonitor.GameServer.ServerId,
-                            rconMonitor.GameServer.Hostname,
-                            rconMonitor.GameServer.QueryPort,
-                            rconMonitor.GameServer.RconPassword, 
-                            rconMonitor.MonitorMapRotation,
-                            rconMonitor.MonitorPlayers,
-                            rconMonitor.MonitorPlayerIPs,
-                            cts);
+                        try
+                        {
+                            rconMonitorFactory.CreateInstance(rconMonitor.GameServer.GameType,
+                                rconMonitor.GameServer.ServerId,
+                                rconMonitor.GameServer.Hostname,
+                                rconMonitor.GameServer.QueryPort,
+                                rconMonitor.GameServer.RconPassword,
+                                rconMonitor.MonitorMapRotation,
+                                rconMonitor.MonitorPlayers,
+                                rconMonitor.MonitorPlayerIPs,
+                                cts);
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.Error(ex, "Failed to create instance for {serverName}", rconMonitor.GameServer.Title);
+                        }
                     }
                 }
             }

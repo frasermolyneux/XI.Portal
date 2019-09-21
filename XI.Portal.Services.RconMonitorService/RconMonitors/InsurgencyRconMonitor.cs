@@ -6,12 +6,12 @@ using XI.Portal.Plugins.Events;
 
 namespace XI.Portal.Services.RconMonitorService.RconMonitors
 {
-    internal class Cod5RconMonitor : BaseRconMonitor
+    internal class InsurgencyRconMonitor : BaseRconMonitor
     {
         private readonly ILogger logger;
         private readonly IRconClientFactory rconClientFactory;
 
-        public Cod5RconMonitor(ILogger logger, IRconClientFactory rconClientFactory) : base(logger, rconClientFactory)
+        public InsurgencyRconMonitor(ILogger logger, IRconClientFactory rconClientFactory) : base(logger, rconClientFactory)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.rconClientFactory = rconClientFactory ?? throw new ArgumentNullException(nameof(rconClientFactory));
@@ -20,7 +20,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
 
         public override void GetMapRotation()
         {
-            var rconClient = rconClientFactory.CreateInstance(GameType.CallOfDuty5, Hostname, Port, RconPassword);
+            var rconClient = rconClientFactory.CreateInstance(GameType.Insurgency, Hostname, Port, RconPassword);
 
             try
             {
@@ -30,7 +30,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"[{ServerId}] Failed to retrieve map rotation");
+                logger.Error(ex, $"[{ServerId}] Failed to retrieve server status");
             }
 
             base.GetMapRotation();
@@ -38,7 +38,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
 
         public override void GetStatus()
         {
-            var rconClient = rconClientFactory.CreateInstance(GameType.CallOfDuty5, Hostname, Port, RconPassword);
+            var rconClient = rconClientFactory.CreateInstance(GameType.Insurgency, Hostname, Port, RconPassword);
 
             try
             {
