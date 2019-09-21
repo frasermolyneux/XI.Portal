@@ -150,9 +150,18 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                     var guid = match.Groups[4].ToString();
                     var ipAddress = match.Groups[10].ToString();
 
-                    EnsurePlayerExists(onStatusRconResponseEventArgs.GameType, guid, name);
-                    var player = context.Players.SingleOrDefault(p => p.Guid == guid && p.GameType == onStatusRconResponseEventArgs.GameType);
-                    UpdatePlayerIpAddress(context, ipAddress, player);
+                    if (onStatusRconResponseEventArgs.MonitorPlayers) EnsurePlayerExists(onStatusRconResponseEventArgs.GameType, guid, name);
+
+                    if (onStatusRconResponseEventArgs.MonitorPlayerIPs)
+                    {
+                        var player = context.Players.SingleOrDefault(p => p.Guid == guid && p.GameType == onStatusRconResponseEventArgs.GameType);
+
+                        if (player == null)
+                            continue;
+
+                        UpdatePlayerIpAddress(context, ipAddress, player);
+                    }
+
                     UpdateLivePlayerIpAddress(context, ipAddress);
 
                     var livePlayerLocationCutOff = DateTime.UtcNow.AddDays(-1);

@@ -88,6 +88,8 @@ namespace XI.Portal.Plugins.MapRotationPlugin
                         var gameMode = subParts.First().Trim();
                         var mapName = subParts.Skip(1).Single().Trim();
 
+                        logger.Debug("Processing {map} with {mode} under {gameType}", mapName, gameMode, mapRotationRconResponse.GameType);
+
                         var map = GetMapAndEnsureExists(context, gameServer.GameType, mapName);
 
                         if (map == null)
@@ -109,10 +111,14 @@ namespace XI.Portal.Plugins.MapRotationPlugin
                     line = line.Replace("gametype", "");
                     var parts = line.Split(new[] { "map" }, StringSplitOptions.RemoveEmptyEntries);
                     var gameMode = parts.First().Trim();
-                    Console.WriteLine($"Game Mode: {gameMode}");
+
+                    logger.Debug("Game mode is {gameMode}", gameMode);
+
                     foreach (var part in parts.Skip(1))
                     {
                         var mapName = part.Trim();
+
+                        logger.Debug("Processing {map} with {mode} under {gameType}", mapName, gameMode, mapRotationRconResponse.GameType);
 
                         var map = GetMapAndEnsureExists(context, gameServer.GameType, mapName);
 
@@ -140,24 +146,32 @@ namespace XI.Portal.Plugins.MapRotationPlugin
 
         private Map GetMapAndEnsureExists(PortalContext context, GameType gameType, string mapName)
         {
-            var map = context.Maps.SingleOrDefault(m =>m.MapName == mapName && m.GameType == gameType);
-
-            if (map == null)
+            try
             {
-                logger.Information($"Creating map entry in database for {mapName} under {gameType}");
+                var map = context.Maps.SingleOrDefault(m => m.MapName == mapName && m.GameType == gameType);
 
-                context.Maps.Add(new Map()
+                if (map == null)
                 {
-                    GameType = gameType,
-                    MapName = mapName
-                });
+                    logger.Information($"Creating map entry in database for {mapName} under {gameType}");
 
-                context.SaveChanges();
+                    context.Maps.Add(new Map()
+                    {
+                        GameType = gameType,
+                        MapName = mapName
+                    });
 
-                map = context.Maps.SingleOrDefault(m => m.MapName == mapName && m.GameType == gameType);
+                    context.SaveChanges();
+
+                    map = context.Maps.SingleOrDefault(m => m.MapName == mapName && m.GameType == gameType);
+                }
+
+                return map;
             }
-
-            return map;
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Failed to process {map} under {game}", mapName, gameType);
+                throw;
+            }
         }
     }
 }
