@@ -94,7 +94,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
                         }
                     }
 
-                    if (MonitorPlayers)
+                    if (MonitorPlayers || MonitorPlayerIPs)
                     {
                         if (LastStatus < DateTime.UtcNow.AddMinutes(-1))
                         {
