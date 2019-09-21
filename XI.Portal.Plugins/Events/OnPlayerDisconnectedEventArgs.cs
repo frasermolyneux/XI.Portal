@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace XI.Portal.Services.FileMonitor.Events
+namespace XI.Portal.Plugins.Events
 {
-    public class OnPlayerConnectedEventArgs : EventArgs
+    public class OnPlayerDisconnectedEventArgs : EventArgs
     {
         public Guid ServerId { get; set; }
         public string Guid { get; set; }

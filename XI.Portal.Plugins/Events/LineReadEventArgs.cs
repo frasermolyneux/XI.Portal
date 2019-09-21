@@ -1,7 +1,7 @@
 ﻿using System;
 using XI.Portal.Library.CommonTypes;
 
-namespace XI.Portal.Services.FileMonitor.Events
+namespace XI.Portal.Plugins.Events
 {
     public class LineReadEventArgs : EventArgs
     {

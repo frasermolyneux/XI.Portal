@@ -10,11 +10,14 @@ using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Configuration;
 using XI.Portal.Library.Configuration.Providers;
 using XI.Portal.Library.Logging;
-using XI.Portal.Services.FileMonitor.Events;
-using XI.Portal.Services.FileMonitor.FtpFileMonitor;
+using XI.Portal.Plugins.ChatMonitorPlugin;
+using XI.Portal.Plugins.Events;
+using XI.Portal.Plugins.FuckYouPlugin;
+using XI.Portal.Plugins.Interfaces;
+using XI.Portal.Plugins.LogProxyPlugin;
+using XI.Portal.Plugins.PlayerInfoPlugin;
+using XI.Portal.Services.FileMonitor.Factories;
 using XI.Portal.Services.FileMonitor.Interfaces;
-using XI.Portal.Services.FileMonitor.Parsers;
-using XI.Portal.Services.FileMonitor.Plugins;
 
 namespace XI.Portal.Services.FileMonitor
 {
@@ -45,9 +48,9 @@ namespace XI.Portal.Services.FileMonitor
             container.RegisterType<IParserFactory, ParserFactory>();
 
             container.RegisterType<IPlugin, ChatMonitorPlugin>();
-            container.RegisterType<IPlugin, PlayerCorePlugin>();
+            container.RegisterType<IPlugin, PlayerInfoPlugin>();
             container.RegisterType<IPlugin, FuckYouPlugin>();
-            container.RegisterType<IPlugin, StatsLogProxyPlugin>();
+            container.RegisterType<IPlugin, LogProxyPlugin>();
 
 
             HostFactory.Run(x =>

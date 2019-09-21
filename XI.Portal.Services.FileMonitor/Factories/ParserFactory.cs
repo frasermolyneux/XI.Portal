@@ -1,14 +1,18 @@
 ﻿using System.Collections.Generic;
 using Serilog;
 using XI.Portal.Library.CommonTypes;
+using XI.Portal.Plugins.ChatMonitorPlugin;
+using XI.Portal.Plugins.FuckYouPlugin;
+using XI.Portal.Plugins.LogProxyPlugin;
+using XI.Portal.Plugins.PlayerInfoPlugin;
 using XI.Portal.Services.FileMonitor.Interfaces;
-using XI.Portal.Services.FileMonitor.Plugins;
+using XI.Portal.Services.FileMonitor.Parsers;
 
-namespace XI.Portal.Services.FileMonitor.Parsers
+namespace XI.Portal.Services.FileMonitor.Factories
 {
     internal class ParserFactory : IParserFactory
     {
-        public ParserFactory(ILogger logger, ChatMonitorPlugin chatMonitorPlugin, PlayerCorePlugin playerCorePlugin, FuckYouPlugin fuckYouPlugin, StatsLogProxyPlugin statsLogProxyPlugin)
+        public ParserFactory(ILogger logger, ChatMonitorPlugin chatMonitorPlugin, PlayerInfoPlugin playerInfoPlugin, FuckYouPlugin fuckYouPlugin, LogProxyPlugin logProxyPlugin)
         {
             Parsers.Add(GameType.CallOfDuty2, new Cod2Parser(logger));
             Parsers.Add(GameType.CallOfDuty4, new Cod4Parser(logger));
@@ -17,9 +21,9 @@ namespace XI.Portal.Services.FileMonitor.Parsers
             foreach (var parser in Parsers)
             {
                 chatMonitorPlugin.RegisterEventHandlers(parser.Value);
-                playerCorePlugin.RegisterEventHandlers(parser.Value);
+                playerInfoPlugin.RegisterEventHandlers(parser.Value);
                 fuckYouPlugin.RegisterEventHandlers(parser.Value);
-                statsLogProxyPlugin.RegisterEventHandlers(parser.Value);
+                logProxyPlugin.RegisterEventHandlers(parser.Value);
             }
         }
 

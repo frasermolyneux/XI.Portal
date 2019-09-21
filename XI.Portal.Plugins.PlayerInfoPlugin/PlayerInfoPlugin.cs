@@ -4,28 +4,28 @@ using Serilog;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Logging;
-using XI.Portal.Services.FileMonitor.Events;
-using XI.Portal.Services.FileMonitor.Interfaces;
+using XI.Portal.Plugins.Events;
+using XI.Portal.Plugins.Interfaces;
 
-namespace XI.Portal.Services.FileMonitor.Plugins
+namespace XI.Portal.Plugins.PlayerInfoPlugin
 {
-    public class PlayerCorePlugin : IPlugin
+    public class PlayerInfoPlugin : IPlugin
     {
         private readonly IContextProvider contextProvider;
         private readonly IDatabaseLogger databaseLogger;
         private readonly ILogger logger;
 
-        public PlayerCorePlugin(ILogger logger, IContextProvider contextProvider, IDatabaseLogger databaseLogger)
+        public PlayerInfoPlugin(ILogger logger, IContextProvider contextProvider, IDatabaseLogger databaseLogger)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
             this.databaseLogger = databaseLogger ?? throw new ArgumentNullException(nameof(databaseLogger));
         }
 
-        public void RegisterEventHandlers(IParser parser)
+        public void RegisterEventHandlers(IPluginEvents events)
         {
-            parser.PlayerConnected += Parser_PlayerConnected;
-            parser.PlayerDisconnected += Parser_PlayerDisconnected;
+            events.PlayerConnected += Parser_PlayerConnected;
+            events.PlayerDisconnected += Parser_PlayerDisconnected;
         }
 
         private void Parser_PlayerConnected(object sender, EventArgs e)
