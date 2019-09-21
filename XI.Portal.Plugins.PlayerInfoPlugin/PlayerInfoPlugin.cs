@@ -11,6 +11,7 @@ using XI.Portal.Library.GeoLocation.Repository;
 using XI.Portal.Library.Logging;
 using XI.Portal.Plugins.Events;
 using XI.Portal.Plugins.Interfaces;
+using XI.Portal.Plugins.PlayerInfoPlugin.Interfaces;
 
 namespace XI.Portal.Plugins.PlayerInfoPlugin
 {
@@ -19,17 +20,17 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
         private readonly IContextProvider contextProvider;
         private readonly IDatabaseLogger databaseLogger;
         private readonly IGeoLocationApiRepository geoLocationApiRepository;
+        private readonly IIpAddressCaching ipAddressCaching;
         private readonly ILogger logger;
 
-        public PlayerInfoPlugin(ILogger logger, IContextProvider contextProvider, IDatabaseLogger databaseLogger, IGeoLocationApiRepository geoLocationApiRepository)
+        public PlayerInfoPlugin(ILogger logger, IContextProvider contextProvider, IDatabaseLogger databaseLogger, IGeoLocationApiRepository geoLocationApiRepository, IIpAddressCaching ipAddressCaching)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
             this.databaseLogger = databaseLogger ?? throw new ArgumentNullException(nameof(databaseLogger));
             this.geoLocationApiRepository = geoLocationApiRepository ?? throw new ArgumentNullException(nameof(geoLocationApiRepository));
+            this.ipAddressCaching = ipAddressCaching ?? throw new ArgumentNullException(nameof(ipAddressCaching));
         }
-
-        public Dictionary<string, DateTime> CachedAddresses { get; set; } = new Dictionary<string, DateTime>();
 
         public void RegisterEventHandlers(IPluginEvents events)
         {
@@ -176,12 +177,7 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
             context.LivePlayerLocations.RemoveRange(context.LivePlayerLocations.Where(lpl => lpl.LastSeen < livePlayerLocationCutOff));
             context.SaveChanges();
 
-            var expiredCachedAddresses = CachedAddresses.Where(ca => ca.Value < DateTime.UtcNow.AddHours(-1)).ToList();
-            foreach (var cachedAddress in expiredCachedAddresses)
-            {
-                logger.Debug("Clearing {address} from local cache as it has expired", cachedAddress.Key);
-                CachedAddresses.Remove(cachedAddress.Key);
-            }
+            ipAddressCaching.ReduceCache();
         }
 
         private void EnsurePlayerExists(GameType gameType, string guid, string name)
@@ -242,15 +238,15 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
         {
             try
             {
-                if (CachedAddresses.ContainsKey(ipAddress))
+                if (ipAddressCaching.IpAddressInCache(ipAddress))
                 {
-                    logger.Debug("Player address {ipAddress} already exists in local cache from {timestamp}", ipAddress, CachedAddresses[ipAddress]);
+                    logger.Debug("Player address {ipAddress} already exists in local cache", ipAddress);
                     return;
                 }
 
                 var ipLocation = geoLocationApiRepository.GetLocation(ipAddress).Result;
 
-                CachedAddresses.Add(ipAddress, DateTime.UtcNow);
+                ipAddressCaching.AddToCache(ipAddress);
 
                 if (!ipLocation.IsDefault())
                 {

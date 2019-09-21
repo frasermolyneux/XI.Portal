@@ -10,6 +10,8 @@ using XI.Portal.Library.GeoLocation.Repository;
 using XI.Portal.Library.Logging;
 using XI.Portal.Library.Rcon.Factories;
 using XI.Portal.Library.Rcon.Interfaces;
+using XI.Portal.Plugins.PlayerInfoPlugin.Interfaces;
+using XI.Portal.Plugins.PlayerInfoPlugin.LocalCaching;
 using XI.Portal.Services.RconMonitorService.Factories;
 using XI.Portal.Services.RconMonitorService.Interfaces;
 
@@ -37,10 +39,9 @@ namespace XI.Portal.Services.RconMonitorService
             container.RegisterType<IContextProvider, ContextProvider>();
             container.RegisterType<IDatabaseLogger, DatabaseLogger>();
             container.RegisterType<IRconClientFactory, RconClientFactory>();
-
-            container.RegisterType<IGeoLocationApiRepository, GeoLocationApiRepository>();
-
             container.RegisterType<IRconMonitorFactory, RconMonitorFactory>();
+            container.RegisterType<IGeoLocationApiRepository, GeoLocationApiRepository>();
+            container.RegisterType<IIpAddressCaching, IpAddressCaching>();
 
             HostFactory.Run(x =>
             {
