@@ -46,12 +46,14 @@
     <Compile Include="Events\OnChatMessageEventArgs.cs" />
     <Compile Include="Events\OnDamageEventArgs.cs" />
     <Compile Include="Events\OnKillEventArgs.cs" />
+    <Compile Include="Events\OnStatusRconResponse.cs" />
     <Compile Include="Events\OnMapRotationRconResponse.cs" />
     <Compile Include="Events\OnPlayerConnectedEventArgs.cs" />
     <Compile Include="Events\OnPlayerDisconnectedEventArgs.cs" />
     <Compile Include="Events\OnRoundStartEventArgs.cs" />
     <Compile Include="Events\OnSuicideEventArgs.cs" />
     <Compile Include="Events\OnTeamKillEventArgs.cs" />
+    <Compile Include="Events\ServerBaseEventArgs.cs" />
     <Compile Include="Interfaces\IPlugin.cs" />
     <Compile Include="Interfaces\IPluginEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

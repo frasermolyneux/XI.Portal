@@ -3,12 +3,19 @@ using XI.Portal.Library.CommonTypes;
 
 namespace XI.Portal.Plugins.Events
 {
-    public class OnChatMessageEventArgs : EventArgs
+    public class OnChatMessageEventArgs : ServerBaseEventArgs
     {
-        public string Guid { get; set; }
-        public string Name { get; set; }
-        public string Message { get; set; }
-        public Guid ServerId { get; set; }
-        public ChatType ChatType { get; set; }
+        public OnChatMessageEventArgs(Guid serverId, GameType gameType, string guid, string name, string message, ChatType chatType) : base(serverId, gameType)
+        {
+            Guid = guid;
+            Name = name;
+            Message = message;
+            ChatType = chatType;
+        }
+
+        public string Guid { get; }
+        public string Name { get; }
+        public string Message { get; }
+        public ChatType ChatType { get; }
     }
 }

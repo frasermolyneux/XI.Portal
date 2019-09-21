@@ -3,10 +3,13 @@ using XI.Portal.Library.CommonTypes;
 
 namespace XI.Portal.Plugins.Events
 {
-    public class LineReadEventArgs : EventArgs
+    public class LineReadEventArgs : ServerBaseEventArgs
     {
-        public Guid ServerId { get; set; }
-        public GameType GameType { get; set; }
-        public string LineData { get; set; }
+        public LineReadEventArgs(Guid serverId, GameType gameType, string lineData) : base(serverId, gameType)
+        {
+            LineData = lineData;
+        }
+
+        public string LineData { get; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Serilog;
+using XI.Portal.Library.CommonTypes;
 using XI.Portal.Plugins.Events;
 using XI.Portal.Services.RconMonitorService.Interfaces;
 
@@ -16,6 +17,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
         }
 
         public Guid ServerId { get; private set; }
+        public GameType GameType { get; private set; }
         public string Hostname { get; private set; }
         public int Port { get; private set; }
         public string RconPassword { get; private set; }
@@ -24,6 +26,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
         public bool MonitorPlayerIPs { get; set; }
 
         public DateTime LastMapRotation { get; set; } = DateTime.MinValue;
+        public DateTime LastStatus { get; set; } = DateTime.MinValue;
 
         private CancellationTokenSource CancellationTokenSource { get; set; }
 
@@ -38,10 +41,12 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
         public event EventHandler Action;
         public event EventHandler Damage;
         public event EventHandler MapRotationRconResponse;
+        public event EventHandler StatusRconResponse;
 
-        public void Configure(Guid serverId, string hostname, int port, string rconPassword, bool monitorMapRotation, bool monitorPlayers, bool monitorPlayerIPs, CancellationTokenSource cancellationTokenSource)
+        public void Configure(Guid serverId, GameType gameType, string hostname, int port, string rconPassword, bool monitorMapRotation, bool monitorPlayers, bool monitorPlayerIPs, CancellationTokenSource cancellationTokenSource)
         {
             ServerId = serverId;
+            GameType = gameType;
             Hostname = hostname;
             Port = port;
             RconPassword = rconPassword;
@@ -57,6 +62,11 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
         protected virtual void OnMapRotationRconResponse(OnMapRotationRconResponse eventArgs)
         {
             MapRotationRconResponse?.Invoke(this, eventArgs);
+        }
+
+        protected virtual void OnStatusRconResponse(OnStatusRconResponse eventArgs)
+        {
+            StatusRconResponse?.Invoke(this, eventArgs);
         }
 
         private void MonitorServer()
@@ -81,6 +91,14 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
                         }
                     }
 
+                    if (MonitorPlayers)
+                    {
+                        if (LastStatus < DateTime.UtcNow.AddMinutes(-1))
+                        {
+                            GetStatus();
+                        }
+                    }
+
                     lastLoop = DateTime.UtcNow;
                 }
             }
@@ -94,6 +112,12 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
         {
             LastMapRotation = DateTime.UtcNow;
             logger.Information($"[{ServerId}] Last Map Rotation set to {LastMapRotation}");
+        }
+
+        public virtual void GetStatus()
+        {
+            LastStatus = DateTime.UtcNow;
+            logger.Information($"[{ServerId}] Last Status set to {LastStatus}");
         }
     }
 }

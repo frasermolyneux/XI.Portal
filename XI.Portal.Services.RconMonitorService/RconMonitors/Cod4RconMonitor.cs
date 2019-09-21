@@ -22,11 +22,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
             {
                 var commandResponse = rconClient.MapRotation();
 
-                OnMapRotationRconResponse(new OnMapRotationRconResponse()
-                {
-                    ServerId = ServerId,
-                    ResponseData = commandResponse
-                });
+                OnMapRotationRconResponse(new OnMapRotationRconResponse(ServerId, GameType, commandResponse));
             }
             catch (Exception ex)
             {
@@ -34,6 +30,24 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
             }
 
             base.GetMapRotation();
+        }
+
+        public override void GetStatus()
+        {
+            var rconClient = new RconClient(Hostname, Port, RconPassword);
+
+            try
+            {
+                var commandResponse = rconClient.StatusCommand();
+
+                OnStatusRconResponse(new OnStatusRconResponse(ServerId, GameType, commandResponse, MonitorPlayerIPs));
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, $"[{ServerId}] Failed to retrieve server status");
+            }
+
+            base.GetStatus();
         }
     }
 }

@@ -182,6 +182,10 @@
       <Project>{9e986b37-a07b-4f2f-93b7-561d3ed15cf0}</Project>
       <Name>XI.Portal.Plugins.MapRotationPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Plugins.PlayerInfoPlugin\XI.Portal.Plugins.PlayerInfoPlugin.csproj">
+      <Project>{6B933FE5-82BC-48E1-8170-EB865A24FBD0}</Project>
+      <Name>XI.Portal.Plugins.PlayerInfoPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Plugins\XI.Portal.Plugins.csproj">
       <Project>{deca7c71-871a-43c4-95d1-af7e825acfc3}</Project>
       <Name>XI.Portal.Plugins</Name>

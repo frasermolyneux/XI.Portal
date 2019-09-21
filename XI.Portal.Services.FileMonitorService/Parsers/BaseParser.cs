@@ -1,5 +1,6 @@
 ﻿using System;
 using Serilog;
+using XI.Portal.Library.CommonTypes;
 using XI.Portal.Plugins.Events;
 using XI.Portal.Services.FileMonitorService.Interfaces;
 
@@ -14,7 +15,7 @@ namespace XI.Portal.Services.FileMonitorService.Parsers
             Logger = logger;
         }
 
-        public virtual void ParseLine(string line, Guid serverId)
+        public virtual void ParseLine(string line, Guid serverId, GameType gameType)
         {
         }
 
@@ -29,6 +30,7 @@ namespace XI.Portal.Services.FileMonitorService.Parsers
         public event EventHandler Action;
         public event EventHandler Damage;
         public event EventHandler MapRotationRconResponse;
+        public event EventHandler StatusRconResponse;
 
         protected virtual void OnLineRead(LineReadEventArgs eventArgs)
         {

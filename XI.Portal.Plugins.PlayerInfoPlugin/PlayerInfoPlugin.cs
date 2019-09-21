@@ -26,6 +26,7 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
         {
             events.PlayerConnected += Parser_PlayerConnected;
             events.PlayerDisconnected += Parser_PlayerDisconnected;
+            events.StatusRconResponse += Events_StatusRconResponse;
         }
 
         private void Parser_PlayerConnected(object sender, EventArgs e)
@@ -44,6 +45,13 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
             logger.Information($"[{onPlayerDisconnectedEventArgs.ServerId}] Player {onPlayerDisconnectedEventArgs.Name} disconnected with GUID {onPlayerDisconnectedEventArgs.Guid} at {DateTime.UtcNow.ToShortTimeString()}");
 
             EnsurePlayerExists(onPlayerDisconnectedEventArgs.ServerId, onPlayerDisconnectedEventArgs.Guid, onPlayerDisconnectedEventArgs.Name);
+        }
+
+        private void Events_StatusRconResponse(object sender, EventArgs e)
+        {
+            var onStatusRconResponseEventArgs = (OnStatusRconResponse) e;
+
+            logger.Debug(onStatusRconResponseEventArgs.ResponseData);
         }
 
         private void EnsurePlayerExists(Guid serverId, string guid, string name)

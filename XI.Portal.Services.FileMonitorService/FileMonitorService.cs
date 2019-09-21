@@ -74,7 +74,7 @@ namespace XI.Portal.Services.FileMonitorService
             var eventData = (LineReadEventArgs) e;
 
             var parser = parserFactory.GetParserForGameType(eventData.GameType);
-            parser.ParseLine(eventData.LineData, eventData.ServerId);
+            parser.ParseLine(eventData.LineData, eventData.ServerId, eventData.GameType);
         }
     }
 }

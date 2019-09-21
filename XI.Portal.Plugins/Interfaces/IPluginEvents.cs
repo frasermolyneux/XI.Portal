@@ -17,6 +17,7 @@ namespace XI.Portal.Plugins.Interfaces
         event EventHandler Damage;
 
         //RconMonitorEvents
-        event EventHandler MapRotationRconResponse;
+        event EventHandler MapRotationRconResponse; 
+        event EventHandler StatusRconResponse;
     }
 }

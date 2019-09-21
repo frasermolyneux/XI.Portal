@@ -1,10 +1,15 @@
 ﻿using System;
+using XI.Portal.Library.CommonTypes;
 
 namespace XI.Portal.Plugins.Events
 {
-    public class OnMapRotationRconResponse : EventArgs
+    public class OnMapRotationRconResponse : ServerBaseEventArgs
     {
-        public Guid ServerId { get; set; }
-        public string ResponseData { get; set; }
+        public OnMapRotationRconResponse(Guid serverId, GameType gameType, string responseData) : base(serverId, gameType)
+        {
+            ResponseData = responseData;
+        }
+
+        public string ResponseData { get; }
     }
 }

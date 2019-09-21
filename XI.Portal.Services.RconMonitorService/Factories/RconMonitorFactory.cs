@@ -3,6 +3,7 @@ using System.Threading;
 using Serilog;
 using XI.Portal.Library.CommonTypes;
 using XI.Portal.Plugins.MapRotationPlugin;
+using XI.Portal.Plugins.PlayerInfoPlugin;
 using XI.Portal.Services.RconMonitorService.Interfaces;
 using XI.Portal.Services.RconMonitorService.RconMonitors;
 
@@ -12,11 +13,13 @@ namespace XI.Portal.Services.RconMonitorService.Factories
     {
         private readonly ILogger logger;
         private readonly MapRotationPlugin mapRotationPlugin;
+        private readonly PlayerInfoPlugin playerInfoPlugin;
 
-        public RconMonitorFactory(ILogger logger, MapRotationPlugin mapRotationPlugin)
+        public RconMonitorFactory(ILogger logger, MapRotationPlugin mapRotationPlugin, PlayerInfoPlugin playerInfoPlugin)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.mapRotationPlugin = mapRotationPlugin ?? throw new ArgumentNullException(nameof(mapRotationPlugin));
+            this.playerInfoPlugin = playerInfoPlugin ?? throw new ArgumentNullException(nameof(playerInfoPlugin));
         }
 
         public IRconMonitor CreateInstance(GameType gameType, Guid serverId, string hostname, int port, string rconPassword, bool monitorMapRotation, bool monitorPlayers, bool monitorPlayerIPs, CancellationTokenSource cancellationTokenSource)
@@ -37,8 +40,9 @@ namespace XI.Portal.Services.RconMonitorService.Factories
                     throw new Exception("Game type is not supported by the Rcon Monitor");
             }
 
-            rconMonitor.Configure(serverId, hostname, port, rconPassword, monitorMapRotation, monitorPlayers, monitorPlayerIPs, cancellationTokenSource);
+            rconMonitor.Configure(serverId, gameType, hostname, port, rconPassword, monitorMapRotation, monitorPlayers, monitorPlayerIPs, cancellationTokenSource);
             mapRotationPlugin.RegisterEventHandlers(rconMonitor);
+            playerInfoPlugin.RegisterEventHandlers(rconMonitor);
 
             return rconMonitor;
         }
