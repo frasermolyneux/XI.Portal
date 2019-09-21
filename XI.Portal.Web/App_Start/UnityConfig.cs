@@ -1,6 +1,7 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
+using Serilog;
 using System;
 using System.Data.Entity;
 using System.Web;
@@ -35,6 +36,15 @@ namespace XI.Portal.Web.Portal
 
         public static void RegisterTypes(IUnityContainer container)
         {
+            var logger = new LoggerConfiguration()
+                .ReadFrom.AppSettings()
+                .WriteTo.ColoredConsole()
+                .CreateLogger();
+
+            Log.Logger = logger;
+
+            container.RegisterFactory<ILogger>((ctr, type, name) => logger, new ContainerControlledLifetimeManager());
+
             container.RegisterType<AppSettingConfigurationProvider>();
             container.RegisterType<AwsSecretConfigurationProvider>();
             container.RegisterType<AwsConfiguration>();

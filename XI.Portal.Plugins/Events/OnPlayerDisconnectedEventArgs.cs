@@ -1,11 +1,17 @@
 ﻿using System;
+using XI.Portal.Library.CommonTypes;
 
 namespace XI.Portal.Plugins.Events
 {
-    public class OnPlayerDisconnectedEventArgs : EventArgs
+    public class OnPlayerDisconnectedEventArgs : ServerBaseEventArgs
     {
-        public Guid ServerId { get; set; }
-        public string Guid { get; set; }
-        public string Name { get; set; }
+        public OnPlayerDisconnectedEventArgs(Guid serverId, GameType gameType, string guid, string name) : base(serverId, gameType)
+        {
+            Guid = guid;
+            Name = name;
+        }
+
+        public string Guid { get; }
+        public string Name { get; }
     }
 }
