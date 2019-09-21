@@ -11,8 +11,8 @@ namespace XI.Portal.Library.GeoLocation.Repository
 {
     public class GeoLocationApiRepository : IGeoLocationApiRepository
     {
-        private readonly ILogger logger;
         private readonly GeoLocationConfiguration geoLocationConfiguration;
+        private readonly ILogger logger;
 
         public GeoLocationApiRepository(ILogger logger, GeoLocationConfiguration geoLocationConfiguration)
         {
@@ -34,14 +34,14 @@ namespace XI.Portal.Library.GeoLocation.Repository
                     var locationString = await wc.DownloadStringTaskAsync($"{geoLocationConfiguration.GeoLocationServiceUrl}/api/geo/location/{encodedAddress}");
                     var deserializeLocation = JsonConvert.DeserializeObject<LocationDto>(locationString);
 
-                    logger.Debug($"Location {deserializeLocation} retrieved for {address}");
+                    logger.Debug("{@location} retrieved for {address}", deserializeLocation, address);
 
                     return deserializeLocation;
                 }
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"Failed to get location for address {address}");
+                logger.Error(ex, "Failed to get location for address {address}", address);
 
                 return new LocationDto();
             }
