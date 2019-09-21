@@ -3,6 +3,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Serilog;
 using XI.Portal.Library.Configuration;
 using XI.Portal.Library.GeoLocation.Models;
 
@@ -10,10 +11,12 @@ namespace XI.Portal.Library.GeoLocation.Repository
 {
     public class GeoLocationApiRepository : IGeoLocationApiRepository
     {
+        private readonly ILogger logger;
         private readonly GeoLocationConfiguration geoLocationConfiguration;
 
-        public GeoLocationApiRepository(GeoLocationConfiguration geoLocationConfiguration)
+        public GeoLocationApiRepository(ILogger logger, GeoLocationConfiguration geoLocationConfiguration)
         {
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.geoLocationConfiguration = geoLocationConfiguration ?? throw new ArgumentNullException(nameof(geoLocationConfiguration));
         }
 
@@ -29,11 +32,17 @@ namespace XI.Portal.Library.GeoLocation.Repository
                 using (var wc = new WebClient())
                 {
                     var locationString = await wc.DownloadStringTaskAsync($"{geoLocationConfiguration.GeoLocationServiceUrl}/api/geo/location/{encodedAddress}");
-                    return JsonConvert.DeserializeObject<LocationDto>(locationString);
+                    var deserializeLocation = JsonConvert.DeserializeObject<LocationDto>(locationString);
+
+                    logger.Debug($"Location {deserializeLocation} retrieved for {address}");
+
+                    return deserializeLocation;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                logger.Error(ex, $"Failed to get location for address {address}");
+
                 return new LocationDto();
             }
         }

@@ -40,7 +40,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
             {
                 var commandResponse = rconClient.StatusCommand();
 
-                OnStatusRconResponse(new OnStatusRconResponse(ServerId, GameType, commandResponse, MonitorPlayerIPs));
+                OnStatusRconResponse(new OnStatusRconResponse(ServerId, GameType, commandResponse, MonitorPlayers, MonitorPlayerIPs));
             }
             catch (Exception ex)
             {
