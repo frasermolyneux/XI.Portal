@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Serilog;
@@ -27,6 +28,8 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
             this.databaseLogger = databaseLogger ?? throw new ArgumentNullException(nameof(databaseLogger));
             this.geoLocationApiRepository = geoLocationApiRepository ?? throw new ArgumentNullException(nameof(geoLocationApiRepository));
         }
+
+        public Dictionary<string, DateTime> CachedAddresses { get; set; } = new Dictionary<string, DateTime>();
 
         public void RegisterEventHandlers(IPluginEvents events)
         {
@@ -124,9 +127,7 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                     UpdateLivePlayerIpAddress(context, ipAddress);
                 }
 
-                var livePlayerLocationCutOff = DateTime.UtcNow.AddDays(-1);
-                context.LivePlayerLocations.RemoveRange(context.LivePlayerLocations.Where(lpl => lpl.LastSeen < livePlayerLocationCutOff));
-                context.SaveChanges();
+                CleanLivePlayerIps(context);
             }
         }
 
@@ -164,10 +165,22 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
 
                     UpdateLivePlayerIpAddress(context, ipAddress);
 
-                    var livePlayerLocationCutOff = DateTime.UtcNow.AddDays(-1);
-                    context.LivePlayerLocations.RemoveRange(context.LivePlayerLocations.Where(lpl => lpl.LastSeen < livePlayerLocationCutOff));
-                    context.SaveChanges();
+                    CleanLivePlayerIps(context);
                 }
+            }
+        }
+
+        private void CleanLivePlayerIps(PortalContext context)
+        {
+            var livePlayerLocationCutOff = DateTime.UtcNow.AddDays(-1);
+            context.LivePlayerLocations.RemoveRange(context.LivePlayerLocations.Where(lpl => lpl.LastSeen < livePlayerLocationCutOff));
+            context.SaveChanges();
+
+            var expiredCachedAddresses = CachedAddresses.Where(ca => ca.Value < DateTime.UtcNow.AddHours(-1)).ToList();
+            foreach (var cachedAddress in expiredCachedAddresses)
+            {
+                logger.Debug("Clearing {address} from local cache as it has expired", cachedAddress.Key);
+                CachedAddresses.Remove(cachedAddress.Key);
             }
         }
 
@@ -229,7 +242,15 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
         {
             try
             {
+                if (CachedAddresses.ContainsKey(ipAddress))
+                {
+                    logger.Debug("Player address {ipAddress} already exists in local cache from {timestamp}", ipAddress, CachedAddresses[ipAddress]);
+                    return;
+                }
+
                 var ipLocation = geoLocationApiRepository.GetLocation(ipAddress).Result;
+
+                CachedAddresses.Add(ipAddress, DateTime.UtcNow);
 
                 if (!ipLocation.IsDefault())
                 {
