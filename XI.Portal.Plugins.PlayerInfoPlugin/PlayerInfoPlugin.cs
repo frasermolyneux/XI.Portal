@@ -272,7 +272,7 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "[RconMonitor] Failed to get location for {ipAddress}", ipAddress);
+                logger.Error(ex, "Failed to get location for {ipAddress}", ipAddress);
             }
         }
 
@@ -298,7 +298,7 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
             }
 
             if (player.IpAddress != ipAddress)
-                logger.Information("[RconMonitor] New IpAddress {ipAddress} recorded for {PlayerId} ({Username})", ipAddress, player.PlayerId, player.Username);
+                logger.Information("New IpAddress {ipAddress} recorded for {PlayerId} ({Username})", ipAddress, player.PlayerId, player.Username);
 
             player.LastSeen = DateTime.UtcNow;
             player.IpAddress = ipAddress;

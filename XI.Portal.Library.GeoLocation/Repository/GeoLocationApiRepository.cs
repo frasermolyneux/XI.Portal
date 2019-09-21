@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Polly;
 using Serilog;
 using XI.Portal.Library.Configuration;
 using XI.Portal.Library.GeoLocation.Models;
@@ -29,21 +31,42 @@ namespace XI.Portal.Library.GeoLocation.Repository
 
             try
             {
-                using (var wc = new WebClient())
-                {
-                    var locationString = await wc.DownloadStringTaskAsync($"{geoLocationConfiguration.GeoLocationServiceUrl}/api/geo/location/{encodedAddress}");
-                    var deserializeLocation = JsonConvert.DeserializeObject<LocationDto>(locationString);
+                var locationResult = await Policy.Handle<Exception>()
+                    .WaitAndRetry(GetRetryTimeSpans(), (result, timeSpan, retryCount, acontext) => { logger.Warning("Failed to get location from GeoLocationApi for {address} - retry count: {count)", address, retryCount); })
+                    .Execute(() => GetLocationDto(address, encodedAddress));
 
-                    logger.Debug("{@location} retrieved for {address}", deserializeLocation, address);
-
-                    return deserializeLocation;
-                }
+                return locationResult;
             }
             catch (Exception ex)
             {
                 logger.Error(ex, "Failed to get location for address {address}", address);
 
                 return new LocationDto();
+            }
+        }
+
+        private static IEnumerable<TimeSpan> GetRetryTimeSpans()
+        {
+            var random = new Random();
+
+            return new[]
+            {
+                TimeSpan.FromSeconds(random.Next(1)),
+                TimeSpan.FromSeconds(random.Next(3)),
+                TimeSpan.FromSeconds(random.Next(5))
+            };
+        }
+
+        private async Task<LocationDto> GetLocationDto(string address, string encodedAddress)
+        {
+            using (var wc = new WebClient())
+            {
+                var locationString = await wc.DownloadStringTaskAsync($"{geoLocationConfiguration.GeoLocationServiceUrl}/api/geo/location/{encodedAddress}");
+                var deserializeLocation = JsonConvert.DeserializeObject<LocationDto>(locationString);
+
+                logger.Debug("{@location} retrieved for {address}", deserializeLocation, address);
+
+                return deserializeLocation;
             }
         }
     }
