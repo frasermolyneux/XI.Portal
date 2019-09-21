@@ -164,9 +164,9 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                     }
 
                     UpdateLivePlayerIpAddress(context, ipAddress);
-
-                    CleanLivePlayerIps(context);
                 }
+
+                CleanLivePlayerIps(context);
             }
         }
 
