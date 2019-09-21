@@ -8,7 +8,7 @@ using Serilog;
 using XI.Portal.Library.CommonTypes;
 using XI.Portal.Plugins.Events;
 
-namespace XI.Portal.Services.FileMonitor.FtpFileMonitor
+namespace XI.Portal.Services.FileMonitorService.FtpFileMonitor
 {
     public class FtpFileMonitor
     {

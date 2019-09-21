@@ -1,6 +1,6 @@
 ﻿using Serilog;
 
-namespace XI.Portal.Services.FileMonitor.Parsers
+namespace XI.Portal.Services.FileMonitorService.Parsers
 {
     public class Cod4Parser : CodBaseParser
     {

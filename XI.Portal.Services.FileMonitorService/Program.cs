@@ -16,10 +16,10 @@ using XI.Portal.Plugins.FuckYouPlugin;
 using XI.Portal.Plugins.Interfaces;
 using XI.Portal.Plugins.LogProxyPlugin;
 using XI.Portal.Plugins.PlayerInfoPlugin;
-using XI.Portal.Services.FileMonitor.Factories;
-using XI.Portal.Services.FileMonitor.Interfaces;
+using XI.Portal.Services.FileMonitorService.Factories;
+using XI.Portal.Services.FileMonitorService.Interfaces;
 
-namespace XI.Portal.Services.FileMonitor
+namespace XI.Portal.Services.FileMonitorService
 {
     internal class Program
     {

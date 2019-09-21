@@ -2,9 +2,9 @@
 using System.Threading;
 using Serilog;
 using XI.Portal.Library.CommonTypes;
-using XI.Portal.Services.FileMonitor.Interfaces;
+using XI.Portal.Services.FileMonitorService.Interfaces;
 
-namespace XI.Portal.Services.FileMonitor.Factories
+namespace XI.Portal.Services.FileMonitorService.Factories
 {
     public class FtpFileMonitorFactory : IFtpFileMonitorFactory
     {

@@ -4,7 +4,7 @@ using Serilog;
 using XI.Portal.Library.CommonTypes;
 using XI.Portal.Plugins.Events;
 
-namespace XI.Portal.Services.FileMonitor.Parsers
+namespace XI.Portal.Services.FileMonitorService.Parsers
 {
     public class CodBaseParser : BaseParser
     {

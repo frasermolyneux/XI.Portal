@@ -1,9 +1,9 @@
 ﻿using System;
 using Serilog;
 using XI.Portal.Plugins.Events;
-using XI.Portal.Services.FileMonitor.Interfaces;
+using XI.Portal.Services.FileMonitorService.Interfaces;
 
-namespace XI.Portal.Services.FileMonitor.Parsers
+namespace XI.Portal.Services.FileMonitorService.Parsers
 {
     public class BaseParser : IParser
     {

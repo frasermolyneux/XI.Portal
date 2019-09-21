@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{1C7A90A4-E3B0-4798-ADF8-FABC47F1A3FA}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>XI.Portal.Services.FileMonitor</RootNamespace>
-    <AssemblyName>XI.Portal.Services.FileMonitor</AssemblyName>
+    <RootNamespace>XI.Portal.Services.FileMonitorService</RootNamespace>
+    <AssemblyName>XI.Portal.Services.FileMonitorService</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

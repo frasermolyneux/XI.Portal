@@ -5,10 +5,10 @@ using XI.Portal.Plugins.ChatMonitorPlugin;
 using XI.Portal.Plugins.FuckYouPlugin;
 using XI.Portal.Plugins.LogProxyPlugin;
 using XI.Portal.Plugins.PlayerInfoPlugin;
-using XI.Portal.Services.FileMonitor.Interfaces;
-using XI.Portal.Services.FileMonitor.Parsers;
+using XI.Portal.Services.FileMonitorService.Interfaces;
+using XI.Portal.Services.FileMonitorService.Parsers;
 
-namespace XI.Portal.Services.FileMonitor.Factories
+namespace XI.Portal.Services.FileMonitorService.Factories
 {
     internal class ParserFactory : IParserFactory
     {

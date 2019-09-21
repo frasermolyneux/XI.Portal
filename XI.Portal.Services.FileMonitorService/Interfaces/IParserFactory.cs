@@ -1,6 +1,6 @@
 ﻿using XI.Portal.Library.CommonTypes;
 
-namespace XI.Portal.Services.FileMonitor.Interfaces
+namespace XI.Portal.Services.FileMonitorService.Interfaces
 {
     internal interface IParserFactory
     {
