@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Serilog;
 using XI.Portal.Library.CommonTypes;
 using XI.Portal.Plugins.Events;
@@ -58,7 +59,7 @@ namespace XI.Portal.Services.FileMonitorService.Parsers
             }
             else
             {
-                Logger.Debug($"[{serverId}] {line}");
+                //Logger.Debug("[{serverName}] {line}", serverName, line);
             }
         }
     }
