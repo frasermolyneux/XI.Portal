@@ -13,12 +13,14 @@ namespace XI.Portal.Library.Rcon.Clients
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        public string ServerName { get; set; }
         public string Hostname { get; private set; }
         public int QueryPort { get; private set; }
         public string RconPassword { get; private set; }
 
-        public void Configure(string hostname, int queryPort, string rconPassword)
+        public void Configure(string serverName, string hostname, int queryPort, string rconPassword)
         {
+            ServerName = serverName;
             Hostname = hostname;
             QueryPort = queryPort;
             RconPassword = rconPassword;
@@ -26,49 +28,49 @@ namespace XI.Portal.Library.Rcon.Clients
 
         public virtual string PlayerStatus()
         {
-            logger.Warning("PlayerStatus not currently implemented");
+            logger.Warning("[{serverName}] PlayerStatus not currently implemented", ServerName);
             return string.Empty;
         }
 
         public virtual string KickPlayer(string targetPlayerNum)
         {
-            logger.Warning("KickPlayer not currently implemented");
+            logger.Warning("[{serverName}] KickPlayer not currently implemented", ServerName);
             return string.Empty;
         }
 
         public virtual string BanPlayer(string targetPlayerNum)
         {
-            logger.Warning("BanPlayer not currently implemented");
+            logger.Warning("[{serverName}] BanPlayer not currently implemented", ServerName);
             return string.Empty;
         }
 
         public virtual string RestartServer()
         {
-            logger.Warning("RestartServer not currently implemented");
+            logger.Warning("[{serverName}] RestartServer not currently implemented", ServerName);
             return string.Empty;
         }
 
         public virtual string RestartMap()
         {
-            logger.Warning("RestartMap not currently implemented");
+            logger.Warning("[{serverName}] RestartMap not currently implemented", ServerName);
             return string.Empty;
         }
 
         public virtual string NextMap()
         {
-            logger.Warning("NextMap not currently implemented");
+            logger.Warning("[{serverName}] NextMap not currently implemented", ServerName);
             return string.Empty;
         }
 
         public virtual string MapRotation()
         {
-            logger.Warning("MapRotation not currently implemented");
+            logger.Warning("[{serverName}] MapRotation not currently implemented", ServerName);
             return string.Empty;
         }
 
         public virtual string Say(string message)
         {
-            logger.Warning("Say not currently implemented");
+            logger.Warning("[{serverName}] Say not currently implemented", ServerName);
             return string.Empty;
         }
     }

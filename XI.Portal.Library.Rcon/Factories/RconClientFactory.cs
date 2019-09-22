@@ -15,7 +15,7 @@ namespace XI.Portal.Library.Rcon.Factories
             this.logger = logger;
         }
 
-        public IRconClient CreateInstance(GameType gameType, string hostname, int queryPort, string rconPassword)
+        public IRconClient CreateInstance(GameType gameType, string serverName, string hostname, int queryPort, string rconPassword)
         {
             IRconClient rconClient;
 
@@ -37,7 +37,7 @@ namespace XI.Portal.Library.Rcon.Factories
                     throw new Exception("Unsupported game type");
             }
 
-            rconClient.Configure(hostname, queryPort, rconPassword);
+            rconClient.Configure(serverName, hostname, queryPort, rconPassword);
             return rconClient;
         }
     }

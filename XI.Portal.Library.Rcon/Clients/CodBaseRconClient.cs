@@ -57,6 +57,8 @@ namespace XI.Portal.Library.Rcon.Clients
 
         private string ExecuteCommand(string rconCommand)
         {
+            logger.Information("[{serverName}] Executing {command} command against server", ServerName, rconCommand);
+
             try
             {
                 var client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)
@@ -101,7 +103,7 @@ namespace XI.Portal.Library.Rcon.Clients
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "Failed to execute rcon command against {server}", Hostname);
+                logger.Error(ex, "[{serverName}] Failed to execute rcon command", ServerName);
                 throw;
             }
             

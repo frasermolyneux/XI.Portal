@@ -20,7 +20,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
 
         public override void GetMapRotation()
         {
-            var rconClient = rconClientFactory.CreateInstance(GameType.CallOfDuty4, Hostname, Port, RconPassword);
+            var rconClient = rconClientFactory.CreateInstance(GameType.CallOfDuty4, ServerName, Hostname, Port, RconPassword);
 
             try
             {
@@ -38,7 +38,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
 
         public override void GetStatus()
         {
-            var rconClient = rconClientFactory.CreateInstance(GameType.CallOfDuty4, Hostname, Port, RconPassword);
+            var rconClient = rconClientFactory.CreateInstance(GameType.CallOfDuty4, ServerName, Hostname, Port, RconPassword);
 
             try
             {

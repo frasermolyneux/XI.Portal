@@ -39,7 +39,7 @@ namespace XI.Portal.Plugins.FuckYouPlugin
             using (var context = contextProvider.GetContext())
             {
                 var server = context.GameServers.Single(s => s.ServerId == eventArgs.ServerId);
-                var rconClient = rconClientFactory.CreateInstance(eventArgs.GameType, server.Hostname, server.QueryPort, server.RconPassword);
+                var rconClient = rconClientFactory.CreateInstance(eventArgs.GameType, eventArgs.ServerName, server.Hostname, server.QueryPort, server.RconPassword);
                 rconClient.Say(responseMessage);
 
                 logger.Information("[{serverName}] FuckYou: {response}", eventArgs.ServerName, responseMessage);
