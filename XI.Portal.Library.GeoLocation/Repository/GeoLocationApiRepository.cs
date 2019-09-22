@@ -32,15 +32,14 @@ namespace XI.Portal.Library.GeoLocation.Repository
             try
             {
                 var locationResult = await Policy.Handle<Exception>()
-                    .WaitAndRetry(GetRetryTimeSpans(), (result, timeSpan, retryCount, acontext) => { logger.Warning("Failed to get location from GeoLocationApi for {address} - retry count: {count)", address, retryCount); })
-                    .Execute(() => GetLocationDto(address, encodedAddress));
+                    .WaitAndRetryAsync(GetRetryTimeSpans(), (result, timeSpan, retryCount, acontext) => { logger.Warning("Failed to get location for {address} - retry count: {count)", address, retryCount); })
+                    .ExecuteAsync(async () => await GetLocationDto(address, encodedAddress));
 
                 return locationResult;
             }
             catch (Exception ex)
             {
                 logger.Error(ex, "Failed to get location for address {address}", address);
-
                 return new LocationDto();
             }
         }
