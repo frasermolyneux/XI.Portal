@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Serilog;
@@ -41,48 +40,48 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
 
         private void Parser_PlayerConnected(object sender, EventArgs e)
         {
-            var onPlayerConnectedEventArgs = (OnPlayerConnectedEventArgs) e;
+            var eventArgs = (OnPlayerConnectedEventArgs) e;
 
-            logger.Information($"[{onPlayerConnectedEventArgs.ServerId}] Player {onPlayerConnectedEventArgs.Name} connected with GUID {onPlayerConnectedEventArgs.Guid} at {DateTime.UtcNow.ToShortTimeString()}");
+            logger.Information("[{serverName}] Player {name} connected with GUID {guid} at {timestamp}", eventArgs.ServerName, eventArgs.Name, eventArgs.Guid, DateTime.UtcNow);
 
-            EnsurePlayerExists(onPlayerConnectedEventArgs.GameType, onPlayerConnectedEventArgs.Guid, onPlayerConnectedEventArgs.Name);
+            EnsurePlayerExists(eventArgs.GameType, eventArgs.Guid, eventArgs.Name, eventArgs.ServerName);
         }
 
         private void Parser_PlayerDisconnected(object sender, EventArgs e)
         {
-            var onPlayerDisconnectedEventArgs = (OnPlayerDisconnectedEventArgs) e;
+            var eventArgs = (OnPlayerDisconnectedEventArgs) e;
 
-            logger.Information($"[{onPlayerDisconnectedEventArgs.ServerId}] Player {onPlayerDisconnectedEventArgs.Name} disconnected with GUID {onPlayerDisconnectedEventArgs.Guid} at {DateTime.UtcNow.ToShortTimeString()}");
+            logger.Information("[{serverName}] Player {name} disconnected with GUID {guid} at {timestamp}", eventArgs.ServerName, eventArgs.Name, eventArgs.Guid, DateTime.UtcNow);
 
-            EnsurePlayerExists(onPlayerDisconnectedEventArgs.GameType, onPlayerDisconnectedEventArgs.Guid, onPlayerDisconnectedEventArgs.Name);
+            EnsurePlayerExists(eventArgs.GameType, eventArgs.Guid, eventArgs.Name, eventArgs.ServerName);
         }
 
         private void Events_StatusRconResponse(object sender, EventArgs e)
         {
-            var onStatusRconResponseEventArgs = (OnStatusRconResponse) e;
+            var eventArgs = (OnStatusRconResponse) e;
 
-            logger.Debug(onStatusRconResponseEventArgs.ResponseData);
+            logger.Debug(eventArgs.ResponseData);
 
-            switch (onStatusRconResponseEventArgs.GameType)
+            switch (eventArgs.GameType)
             {
                 case GameType.CallOfDuty2:
                 case GameType.CallOfDuty4:
                 case GameType.CallOfDuty5:
-                    HandleCodStatusRconResponse(onStatusRconResponseEventArgs);
+                    HandleCodStatusRconResponse(eventArgs);
                     break;
                 case GameType.Insurgency:
-                    HandleInsurgencyStatusRconResponse(onStatusRconResponseEventArgs);
+                    HandleInsurgencyStatusRconResponse(eventArgs);
                     break;
                 default:
-                    logger.Warning("Invalid game type for Status Rcon Response");
+                    logger.Warning("[{serverName}] Invalid game type {gameType} for Status Rcon Response", eventArgs.ServerName, eventArgs.GameType);
                     break;
             }
         }
 
-        private void HandleCodStatusRconResponse(OnStatusRconResponse onStatusRconResponseEventArgs)
+        private void HandleCodStatusRconResponse(OnStatusRconResponse eventArgs)
         {
             Regex regex;
-            switch (onStatusRconResponseEventArgs.GameType)
+            switch (eventArgs.GameType)
             {
                 case GameType.CallOfDuty2:
                     regex = new Regex("^\\s*([0-9]+)\\s+([0-9-]+)\\s+([0-9]+)\\s+([0-9]+)\\s+(.*?)\\s+([0-9]+?)\\s*((?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])):?(-?[0-9]{1,5})\\s*(-?[0-9]{1,5})\\s+([0-9]+)$");
@@ -94,10 +93,11 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                     regex = new Regex("^\\s*([0-9]+)\\s+([0-9-]+)\\s+([0-9]+)\\s+([0-9]+)\\s+(.*?)\\s+([0-9]+?)\\s*((?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])):?(-?[0-9]{1,5})\\s*(-?[0-9]{1,5})\\s+([0-9]+)$");
                     break;
                 default:
-                    throw new Exception("Game Type is not supported");
+                    logger.Error("[{serverName}] Invalid game type {gameType} for Status Rcon Response", eventArgs.ServerName, eventArgs.GameType);
+                    throw new Exception($"Invalid game type {eventArgs.GameType} for Status Rcon Response");
             }
 
-            var lines = onStatusRconResponseEventArgs.ResponseData.Split('\n').Where(line => !string.IsNullOrWhiteSpace(line)).ToList();
+            var lines = eventArgs.ResponseData.Split('\n').Where(line => !string.IsNullOrWhiteSpace(line)).ToList();
 
             using (var context = contextProvider.GetContext())
             {
@@ -113,30 +113,30 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                     var name = match.Groups[5].ToString();
                     var ipAddress = match.Groups[7].ToString();
 
-                    if (onStatusRconResponseEventArgs.MonitorPlayers) EnsurePlayerExists(onStatusRconResponseEventArgs.GameType, guid, name);
+                    if (eventArgs.MonitorPlayers) EnsurePlayerExists(eventArgs.GameType, guid, name, eventArgs.ServerName);
 
-                    if (onStatusRconResponseEventArgs.MonitorPlayerIPs)
+                    if (eventArgs.MonitorPlayerIPs)
                     {
-                        var player = context.Players.SingleOrDefault(p => p.Guid == guid && p.GameType == onStatusRconResponseEventArgs.GameType);
+                        var player = context.Players.SingleOrDefault(p => p.Guid == guid && p.GameType == eventArgs.GameType);
 
                         if (player == null)
                             continue;
 
-                        UpdatePlayerIpAddress(context, ipAddress, player);
+                        UpdatePlayerIpAddress(context, ipAddress, player, eventArgs.ServerName);
                     }
 
-                    UpdateLivePlayerIpAddress(context, ipAddress);
+                    UpdateLivePlayerIpAddress(context, ipAddress, eventArgs.ServerName);
                 }
 
                 CleanLivePlayerIps(context);
             }
         }
 
-        private void HandleInsurgencyStatusRconResponse(OnStatusRconResponse onStatusRconResponseEventArgs)
+        private void HandleInsurgencyStatusRconResponse(OnStatusRconResponse eventArgs)
         {
             var regex = new Regex("^\\#\\s([0-9]+)\\s([0-9]+)\\s\\\"(.+)\\\"\\s([STEAM0-9:_]+)\\s+([0-9:]+)\\s([0-9]+)\\s([0-9]+)\\s([a-z]+)\\s([0-9]+)\\s((?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])):?(-?[0-9]{1,5})");
 
-            var lines = onStatusRconResponseEventArgs.ResponseData.Split('\n').Where(line => !string.IsNullOrWhiteSpace(line)).ToList();
+            var lines = eventArgs.ResponseData.Split('\n').Where(line => !string.IsNullOrWhiteSpace(line)).ToList();
 
             using (var context = contextProvider.GetContext())
             {
@@ -152,19 +152,19 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                     var guid = match.Groups[4].ToString();
                     var ipAddress = match.Groups[10].ToString();
 
-                    if (onStatusRconResponseEventArgs.MonitorPlayers) EnsurePlayerExists(onStatusRconResponseEventArgs.GameType, guid, name);
+                    if (eventArgs.MonitorPlayers) EnsurePlayerExists(eventArgs.GameType, guid, name, eventArgs.ServerName);
 
-                    if (onStatusRconResponseEventArgs.MonitorPlayerIPs)
+                    if (eventArgs.MonitorPlayerIPs)
                     {
-                        var player = context.Players.SingleOrDefault(p => p.Guid == guid && p.GameType == onStatusRconResponseEventArgs.GameType);
+                        var player = context.Players.SingleOrDefault(p => p.Guid == guid && p.GameType == eventArgs.GameType);
 
                         if (player == null)
                             continue;
 
-                        UpdatePlayerIpAddress(context, ipAddress, player);
+                        UpdatePlayerIpAddress(context, ipAddress, player, eventArgs.ServerName);
                     }
 
-                    UpdateLivePlayerIpAddress(context, ipAddress);
+                    UpdateLivePlayerIpAddress(context, ipAddress, eventArgs.ServerName);
                 }
 
                 CleanLivePlayerIps(context);
@@ -180,10 +180,13 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
             ipAddressCaching.ReduceCache();
         }
 
-        private void EnsurePlayerExists(GameType gameType, string guid, string name)
+        private void EnsurePlayerExists(GameType gameType, string guid, string name, string serverName)
         {
             if (guid == "allies" || guid == "axis")
-                throw new Exception("Guid cannot be allies or axis - invalid");
+            {
+                logger.Warning("[{serverName}] Cannot have guid {guid} for {gameType}", serverName, guid, gameType);
+                return;
+            }
 
             using (var context = contextProvider.GetContext())
             {
@@ -201,7 +204,7 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                     };
 
                     context.Players.Add(playerToAdd);
-                    databaseLogger.CreateSystemLogAsync("Info", $"New player created for {gameType} with username {name} and guid {guid}");
+                    logger.Information("[{serverName}] New player {name} with {guid} created under {gameType}", serverName, name, guid, gameType);
                 }
                 else
                 {
@@ -224,7 +227,7 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                         playerAlias.LastUsed = DateTime.UtcNow;
                     }
 
-                    if (player.Username != name) databaseLogger.CreateSystemLogAsync("Info", $"New name {name} recorded for {player.PlayerId}");
+                    if (player.Username != name) logger.Information("[{serverName}] New name {name} recorded for guid {guid} under {gameType}", serverName, name, guid, gameType);
 
                     player.LastSeen = DateTime.UtcNow;
                     player.Username = name;
@@ -234,13 +237,13 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
             }
         }
 
-        private void UpdateLivePlayerIpAddress(PortalContext context, string ipAddress)
+        private void UpdateLivePlayerIpAddress(PortalContext context, string ipAddress, string serverName)
         {
             try
             {
                 if (ipAddressCaching.IpAddressInCache(ipAddress))
                 {
-                    logger.Debug("Player address {ipAddress} already exists in local cache", ipAddress);
+                    logger.Debug("[{serverName}] Player address {ipAddress} already exists in local cache", serverName, ipAddress);
                     return;
                 }
 
@@ -272,11 +275,11 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "Failed to get location for {ipAddress}", ipAddress);
+                logger.Error(ex, "[{serverName}] Failed to get location for {ipAddress}", serverName, ipAddress);
             }
         }
 
-        private void UpdatePlayerIpAddress(PortalContext context, string ipAddress, Player2 player)
+        private void UpdatePlayerIpAddress(PortalContext context, string ipAddress, Player2 player, string serverName)
         {
             var playerIpAddress = context.PlayerIpAddresses.SingleOrDefault(pip => pip.Player.PlayerId == player.PlayerId && pip.Address == ipAddress);
 
@@ -298,7 +301,7 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
             }
 
             if (player.IpAddress != ipAddress)
-                logger.Information("New IpAddress {ipAddress} recorded for {username} under {game}", ipAddress, player.Username, player.GameType);
+                logger.Information("[{serverName}] New ipAddress {ipAddress} recorded for {name} under {gameType}", serverName, ipAddress, player.Username, player.GameType);
 
             player.LastSeen = DateTime.UtcNow;
             player.IpAddress = ipAddress;

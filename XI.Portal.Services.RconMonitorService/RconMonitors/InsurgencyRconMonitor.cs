@@ -30,7 +30,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"[{ServerId}] Failed to retrieve server status");
+                logger.Error(ex, "[{serverName}] Failed to retrieve map rotation", ServerName);
             }
 
             base.GetMapRotation();
@@ -48,7 +48,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"[{ServerId}] Failed to retrieve server status");
+                logger.Error(ex, "[{serverName}] Failed to retrieve server status", ServerName);
             }
 
             base.GetStatus();

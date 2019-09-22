@@ -22,11 +22,11 @@ namespace XI.Portal.Plugins.LogProxyPlugin
 
         private void Parser_LineRead(object sender, EventArgs e)
         {
-            var lineReadEventArgs = (LineReadEventArgs) e;
+            var eventArgs = (LineReadEventArgs) e;
 
-            if (lineReadEventArgs.LineData.ToLower().Contains("!fu")) return; // block !fu command from being proxied, will need to do this with any additional commands
+            if (eventArgs.LineData.ToLower().Contains("!fu")) return; // block !fu command from being proxied, will need to do this with any additional commands
 
-            var localLogFilePath = $"{statsLogProxyPluginConfiguration.StatsLogBaseDirectory}\\{lineReadEventArgs.ServerId}\\games_mp.log";
+            var localLogFilePath = $"{statsLogProxyPluginConfiguration.StatsLogBaseDirectory}\\{eventArgs.ServerId}\\games_mp.log";
 
             Directory.CreateDirectory(Path.GetDirectoryName(localLogFilePath));
 
@@ -36,7 +36,7 @@ namespace XI.Portal.Plugins.LogProxyPlugin
                 file.Close();
             }
 
-            File.AppendAllText(localLogFilePath, $"{lineReadEventArgs.LineData}\n");
+            File.AppendAllText(localLogFilePath, $"{eventArgs.LineData}\n");
         }
     }
 }

@@ -28,29 +28,29 @@ namespace XI.Portal.Plugins.MapRotationPlugin
 
         private void Events_MapRotationRconResponse(object sender, EventArgs e)
         {
-            var mapRotationRconResponse = (OnMapRotationRconResponse)e;
+            var eventArgs = (OnMapRotationRconResponse)e;
 
-            logger.Debug(mapRotationRconResponse.ResponseData);
+            logger.Debug(eventArgs.ResponseData);
 
-            switch (mapRotationRconResponse.GameType)
+            switch (eventArgs.GameType)
             {
                 case GameType.CallOfDuty2:
                 case GameType.CallOfDuty4:
                 case GameType.CallOfDuty5:
-                    HandleCodMapRotationResponse(mapRotationRconResponse);
+                    HandleCodMapRotationResponse(eventArgs);
                     break;
                 case GameType.Insurgency:
-                    HandleSourceMapRotationResponse(mapRotationRconResponse);
+                    HandleSourceMapRotationResponse(eventArgs);
                     break;
             }
         }
 
-        private void HandleSourceMapRotationResponse(OnMapRotationRconResponse mapRotationRconResponse)
+        private void HandleSourceMapRotationResponse(OnMapRotationRconResponse eventArgs)
         {
             
         }
 
-        private void HandleCodMapRotationResponse(OnMapRotationRconResponse mapRotationRconResponse)
+        private void HandleCodMapRotationResponse(OnMapRotationRconResponse eventArgs)
         {
             // gametype ftag map mp_cgc_bog gametype ftag map mp_cgc_citystreets gametype ftag map mp_strike gametype ftag map mp_carentan gametype ftag
             // map mp_coldfront gametype ftag map mp_vac_2 gametype ftag map mp_cgc_crossfire gametype ftag map mp_overgrown gametype ftag map mp_crash gametype ftag
@@ -62,7 +62,7 @@ namespace XI.Portal.Plugins.MapRotationPlugin
             //map mp_makin map mp_outskirts map mp_roundhouse map mp_seelow map mp_suburban map mp_makin_day map mp_kneedeep map mp_nachtfeuer map mp_subway map mp_docks
             //map mp_kwai map mp_stalingrad map mp_drum map mp_bgate map mp_vodka"
 
-            var line = mapRotationRconResponse.ResponseData;
+            var line = eventArgs.ResponseData;
 
             line = line.Replace("\"sv_mapRotation\" is: \"", "");
             line = line.Replace("^7\" default: \"^7\"", "");
@@ -74,7 +74,7 @@ namespace XI.Portal.Plugins.MapRotationPlugin
 
             using (var context = contextProvider.GetContext())
             {
-                var gameServer = context.GameServers.Single(s => s.ServerId == mapRotationRconResponse.ServerId);
+                var gameServer = context.GameServers.Single(s => s.ServerId == eventArgs.ServerId);
                 var currentMapRotation = context.MapRotations.Where(mr => mr.GameServer.ServerId == gameServer.ServerId);
                 context.MapRotations.RemoveRange(currentMapRotation);
 
@@ -88,13 +88,13 @@ namespace XI.Portal.Plugins.MapRotationPlugin
                         var gameMode = subParts.First().Trim();
                         var mapName = subParts.Skip(1).Single().Trim();
 
-                        logger.Debug("Processing {map} with {mode} under {gameType}", mapName, gameMode, mapRotationRconResponse.GameType);
+                        logger.Debug("[{serverName}] Processing {map} with {mode} under {gameType}", eventArgs.ServerName, mapName, gameMode, eventArgs.GameType);
 
-                        var map = GetMapAndEnsureExists(context, gameServer.GameType, mapName);
+                        var map = GetMapAndEnsureExists(context, gameServer.GameType, mapName, eventArgs.ServerName);
 
                         if (map == null)
                         {
-                            logger.Warning("[RconMonitor] Could not find map {mapName} to add to rotation for {gameType}", mapName, gameServer.GameType);
+                            logger.Warning("[{serverName}] Could not find map {mapName} to add to rotation for {gameType}", eventArgs.ServerName, mapName, gameServer.GameType);
                             continue;
                         }
 
@@ -112,19 +112,19 @@ namespace XI.Portal.Plugins.MapRotationPlugin
                     var parts = line.Split(new[] { "map" }, StringSplitOptions.RemoveEmptyEntries);
                     var gameMode = parts.First().Trim();
 
-                    logger.Debug("Game mode is {gameMode}", gameMode);
+                    logger.Debug("[{serverName}] Game mode is {gameMode}", eventArgs.ServerName, gameMode);
 
                     foreach (var part in parts.Skip(1))
                     {
                         var mapName = part.Trim();
 
-                        logger.Debug("Processing {map} with {mode} under {gameType}", mapName, gameMode, mapRotationRconResponse.GameType);
+                        logger.Debug("[{serverName}] Processing {map} with {mode} under {gameType}", eventArgs.ServerName, mapName, gameMode, eventArgs.GameType);
 
-                        var map = GetMapAndEnsureExists(context, gameServer.GameType, mapName);
+                        var map = GetMapAndEnsureExists(context, gameServer.GameType, mapName, eventArgs.ServerName);
 
                         if (map == null)
                         {
-                            logger.Warning("[RconMonitor] Could not find map {mapName} to add to rotation for {gameType}", mapName, gameServer.GameType);
+                            logger.Warning("[{serverName}] Could not find map {mapName} to add to rotation for {gameType}", eventArgs.ServerName, mapName, gameServer.GameType);
                             continue;
                         }
 
@@ -140,11 +140,11 @@ namespace XI.Portal.Plugins.MapRotationPlugin
                 context.MapRotations.AddRange(newMapRotation);
                 context.SaveChanges();
 
-                logger.Information("[RconMonitor] Updated map rotation for {serverId} with {mapCount} maps", mapRotationRconResponse.ServerId, newMapRotation.Count);
+                logger.Information("[{serverName}] Updated map rotation with {mapCount} maps", eventArgs.ServerName, newMapRotation.Count);
             }
         }
 
-        private Map GetMapAndEnsureExists(PortalContext context, GameType gameType, string mapName)
+        private Map GetMapAndEnsureExists(PortalContext context, GameType gameType, string mapName, string serverName)
         {
             try
             {
@@ -152,7 +152,7 @@ namespace XI.Portal.Plugins.MapRotationPlugin
 
                 if (map == null)
                 {
-                    logger.Information($"Creating map entry in database for {mapName} under {gameType}");
+                    logger.Information("[{serverName}] Creating map entry in database for {mapName} under {gameType}", serverName, mapName, gameType);
 
                     context.Maps.Add(new Map()
                     {
@@ -169,7 +169,7 @@ namespace XI.Portal.Plugins.MapRotationPlugin
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "Failed to process {map} under {game}", mapName, gameType);
+                logger.Error(ex, "[{serverName}] Failed to process {map} under {game}", serverName, mapName, gameType);
                 throw;
             }
         }

@@ -109,20 +109,20 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"[{ServerId}] Top level error monitoring file");
+                logger.Error(ex, "[{serverName}] Top level error monitoring file", ServerName);
             }
         }
 
         public virtual void GetMapRotation()
         {
             LastMapRotation = DateTime.UtcNow;
-            logger.Information($"[{ServerId}] Last Map Rotation set to {LastMapRotation}");
+            logger.Information("[{serverName}] Last Map Rotation set to {LastMapRotation}", ServerName, LastMapRotation);
         }
 
         public virtual void GetStatus()
         {
             LastStatus = DateTime.UtcNow;
-            logger.Information($"[{ServerId}] Last Status set to {LastStatus}");
+            logger.Information("[{serverName}] Last Status set to {LastStatus}", ServerName, LastStatus);
         }
     }
 }
