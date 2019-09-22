@@ -29,7 +29,7 @@ namespace XI.Portal.Services.FileMonitorService.Parsers
 
                 OnPlayerConnected(new OnPlayerConnectedEventArgs(serverId, serverName, gameType, guid, name));
             }
-            else if (line.StartsWith("L;"))
+            else if (line.StartsWith("Q;"))
             {
                 var parts = line.Split(';');
                 var guid = parts[1];
