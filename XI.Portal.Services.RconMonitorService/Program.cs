@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using System;
+using Serilog;
 using Topshelf;
 using Topshelf.Unity;
 using Unity;
