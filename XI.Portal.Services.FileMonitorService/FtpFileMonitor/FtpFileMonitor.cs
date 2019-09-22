@@ -58,7 +58,7 @@ namespace XI.Portal.Services.FileMonitorService.FtpFileMonitor
                 var lastLoop = DateTime.MinValue;
 
                 BytesRead = GetFileSize(FtpUsername, FtpPassword, RequestPath);
-                logger.Information($"[{ServerId}] Setting bytes read to {BytesRead}");
+                logger.Information("[{serverName}] Setting bytes read to {bytesRead}", ServerName, BytesRead);
 
                 while (!CancellationTokenSource.IsCancellationRequested)
                 {
@@ -108,7 +108,7 @@ namespace XI.Portal.Services.FileMonitorService.FtpFileMonitor
                     }
                     catch (Exception ex)
                     {
-                        logger.Error(ex, $"[{ServerId}] Failed monitoring remote file");
+                        logger.Error(ex, "[{serverName}] Failed monitoring remote file", ServerName);
                     }
 
                     lastLoop = DateTime.UtcNow;
@@ -116,7 +116,7 @@ namespace XI.Portal.Services.FileMonitorService.FtpFileMonitor
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"[{ServerId}] Top level error monitoring file");
+                logger.Error(ex, "[{serverName}] Top level error monitoring file", ServerName);
             }
         }
 
