@@ -298,7 +298,7 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
             }
 
             if (player.IpAddress != ipAddress)
-                logger.Information("New IpAddress {ipAddress} recorded for {PlayerId} ({Username})", ipAddress, player.PlayerId, player.Username);
+                logger.Information("New IpAddress {ipAddress} recorded for {username} under {game}", ipAddress, player.Username, player.GameType);
 
             player.LastSeen = DateTime.UtcNow;
             player.IpAddress = ipAddress;
