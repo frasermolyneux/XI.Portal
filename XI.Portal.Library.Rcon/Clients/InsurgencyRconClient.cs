@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using Serilog;
 using XI.Portal.Library.Rcon.Models;
@@ -145,10 +146,18 @@ namespace XI.Portal.Library.Rcon.Clients
                 }
                 else
                 {
-                    var returnPacket = new RconPacket();
-                    returnPacket.ParseFromBytes(state.Data, this);
+                    try
+                    {
+                        var returnPacket = new RconPacket();
+                        returnPacket.ParseFromBytes(state.Data, this);
 
-                    ProcessResponse(returnPacket);
+                        ProcessResponse(returnPacket);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error(ex, "Failed parsing from bytes");
+                        logger.Error(Encoding.UTF8.GetString(state.Data));
+                    }
 
                     StartGetNewPacket();
                 }
