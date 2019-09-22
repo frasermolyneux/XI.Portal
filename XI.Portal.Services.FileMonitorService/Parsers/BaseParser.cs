@@ -19,6 +19,7 @@ namespace XI.Portal.Services.FileMonitorService.Parsers
         {
         }
 
+#pragma warning disable 67
         public event EventHandler LineRead;
         public event EventHandler PlayerConnected;
         public event EventHandler PlayerDisconnected;
@@ -31,6 +32,8 @@ namespace XI.Portal.Services.FileMonitorService.Parsers
         public event EventHandler Damage;
         public event EventHandler MapRotationRconResponse;
         public event EventHandler StatusRconResponse;
+#pragma warning restore 67
+
 
         protected virtual void OnLineRead(LineReadEventArgs eventArgs)
         {

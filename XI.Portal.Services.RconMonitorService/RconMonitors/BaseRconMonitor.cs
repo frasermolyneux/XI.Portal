@@ -34,6 +34,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
 
         private CancellationTokenSource CancellationTokenSource { get; set; }
 
+#pragma warning disable 67
         public event EventHandler LineRead;
         public event EventHandler PlayerConnected;
         public event EventHandler PlayerDisconnected;
@@ -46,6 +47,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
         public event EventHandler Damage;
         public event EventHandler MapRotationRconResponse;
         public event EventHandler StatusRconResponse;
+#pragma warning restore 67
 
         public void Configure(Guid serverId, string serverName, GameType gameType, string hostname, int port, string rconPassword, bool monitorMapRotation, bool monitorPlayers, bool monitorPlayerIPs, CancellationTokenSource cancellationTokenSource)
         {
