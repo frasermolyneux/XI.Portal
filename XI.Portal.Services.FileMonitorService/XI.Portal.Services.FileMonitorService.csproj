@@ -127,6 +127,10 @@
       <Project>{48248EAE-811C-4361-9051-3EB705C50C9C}</Project>
       <Name>XI.Portal.Library.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Library.GeoLocation\XI.Portal.Library.GeoLocation.csproj">
+      <Project>{f13a754a-6bac-4e7e-ae23-0d513f64ba69}</Project>
+      <Name>XI.Portal.Library.GeoLocation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.Logging\XI.Portal.Library.Logging.csproj">
       <Project>{38c09894-2c92-4517-9332-35415375e62a}</Project>
       <Name>XI.Portal.Library.Logging</Name>
