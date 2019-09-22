@@ -25,7 +25,7 @@ namespace XI.Portal.Services.RconMonitorService.Factories
             this.playerInfoPlugin = playerInfoPlugin ?? throw new ArgumentNullException(nameof(playerInfoPlugin));
         }
 
-        public IRconMonitor CreateInstance(GameType gameType, Guid serverId, string hostname, int port, string rconPassword, bool monitorMapRotation, bool monitorPlayers, bool monitorPlayerIPs, CancellationTokenSource cancellationTokenSource)
+        public IRconMonitor CreateInstance(GameType gameType, Guid serverId, string serverName, string hostname, int port, string rconPassword, bool monitorMapRotation, bool monitorPlayers, bool monitorPlayerIPs, CancellationTokenSource cancellationTokenSource)
         {
             IRconMonitor rconMonitor;
             switch (gameType)
@@ -46,7 +46,7 @@ namespace XI.Portal.Services.RconMonitorService.Factories
                     throw new Exception("Game type is not supported by the Rcon Monitor");
             }
 
-            rconMonitor.Configure(serverId, gameType, hostname, port, rconPassword, monitorMapRotation, monitorPlayers, monitorPlayerIPs, cancellationTokenSource);
+            rconMonitor.Configure(serverId, serverName, gameType, hostname, port, rconPassword, monitorMapRotation, monitorPlayers, monitorPlayerIPs, cancellationTokenSource);
             mapRotationPlugin.RegisterEventHandlers(rconMonitor);
             playerInfoPlugin.RegisterEventHandlers(rconMonitor);
 

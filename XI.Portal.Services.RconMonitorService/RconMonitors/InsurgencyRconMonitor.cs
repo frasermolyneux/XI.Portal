@@ -26,7 +26,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
             {
                 var commandResponse = rconClient.MapRotation();
 
-                OnMapRotationRconResponse(new OnMapRotationRconResponse(ServerId, GameType, commandResponse));
+                OnMapRotationRconResponse(new OnMapRotationRconResponse(ServerId, ServerName, GameType, commandResponse));
             }
             catch (Exception ex)
             {
@@ -44,7 +44,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
             {
                 var commandResponse = rconClient.PlayerStatus();
 
-                OnStatusRconResponse(new OnStatusRconResponse(ServerId, GameType, commandResponse, MonitorPlayers, MonitorPlayerIPs));
+                OnStatusRconResponse(new OnStatusRconResponse(ServerId, ServerName, GameType, commandResponse, MonitorPlayers, MonitorPlayerIPs));
             }
             catch (Exception ex)
             {

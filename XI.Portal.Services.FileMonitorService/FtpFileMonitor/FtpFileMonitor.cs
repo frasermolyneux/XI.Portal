@@ -23,18 +23,20 @@ namespace XI.Portal.Services.FileMonitorService.FtpFileMonitor
         private string FtpUsername { get; set; }
         private string FtpPassword { get; set; }
         private Guid ServerId { get; set; }
+        public string ServerName { get; set; }
         private GameType GameType { get; set; }
 
         private CancellationTokenSource CancellationTokenSource { get; set; }
 
         private long BytesRead { get; set; }
 
-        public void Configure(string requestPath, string ftpUsername, string ftpPassword, Guid gameServerId, GameType gameType, CancellationTokenSource cancellationTokenSource)
+        public void Configure(string requestPath, string ftpUsername, string ftpPassword, Guid gameServerId, string serverName, GameType gameType, CancellationTokenSource cancellationTokenSource)
         {
             RequestPath = requestPath;
             FtpUsername = ftpUsername;
             FtpPassword = ftpPassword;
             ServerId = gameServerId;
+            ServerName = serverName;
             GameType = gameType;
             CancellationTokenSource = cancellationTokenSource;
 
@@ -93,7 +95,7 @@ namespace XI.Portal.Services.FileMonitorService.FtpFileMonitor
                                     {
                                         BytesRead += byteList.Count;
 
-                                        var lineReadEventArgs = new LineReadEventArgs(ServerId, GameType, Encoding.UTF8.GetString(byteList.ToArray()).TrimEnd('\n'));
+                                        var lineReadEventArgs = new LineReadEventArgs(ServerId, ServerName, GameType, Encoding.UTF8.GetString(byteList.ToArray()).TrimEnd('\n'));
 
                                         OnLineRead(lineReadEventArgs);
                                         byteList = new List<byte>();

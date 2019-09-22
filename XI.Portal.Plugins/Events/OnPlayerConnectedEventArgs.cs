@@ -5,7 +5,7 @@ namespace XI.Portal.Plugins.Events
 {
     public class OnPlayerConnectedEventArgs : ServerBaseEventArgs
     {
-        public OnPlayerConnectedEventArgs(Guid serverId, GameType gameType, string guid, string name) : base(serverId, gameType)
+        public OnPlayerConnectedEventArgs(Guid serverId, string serverName, GameType gameType, string guid, string name) : base(serverId, serverName, gameType)
         {
             Guid = guid;
             Name = name;

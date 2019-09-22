@@ -45,6 +45,7 @@ namespace XI.Portal.Services.FileMonitorService
                         fileMonitor.GameServer.FtpUsername,
                         fileMonitor.GameServer.FtpPassword,
                         fileMonitor.GameServer.ServerId,
+                        fileMonitor.GameServer.Title,
                         fileMonitor.GameServer.GameType,
                         cts);
 
@@ -74,7 +75,7 @@ namespace XI.Portal.Services.FileMonitorService
             var eventData = (LineReadEventArgs) e;
 
             var parser = parserFactory.GetParserForGameType(eventData.GameType);
-            parser.ParseLine(eventData.LineData, eventData.ServerId, eventData.GameType);
+            parser.ParseLine(eventData.LineData, eventData.ServerId, eventData.ServerName, eventData.GameType);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace XI.Portal.Plugins.Events
 {
     public class OnTeamKillEventArgs : ServerBaseEventArgs
     {
-        public OnTeamKillEventArgs(Guid serverId, GameType gameType) : base(serverId, gameType)
+        public OnTeamKillEventArgs(Guid serverId, string serverName, GameType gameType) : base(serverId, serverName, gameType)
         {
         }
     }

@@ -20,6 +20,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
         }
 
         public Guid ServerId { get; private set; }
+        public string ServerName { get; private set; }
         public GameType GameType { get; private set; }
         public string Hostname { get; private set; }
         public int Port { get; private set; }
@@ -46,9 +47,10 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
         public event EventHandler MapRotationRconResponse;
         public event EventHandler StatusRconResponse;
 
-        public void Configure(Guid serverId, GameType gameType, string hostname, int port, string rconPassword, bool monitorMapRotation, bool monitorPlayers, bool monitorPlayerIPs, CancellationTokenSource cancellationTokenSource)
+        public void Configure(Guid serverId, string serverName, GameType gameType, string hostname, int port, string rconPassword, bool monitorMapRotation, bool monitorPlayers, bool monitorPlayerIPs, CancellationTokenSource cancellationTokenSource)
         {
             ServerId = serverId;
+            ServerName = serverName;
             GameType = gameType;
             Hostname = hostname;
             Port = port;
