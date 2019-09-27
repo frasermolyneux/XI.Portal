@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using Polly;
 using Serilog;
 
 namespace XI.Portal.Library.Rcon.Clients
@@ -13,6 +15,18 @@ namespace XI.Portal.Library.Rcon.Clients
         public CodBaseRconClient(ILogger logger) : base(logger)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        private static IEnumerable<TimeSpan> GetRetryTimeSpans()
+        {
+            var random = new Random();
+
+            return new[]
+            {
+                TimeSpan.FromSeconds(random.Next(1)),
+                TimeSpan.FromSeconds(random.Next(3)),
+                TimeSpan.FromSeconds(random.Next(5))
+            };
         }
 
         public override string PlayerStatus()
@@ -56,6 +70,15 @@ namespace XI.Portal.Library.Rcon.Clients
         }
 
         private string ExecuteCommand(string rconCommand)
+        {
+            var commandResult = Policy.Handle<Exception>()
+                .WaitAndRetry(GetRetryTimeSpans(), (result, timeSpan, retryCount, acontext) => { logger.Warning("[{serverName}] Failed to execute rcon command - retry count: {count}", ServerName, retryCount); })
+                .Execute(() => ExecuteCommandInternal(rconCommand));
+
+            return commandResult;
+        }
+
+        private string ExecuteCommandInternal(string rconCommand)
         {
             logger.Information("[{serverName}] Executing {command} command against server", ServerName, rconCommand);
 
@@ -106,7 +129,6 @@ namespace XI.Portal.Library.Rcon.Clients
                 logger.Error(ex, "[{serverName}] Failed to execute rcon command", ServerName);
                 throw;
             }
-            
         }
     }
 }

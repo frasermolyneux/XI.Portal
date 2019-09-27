@@ -33,29 +33,37 @@ namespace XI.Portal.Library.Rcon.Clients
         {
             logger.Information("[{serverName}] Executing {command} command against server", ServerName, rconCommand);
 
-            if (!Connected)
+            try
             {
-                logger.Debug("[{serverName}] RconClient is not connected, connecting to {hostname}:{queryPort}", ServerName, Hostname, QueryPort);
-                Connected = Connect(new IPEndPoint(IPAddress.Parse(Hostname), QueryPort), RconPassword);
-                logger.Debug("[{serverName}] The RconClient state is now {state}", ServerName, Connected);
+                if (!Connected)
+                {
+                    logger.Debug("[{serverName}] RconClient is not connected, connecting to {hostname}:{queryPort}", ServerName, Hostname, QueryPort);
+                    Connected = Connect(new IPEndPoint(IPAddress.Parse(Hostname), QueryPort), RconPassword);
+                    logger.Debug("[{serverName}] The RconClient state is now {state}", ServerName, Connected);
+                }
+
+                var packetToSend = new RconPacket
+                {
+                    RequestId = 2,
+                    ServerDataSent = RconPacket.SERVERDATA_sent.SERVERDATA_EXECCOMMAND,
+                    String1 = rconCommand
+                };
+
+                SendRconPacket(packetToSend);
+
+                var timeout = DateTime.UtcNow;
+                while (string.IsNullOrWhiteSpace(Result) && timeout < DateTime.UtcNow.AddSeconds(10))
+                {
+                    Thread.Sleep(100);
+                }
+
+                return Result;
             }
-
-            var packetToSend = new RconPacket
+            catch (Exception ex)
             {
-                RequestId = 2,
-                ServerDataSent = RconPacket.SERVERDATA_sent.SERVERDATA_EXECCOMMAND,
-                String1 = rconCommand
-            };
-
-            SendRconPacket(packetToSend);
-
-            var timeout = DateTime.UtcNow;
-            while (string.IsNullOrWhiteSpace(Result) && timeout < DateTime.UtcNow.AddSeconds(10))
-            {
-                Thread.Sleep(100);
+                logger.Error(ex, "Failed to execute {command} against server", rconCommand);
+                return string.Empty;
             }
-
-            return Result;
         }
 
         public bool Connect(IPEndPoint server, string password)
@@ -146,18 +154,10 @@ namespace XI.Portal.Library.Rcon.Clients
                 }
                 else
                 {
-                    try
-                    {
-                        var returnPacket = new RconPacket();
-                        returnPacket.ParseFromBytes(state.Data, this);
+                    var returnPacket = new RconPacket();
+                    returnPacket.ParseFromBytes(state.Data, this);
 
-                        ProcessResponse(returnPacket);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.Error(ex, "[{serverName}] Failed parsing from bytes", ServerName);
-                        logger.Error(Encoding.UTF8.GetString(state.Data));
-                    }
+                    ProcessResponse(returnPacket);
 
                     StartGetNewPacket();
                 }
