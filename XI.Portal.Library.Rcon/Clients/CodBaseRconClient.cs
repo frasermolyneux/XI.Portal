@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -15,18 +14,6 @@ namespace XI.Portal.Library.Rcon.Clients
         public CodBaseRconClient(ILogger logger) : base(logger)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
-
-        private static IEnumerable<TimeSpan> GetRetryTimeSpans()
-        {
-            var random = new Random();
-
-            return new[]
-            {
-                TimeSpan.FromSeconds(random.Next(1)),
-                TimeSpan.FromSeconds(random.Next(3)),
-                TimeSpan.FromSeconds(random.Next(5))
-            };
         }
 
         public override string PlayerStatus()
@@ -86,8 +73,8 @@ namespace XI.Portal.Library.Rcon.Clients
             {
                 var client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)
                 {
-                    SendTimeout = 30000,
-                    ReceiveTimeout = 30000
+                    SendTimeout = 5000,
+                    ReceiveTimeout = 5000
                 };
                 client.Connect(IPAddress.Parse(Hostname), QueryPort);
 

@@ -114,7 +114,12 @@ namespace XI.Portal.Web.Controllers
                             rconMonitor.GameServer.Title,
                             rconMonitor.GameServer.Hostname,
                             rconMonitor.GameServer.QueryPort,
-                            rconMonitor.GameServer.RconPassword);
+                            rconMonitor.GameServer.RconPassword, 
+                                new List<TimeSpan>
+                                {
+                                    TimeSpan.FromSeconds(1)
+                                }
+                            );
 
                         var commandResult = rconClient.PlayerStatus();
 
