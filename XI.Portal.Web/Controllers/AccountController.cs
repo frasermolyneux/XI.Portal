@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
@@ -19,17 +20,20 @@ namespace XI.Portal.Web.Controllers
     {
         private readonly ApplicationUserManager applicationUserManager;
         private readonly IAuthenticationManager authenticationManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
         public AccountController(
             IContextProvider contextProvider,
             IDatabaseLogger databaseLogger,
             ApplicationUserManager applicationUserManager,
-            IAuthenticationManager authenticationManager) : base(contextProvider, databaseLogger)
+            IAuthenticationManager authenticationManager, 
+            ApplicationRoleManager roleManager) : base(contextProvider, databaseLogger)
         {
             this.applicationUserManager = applicationUserManager ??
                                           throw new ArgumentNullException(nameof(applicationUserManager));
             this.authenticationManager = authenticationManager ??
                                          throw new ArgumentNullException(nameof(authenticationManager));
+            this.roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
         }
 
         [HttpPost]
@@ -160,6 +164,12 @@ namespace XI.Portal.Web.Controllers
         private void AddRolesToUser(ApplicationUser user)
         {
             var primaryGroup = (XtremeIdiotsGroups) Convert.ToInt32(user.XtremeIdiotsPrimaryGroupId);
+
+            if(!roleManager.RoleExists(primaryGroup.ToString()))
+            {
+                roleManager.Create(new IdentityRole() { Name = primaryGroup.ToString() });
+            }
+
             applicationUserManager.AddToRole(user.Id, primaryGroup.ToString());
         }
 

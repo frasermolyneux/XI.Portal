@@ -130,7 +130,8 @@ namespace XI.Portal.Library.Rcon.Clients
             catch (Exception ex)
             {
                 logger.Error(ex, "[{serverName}] Failed receiving data from the server", ServerName);
-                throw;
+                Result = ex.Message;
+                //throw;
             }
         }
 

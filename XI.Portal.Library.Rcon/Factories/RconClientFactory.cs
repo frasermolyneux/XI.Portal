@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Serilog;
 using XI.Portal.Library.CommonTypes;
 using XI.Portal.Library.Rcon.Clients;
@@ -16,6 +17,11 @@ namespace XI.Portal.Library.Rcon.Factories
         }
 
         public IRconClient CreateInstance(GameType gameType, string serverName, string hostname, int queryPort, string rconPassword)
+        {
+            return CreateInstance(gameType, serverName, hostname, queryPort, rconPassword, null);
+        }
+
+        public IRconClient CreateInstance(GameType gameType, string serverName, string hostname, int queryPort, string rconPassword, List<TimeSpan> retryOverride)
         {
             IRconClient rconClient;
 
@@ -37,7 +43,7 @@ namespace XI.Portal.Library.Rcon.Factories
                     throw new Exception("Unsupported game type");
             }
 
-            rconClient.Configure(serverName, hostname, queryPort, rconPassword);
+            rconClient.Configure(serverName, hostname, queryPort, rconPassword, retryOverride);
             return rconClient;
         }
     }

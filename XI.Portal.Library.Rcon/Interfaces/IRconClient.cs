@@ -1,8 +1,11 @@
-﻿namespace XI.Portal.Library.Rcon.Interfaces
+﻿using System;
+using System.Collections.Generic;
+
+namespace XI.Portal.Library.Rcon.Interfaces
 {
     public interface IRconClient
     {
-        void Configure(string serverName, string hostname, int queryPort, string rconPassword);
+        void Configure(string serverName, string hostname, int queryPort, string rconPassword, List<TimeSpan> retryOverride);
         string PlayerStatus();
         string KickPlayer(string targetPlayerNum);
         string BanPlayer(string targetPlayerNum);

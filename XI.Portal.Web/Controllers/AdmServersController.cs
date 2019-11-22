@@ -8,6 +8,7 @@ using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Auth.XtremeIdiots;
 using XI.Portal.Library.Logging;
+using XI.Portal.Library.Rcon.Interfaces;
 using XI.Portal.Web.ViewModels.AdmServers;
 
 namespace XI.Portal.Web.Controllers
@@ -15,10 +16,14 @@ namespace XI.Portal.Web.Controllers
     [Authorize(Roles = XtremeIdiotsRoles.SeniorAdmins)]
     public class AdmServersController : BaseController
     {
+        public IRconClientFactory RconClientFactory { get; }
+
         public AdmServersController(
             IContextProvider contextProvider,
-            IDatabaseLogger databaseLogger) : base(contextProvider, databaseLogger)
+            IDatabaseLogger databaseLogger,
+            IRconClientFactory rconClientFactory) : base(contextProvider, databaseLogger)
         {
+            RconClientFactory = rconClientFactory;
         }
 
         [HttpGet]
@@ -185,6 +190,44 @@ namespace XI.Portal.Web.Controllers
                     $"User has deleted a server: {id}");
 
                 return RedirectToAction("Index");
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> RconStatus(string id)
+        {
+            if (!Guid.TryParse(id, out var idAsGuid))
+                return RedirectToAction("Index");
+
+            using (var context = ContextProvider.GetContext())
+            {
+                var gameServer = await context.GameServers.SingleOrDefaultAsync(s => s.ServerId == idAsGuid);
+
+                if (gameServer == null)
+                    return RedirectToAction("Index");
+
+                var rconClient = RconClientFactory.CreateInstance(
+                    gameServer.GameType,
+                    gameServer.Title,
+                    gameServer.Hostname,
+                    gameServer.QueryPort,
+                    gameServer.RconPassword);
+
+                var rconStatusResultViewModel = new RconStatusResultViewModel()
+                {
+                    GameServer = gameServer
+                };
+
+                try
+                {
+                    rconStatusResultViewModel.Result = rconClient.PlayerStatus();
+                }
+                catch (Exception ex)
+                {
+                    rconStatusResultViewModel.Result = ex.Message;
+                }
+
+                return View(rconStatusResultViewModel);
             }
         }
     }

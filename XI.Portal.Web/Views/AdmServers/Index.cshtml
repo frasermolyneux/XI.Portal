@@ -65,8 +65,9 @@
                                     @Html.DisplayFor(modelItem => item.ShowChatLog)
                                 </td>
                                 <td>
-                                    @Html.ActionLink("Edit", "Edit", new {id = item.ServerId}) |
-                                    @Html.ActionLink("Delete", "Delete", new {id = item.ServerId})
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.ServerId }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.ServerId }) |
+                                    @Html.ActionLink("RconStatus", "RconStatus", new { id = item.ServerId })
                                 </td>
                             </tr>
                         }

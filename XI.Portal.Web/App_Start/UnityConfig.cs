@@ -74,6 +74,8 @@ namespace XI.Portal.Web.Portal
             container.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>();
             container.RegisterType<UserManager<ApplicationUser>>(new HierarchicalLifetimeManager());
 
+            container.RegisterFactory<ApplicationRoleManager>(x => new ApplicationRoleManager(new RoleStore<IdentityRole>(context)));
+
             container.RegisterFactory<IdentityRole>(x => new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context)));
             container.RegisterFactory<IAuthenticationManager>(x => HttpContext.Current.GetOwinContext().Authentication);
         }
