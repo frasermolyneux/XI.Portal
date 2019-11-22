@@ -111,6 +111,7 @@ namespace XI.Portal.Web.Controllers
                     {
                         var rconClient = rconClientFactory.CreateInstance(
                             rconMonitor.GameServer.GameType,
+                            rconMonitor.GameServer.Title,
                             rconMonitor.GameServer.Hostname,
                             rconMonitor.GameServer.QueryPort,
                             rconMonitor.GameServer.RconPassword);

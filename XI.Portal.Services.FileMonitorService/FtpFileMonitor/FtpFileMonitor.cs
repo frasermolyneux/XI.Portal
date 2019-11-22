@@ -23,18 +23,20 @@ namespace XI.Portal.Services.FileMonitorService.FtpFileMonitor
         private string FtpUsername { get; set; }
         private string FtpPassword { get; set; }
         private Guid ServerId { get; set; }
+        public string ServerName { get; set; }
         private GameType GameType { get; set; }
 
         private CancellationTokenSource CancellationTokenSource { get; set; }
 
         private long BytesRead { get; set; }
 
-        public void Configure(string requestPath, string ftpUsername, string ftpPassword, Guid gameServerId, GameType gameType, CancellationTokenSource cancellationTokenSource)
+        public void Configure(string requestPath, string ftpUsername, string ftpPassword, Guid gameServerId, string serverName, GameType gameType, CancellationTokenSource cancellationTokenSource)
         {
             RequestPath = requestPath;
             FtpUsername = ftpUsername;
             FtpPassword = ftpPassword;
             ServerId = gameServerId;
+            ServerName = serverName;
             GameType = gameType;
             CancellationTokenSource = cancellationTokenSource;
 
@@ -56,7 +58,7 @@ namespace XI.Portal.Services.FileMonitorService.FtpFileMonitor
                 var lastLoop = DateTime.MinValue;
 
                 BytesRead = GetFileSize(FtpUsername, FtpPassword, RequestPath);
-                logger.Information($"[{ServerId}] Setting bytes read to {BytesRead}");
+                logger.Information("[{serverName}] Setting bytes read to {bytesRead}", ServerName, BytesRead);
 
                 while (!CancellationTokenSource.IsCancellationRequested)
                 {
@@ -93,7 +95,7 @@ namespace XI.Portal.Services.FileMonitorService.FtpFileMonitor
                                     {
                                         BytesRead += byteList.Count;
 
-                                        var lineReadEventArgs = new LineReadEventArgs(ServerId, GameType, Encoding.UTF8.GetString(byteList.ToArray()).TrimEnd('\n'));
+                                        var lineReadEventArgs = new LineReadEventArgs(ServerId, ServerName, GameType, Encoding.UTF8.GetString(byteList.ToArray()).TrimEnd('\n'));
 
                                         OnLineRead(lineReadEventArgs);
                                         byteList = new List<byte>();
@@ -106,7 +108,7 @@ namespace XI.Portal.Services.FileMonitorService.FtpFileMonitor
                     }
                     catch (Exception ex)
                     {
-                        logger.Error(ex, $"[{ServerId}] Failed monitoring remote file");
+                        logger.Error(ex, "[{serverName}] Failed monitoring remote file", ServerName);
                     }
 
                     lastLoop = DateTime.UtcNow;
@@ -114,7 +116,7 @@ namespace XI.Portal.Services.FileMonitorService.FtpFileMonitor
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"[{ServerId}] Top level error monitoring file");
+                logger.Error(ex, "[{serverName}] Top level error monitoring file", ServerName);
             }
         }
 

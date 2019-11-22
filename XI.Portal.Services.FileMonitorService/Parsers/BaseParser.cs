@@ -15,10 +15,11 @@ namespace XI.Portal.Services.FileMonitorService.Parsers
             Logger = logger;
         }
 
-        public virtual void ParseLine(string line, Guid serverId, GameType gameType)
+        public virtual void ParseLine(string line, Guid serverId, string serverName, GameType gameType)
         {
         }
 
+#pragma warning disable 67
         public event EventHandler LineRead;
         public event EventHandler PlayerConnected;
         public event EventHandler PlayerDisconnected;
@@ -31,6 +32,8 @@ namespace XI.Portal.Services.FileMonitorService.Parsers
         public event EventHandler Damage;
         public event EventHandler MapRotationRconResponse;
         public event EventHandler StatusRconResponse;
+#pragma warning restore 67
+
 
         protected virtual void OnLineRead(LineReadEventArgs eventArgs)
         {

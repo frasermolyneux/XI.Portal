@@ -45,6 +45,9 @@
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Polly, Version=7.0.0.0, Culture=neutral, PublicKeyToken=c8a3ffc3f8f825cc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Polly.7.1.1\lib\netstandard2.0\Polly.dll</HintPath>
+    </Reference>
     <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.2.8.0\lib\net45\Serilog.dll</HintPath>
     </Reference>
@@ -126,6 +129,10 @@
     <ProjectReference Include="..\XI.Portal.Library.Configuration\XI.Portal.Library.Configuration.csproj">
       <Project>{48248EAE-811C-4361-9051-3EB705C50C9C}</Project>
       <Name>XI.Portal.Library.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Library.GeoLocation\XI.Portal.Library.GeoLocation.csproj">
+      <Project>{f13a754a-6bac-4e7e-ae23-0d513f64ba69}</Project>
+      <Name>XI.Portal.Library.GeoLocation</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.Logging\XI.Portal.Library.Logging.csproj">
       <Project>{38c09894-2c92-4517-9332-35415375e62a}</Project>

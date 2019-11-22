@@ -4,6 +4,6 @@ namespace XI.Portal.Library.Rcon.Interfaces
 {
     public interface IRconClientFactory
     {
-        IRconClient CreateInstance(GameType gameType, string hostname, int queryPort, string rconPassword);
+        IRconClient CreateInstance(GameType gameType, string serverName, string hostname, int queryPort, string rconPassword);
     }
 }

@@ -26,19 +26,19 @@ namespace XI.Portal.Plugins.ChatMonitorPlugin
 
         private void Parser_ChatMessage(object sender, EventArgs e)
         {
-            var onChatMessageEventArgs = (OnChatMessageEventArgs) e;
+            var eventArgs = (OnChatMessageEventArgs) e;
 
-            logger.Information($"[{onChatMessageEventArgs.ServerId}] [{onChatMessageEventArgs.ChatType}] {onChatMessageEventArgs.Name}: {onChatMessageEventArgs.Message}");
+            logger.Information("[{serverName}] [{chatType}] {name}: {message}", eventArgs.ServerName, eventArgs.ChatType, eventArgs.Name, eventArgs.Message);
 
             using (var context = contextProvider.GetContext())
             {
-                var gameServer = context.GameServers.Single(s => s.ServerId == onChatMessageEventArgs.ServerId);
+                var gameServer = context.GameServers.Single(s => s.ServerId == eventArgs.ServerId);
 
-                var player = context.Players.SingleOrDefault(p => p.Guid == onChatMessageEventArgs.Guid && p.GameType == gameServer.GameType);
+                var player = context.Players.SingleOrDefault(p => p.Guid == eventArgs.Guid && p.GameType == gameServer.GameType);
 
                 if (player == null)
                 {
-                    logger.Debug("Player does not exist in database - message will not be saved");
+                    logger.Debug("[{serverName}] {name} does not exist in database - message will not be saved", eventArgs.ServerName, eventArgs.Name);
                     return;
                 }
 
@@ -46,9 +46,9 @@ namespace XI.Portal.Plugins.ChatMonitorPlugin
                 {
                     GameServer = gameServer,
                     Player = player,
-                    Username = onChatMessageEventArgs.Name,
-                    ChatType = onChatMessageEventArgs.ChatType,
-                    Message = onChatMessageEventArgs.Message,
+                    Username = eventArgs.Name,
+                    ChatType = eventArgs.ChatType,
+                    Message = eventArgs.Message,
                     Timestamp = DateTime.UtcNow
                 };
 

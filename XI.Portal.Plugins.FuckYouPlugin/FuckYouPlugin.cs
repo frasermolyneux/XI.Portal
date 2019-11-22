@@ -28,21 +28,21 @@ namespace XI.Portal.Plugins.FuckYouPlugin
 
         private void Parser_ChatMessage(object sender, EventArgs e)
         {
-            var onChatMessageEventArgs = (OnChatMessageEventArgs) e;
+            var eventArgs = (OnChatMessageEventArgs) e;
 
-            if (!onChatMessageEventArgs.Name.Contains(">XI<") || !onChatMessageEventArgs.Message.ToLower().StartsWith("!fu")) return;
+            if (!eventArgs.Name.Contains(">XI<") || !eventArgs.Message.ToLower().StartsWith("!fu")) return;
 
-            logger.Information($"FuckYou initiated for {onChatMessageEventArgs.Name} ({onChatMessageEventArgs.Guid}) on server {onChatMessageEventArgs.ServerId}");
+            logger.Information("[{serverName}] FuckYou initiated for {name}", eventArgs.ServerName, eventArgs.Name);
 
-            var responseMessage = GenerateResponseMessage(onChatMessageEventArgs);
+            var responseMessage = GenerateResponseMessage(eventArgs);
 
             using (var context = contextProvider.GetContext())
             {
-                var server = context.GameServers.Single(s => s.ServerId == onChatMessageEventArgs.ServerId);
-                var rconClient = rconClientFactory.CreateInstance(onChatMessageEventArgs.GameType, server.Hostname, server.QueryPort, server.RconPassword);
+                var server = context.GameServers.Single(s => s.ServerId == eventArgs.ServerId);
+                var rconClient = rconClientFactory.CreateInstance(eventArgs.GameType, eventArgs.ServerName, server.Hostname, server.QueryPort, server.RconPassword);
                 rconClient.Say(responseMessage);
 
-                logger.Information($"FuckYou: {responseMessage}");
+                logger.Information("[{serverName}] FuckYou: {response}", eventArgs.ServerName, responseMessage);
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using Serilog;
 using XI.Portal.Library.Rcon.Models;
@@ -30,31 +31,39 @@ namespace XI.Portal.Library.Rcon.Clients
 
         private string ExecuteCommand(string rconCommand)
         {
-            logger.Information("Executing {rconCommand} against {hostname}", rconCommand, Hostname);
+            logger.Information("[{serverName}] Executing {command} command against server", ServerName, rconCommand);
 
-            if (!Connected)
+            try
             {
-                logger.Debug("RconClient is not connected, connecting to {hostname}:{queryPort}", Hostname, QueryPort);
-                Connected = Connect(new IPEndPoint(IPAddress.Parse(Hostname), QueryPort), RconPassword);
-                logger.Debug("The RconClient state is now {state}", Connected);
+                if (!Connected)
+                {
+                    logger.Debug("[{serverName}] RconClient is not connected, connecting to {hostname}:{queryPort}", ServerName, Hostname, QueryPort);
+                    Connected = Connect(new IPEndPoint(IPAddress.Parse(Hostname), QueryPort), RconPassword);
+                    logger.Debug("[{serverName}] The RconClient state is now {state}", ServerName, Connected);
+                }
+
+                var packetToSend = new RconPacket
+                {
+                    RequestId = 2,
+                    ServerDataSent = RconPacket.SERVERDATA_sent.SERVERDATA_EXECCOMMAND,
+                    String1 = rconCommand
+                };
+
+                SendRconPacket(packetToSend);
+
+                var timeout = DateTime.UtcNow;
+                while (string.IsNullOrWhiteSpace(Result) && timeout < DateTime.UtcNow.AddSeconds(10))
+                {
+                    Thread.Sleep(100);
+                }
+
+                return Result;
             }
-
-            var packetToSend = new RconPacket
+            catch (Exception ex)
             {
-                RequestId = 2,
-                ServerDataSent = RconPacket.SERVERDATA_sent.SERVERDATA_EXECCOMMAND,
-                String1 = rconCommand
-            };
-
-            SendRconPacket(packetToSend);
-
-            var timeout = DateTime.UtcNow;
-            while (string.IsNullOrWhiteSpace(Result) && timeout < DateTime.UtcNow.AddSeconds(10))
-            {
-                Thread.Sleep(100);
+                logger.Error(ex, "Failed to execute {command} against server", rconCommand);
+                return string.Empty;
             }
-
-            return Result;
         }
 
         public bool Connect(IPEndPoint server, string password)
@@ -66,7 +75,7 @@ namespace XI.Portal.Library.Rcon.Clients
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "Failed to connect to server");
+                logger.Error(ex, "[{serverName}] Failed to connect to server", ServerName);
                 return false;
             }
 
@@ -120,7 +129,7 @@ namespace XI.Portal.Library.Rcon.Clients
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "Failed receiving data from the server");
+                logger.Error(ex, "[{serverName}] Failed receiving data from the server", ServerName);
                 throw;
             }
         }
@@ -157,10 +166,10 @@ namespace XI.Portal.Library.Rcon.Clients
 
         private void ProcessResponse(RconPacket packet)
         {
-            logger.Debug("Packet ServerDataReceived {ServerDataReceived} has been received from server", packet.ServerDataReceived);
-            logger.Debug("Packet ServerDataSent {ServerDataSent} has been received from server", packet.ServerDataSent);
-            logger.Debug("Packet String1 {String1} has been received from server", packet.String1);
-            logger.Debug("Packet String2 {String2} has been received from server", packet.String2);
+            logger.Debug("[{serverName}] Packet ServerDataReceived {ServerDataReceived} has been received from server", ServerName, packet.ServerDataReceived);
+            logger.Debug("[{serverName}] Packet ServerDataSent {ServerDataSent} has been received from server", ServerName, packet.ServerDataSent);
+            logger.Debug("[{serverName}] Packet String1 {String1} has been received from server", ServerName, packet.String1);
+            logger.Debug("[{serverName}] Packet String2 {String2} has been received from server", ServerName, packet.String2);
 
             switch (packet.ServerDataReceived)
             {
@@ -169,11 +178,11 @@ namespace XI.Portal.Library.Rcon.Clients
                     {
                         // Connected.
                         Connected = true;
-                        logger.Information("Successfully connected to server");
+                        logger.Information("[{serverName}] Successfully connected to server", ServerName);
                     }
                     else
                     {
-                        logger.Error("Failed to connect to server");
+                        logger.Error("[{serverName}] Failed to connect to server", ServerName);
                     }
 
                     break;
@@ -182,7 +191,7 @@ namespace XI.Portal.Library.Rcon.Clients
                     Result = packet.String1;
                     break;
                 default:
-                    logger.Error("Unknown response from server");
+                    logger.Error("[{serverName}] Unknown response from server", ServerName);
                     break;
             }
         }

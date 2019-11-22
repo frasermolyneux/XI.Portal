@@ -20,6 +20,7 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
         }
 
         public Guid ServerId { get; private set; }
+        public string ServerName { get; private set; }
         public GameType GameType { get; private set; }
         public string Hostname { get; private set; }
         public int Port { get; private set; }
@@ -33,22 +34,10 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
 
         private CancellationTokenSource CancellationTokenSource { get; set; }
 
-        public event EventHandler LineRead;
-        public event EventHandler PlayerConnected;
-        public event EventHandler PlayerDisconnected;
-        public event EventHandler ChatMessage;
-        public event EventHandler Kill;
-        public event EventHandler TeamKill;
-        public event EventHandler Suicide;
-        public event EventHandler RoundStart;
-        public event EventHandler Action;
-        public event EventHandler Damage;
-        public event EventHandler MapRotationRconResponse;
-        public event EventHandler StatusRconResponse;
-
-        public void Configure(Guid serverId, GameType gameType, string hostname, int port, string rconPassword, bool monitorMapRotation, bool monitorPlayers, bool monitorPlayerIPs, CancellationTokenSource cancellationTokenSource)
+        public void Configure(Guid serverId, string serverName, GameType gameType, string hostname, int port, string rconPassword, bool monitorMapRotation, bool monitorPlayers, bool monitorPlayerIPs, CancellationTokenSource cancellationTokenSource)
         {
             ServerId = serverId;
+            ServerName = serverName;
             GameType = gameType;
             Hostname = hostname;
             Port = port;
@@ -60,6 +49,18 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
 
             var monitorThread = new Thread(MonitorServer);
             monitorThread.Start();
+        }
+
+        public virtual void GetMapRotation()
+        {
+            LastMapRotation = DateTime.UtcNow;
+            logger.Information("[{serverName}] Last Map Rotation set to {LastMapRotation}", ServerName, LastMapRotation);
+        }
+
+        public virtual void GetStatus()
+        {
+            LastStatus = DateTime.UtcNow;
+            logger.Information("[{serverName}] Last Status set to {LastStatus}", ServerName, LastStatus);
         }
 
         protected virtual void OnMapRotationRconResponse(OnMapRotationRconResponse eventArgs)
@@ -87,40 +88,49 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
                     }
 
                     if (MonitorMapRotation)
-                    {
                         if (LastMapRotation < DateTime.UtcNow.AddMinutes(-5))
-                        {
-                            GetMapRotation();
-                        }
-                    }
+                            try
+                            {
+                                GetMapRotation();
+                            }
+                            catch (Exception ex)
+                            {
+                                logger.Error(ex, "[{serverName}] Error getting map rotation", ServerName);
+                            }
 
                     if (MonitorPlayers || MonitorPlayerIPs)
-                    {
                         if (LastStatus < DateTime.UtcNow.AddMinutes(-1))
-                        {
-                            GetStatus();
-                        }
-                    }
+                            try
+                            {
+                                GetStatus();
+                            }
+                            catch (Exception ex)
+                            {
+                                logger.Error(ex, "[{serverName}] Error getting status", ServerName);
+                            }
 
                     lastLoop = DateTime.UtcNow;
                 }
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"[{ServerId}] Top level error monitoring file");
+                logger.Error(ex, "[{serverName}] Top level error monitoring server", ServerName);
             }
         }
 
-        public virtual void GetMapRotation()
-        {
-            LastMapRotation = DateTime.UtcNow;
-            logger.Information($"[{ServerId}] Last Map Rotation set to {LastMapRotation}");
-        }
-
-        public virtual void GetStatus()
-        {
-            LastStatus = DateTime.UtcNow;
-            logger.Information($"[{ServerId}] Last Status set to {LastStatus}");
-        }
+#pragma warning disable 67
+        public event EventHandler LineRead;
+        public event EventHandler PlayerConnected;
+        public event EventHandler PlayerDisconnected;
+        public event EventHandler ChatMessage;
+        public event EventHandler Kill;
+        public event EventHandler TeamKill;
+        public event EventHandler Suicide;
+        public event EventHandler RoundStart;
+        public event EventHandler Action;
+        public event EventHandler Damage;
+        public event EventHandler MapRotationRconResponse;
+        public event EventHandler StatusRconResponse;
+#pragma warning restore 67
     }
 }

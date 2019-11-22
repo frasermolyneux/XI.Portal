@@ -40,6 +40,7 @@ namespace XI.Portal.Services.RconMonitorService
                         {
                             rconMonitorFactory.CreateInstance(rconMonitor.GameServer.GameType,
                                 rconMonitor.GameServer.ServerId,
+                                rconMonitor.GameServer.Title,
                                 rconMonitor.GameServer.Hostname,
                                 rconMonitor.GameServer.QueryPort,
                                 rconMonitor.GameServer.RconPassword,

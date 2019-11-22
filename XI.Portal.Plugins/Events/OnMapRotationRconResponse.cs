@@ -5,7 +5,7 @@ namespace XI.Portal.Plugins.Events
 {
     public class OnMapRotationRconResponse : ServerBaseEventArgs
     {
-        public OnMapRotationRconResponse(Guid serverId, GameType gameType, string responseData) : base(serverId, gameType)
+        public OnMapRotationRconResponse(Guid serverId, string serverName, GameType gameType, string responseData) : base(serverId, serverName, gameType)
         {
             ResponseData = responseData;
         }

@@ -7,12 +7,17 @@ using Unity.Lifetime;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Configuration;
 using XI.Portal.Library.Configuration.Providers;
+using XI.Portal.Library.GeoLocation.Repository;
 using XI.Portal.Library.Logging;
+using XI.Portal.Library.Rcon.Factories;
+using XI.Portal.Library.Rcon.Interfaces;
 using XI.Portal.Plugins.ChatMonitorPlugin;
 using XI.Portal.Plugins.FuckYouPlugin;
 using XI.Portal.Plugins.Interfaces;
 using XI.Portal.Plugins.LogProxyPlugin;
 using XI.Portal.Plugins.PlayerInfoPlugin;
+using XI.Portal.Plugins.PlayerInfoPlugin.Interfaces;
+using XI.Portal.Plugins.PlayerInfoPlugin.LocalCaching;
 using XI.Portal.Services.FileMonitorService.Factories;
 using XI.Portal.Services.FileMonitorService.Interfaces;
 
@@ -35,6 +40,7 @@ namespace XI.Portal.Services.FileMonitorService
             container.RegisterType<AwsConfiguration>();
             container.RegisterType<DatabaseConfiguration>();
             container.RegisterType<StatsLogProxyPluginConfiguration>();
+            container.RegisterType<GeoLocationConfiguration>();
 
             container.RegisterFactory<ILogger>((ctr, type, name) => logger, new ContainerControlledLifetimeManager());
 
@@ -43,6 +49,9 @@ namespace XI.Portal.Services.FileMonitorService
 
             container.RegisterType<IFtpFileMonitorFactory, FtpFileMonitorFactory>();
             container.RegisterType<IParserFactory, ParserFactory>();
+            container.RegisterType<IRconClientFactory, RconClientFactory>();
+            container.RegisterType<IGeoLocationApiRepository, GeoLocationApiRepository>();
+            container.RegisterType<IIpAddressCaching, IpAddressCaching>();
 
             container.RegisterType<IPlugin, ChatMonitorPlugin>();
             container.RegisterType<IPlugin, PlayerInfoPlugin>();

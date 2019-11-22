@@ -2,7 +2,7 @@
 {
     public interface IRconClient
     {
-        void Configure(string hostname, int queryPort, string rconPassword);
+        void Configure(string serverName, string hostname, int queryPort, string rconPassword);
         string PlayerStatus();
         string KickPlayer(string targetPlayerNum);
         string BanPlayer(string targetPlayerNum);

@@ -15,10 +15,10 @@ namespace XI.Portal.Services.FileMonitorService.Factories
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public FtpFileMonitor.FtpFileMonitor CreateInstance(string requestPath, string ftpUsername, string ftpPassword, Guid gameServerId, GameType gameServerGameType, CancellationTokenSource cancellationTokenSource)
+        public FtpFileMonitor.FtpFileMonitor CreateInstance(string requestPath, string ftpUsername, string ftpPassword, Guid serverId, string serverName, GameType gameType, CancellationTokenSource cancellationTokenSource)
         {
             var ftpFileMonitor = new FtpFileMonitor.FtpFileMonitor(logger);
-            ftpFileMonitor.Configure(requestPath, ftpUsername, ftpPassword, gameServerId, gameServerGameType, cancellationTokenSource);
+            ftpFileMonitor.Configure(requestPath, ftpUsername, ftpPassword, serverId, serverName, gameType, cancellationTokenSource);
             return ftpFileMonitor;
         }
     }

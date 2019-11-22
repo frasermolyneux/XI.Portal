@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Serilog;
 using XI.Portal.Library.CommonTypes;
 using XI.Portal.Plugins.Events;
@@ -12,9 +13,9 @@ namespace XI.Portal.Services.FileMonitorService.Parsers
         {
         }
 
-        public override void ParseLine(string line, Guid serverId, GameType gameType)
+        public override void ParseLine(string line, Guid serverId, string serverName, GameType gameType)
         {
-            OnLineRead(new LineReadEventArgs(serverId, gameType, line));
+            OnLineRead(new LineReadEventArgs(serverId, serverName, gameType, line));
 
             line = line.Replace("\r\n", "");
             line = line.Trim();
@@ -26,15 +27,15 @@ namespace XI.Portal.Services.FileMonitorService.Parsers
                 var guid = parts[1];
                 var name = parts[3];
 
-                OnPlayerConnected(new OnPlayerConnectedEventArgs(serverId, gameType, guid, name));
+                OnPlayerConnected(new OnPlayerConnectedEventArgs(serverId, serverName, gameType, guid, name));
             }
-            else if (line.StartsWith("L;"))
+            else if (line.StartsWith("Q;"))
             {
                 var parts = line.Split(';');
                 var guid = parts[1];
                 var name = parts[3];
 
-                OnPlayerDisconnected(new OnPlayerDisconnectedEventArgs(serverId, gameType, guid, name));
+                OnPlayerDisconnected(new OnPlayerDisconnectedEventArgs(serverId, serverName, gameType, guid, name));
             }
             else if (line.StartsWith("say;"))
             {
@@ -44,7 +45,7 @@ namespace XI.Portal.Services.FileMonitorService.Parsers
                 var message = parts[4];
                 message = new string(message.Where(c => !char.IsControl(c)).ToArray());
 
-                OnChatMessage(new OnChatMessageEventArgs(serverId, gameType, guid, name, message, ChatType.All));
+                OnChatMessage(new OnChatMessageEventArgs(serverId, serverName, gameType, guid, name, message, ChatType.All));
             }
             else if (line.StartsWith("sayteam;"))
             {
@@ -54,11 +55,11 @@ namespace XI.Portal.Services.FileMonitorService.Parsers
                 var message = parts[4];
                 message = new string(message.Where(c => !char.IsControl(c)).ToArray());
 
-                OnChatMessage(new OnChatMessageEventArgs(serverId, gameType, guid, name, message, ChatType.Team));
+                OnChatMessage(new OnChatMessageEventArgs(serverId, serverName, gameType, guid, name, message, ChatType.Team));
             }
             else
             {
-                Logger.Debug($"[{serverId}] {line}");
+                //Logger.Debug("[{serverName}] {line}", serverName, line);
             }
         }
     }

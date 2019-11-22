@@ -20,17 +20,17 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
 
         public override void GetMapRotation()
         {
-            var rconClient = rconClientFactory.CreateInstance(GameType.CallOfDuty2, Hostname, Port, RconPassword);
+            var rconClient = rconClientFactory.CreateInstance(GameType.CallOfDuty2, ServerName, Hostname, Port, RconPassword);
 
             try
             {
                 var commandResponse = rconClient.MapRotation();
 
-                OnMapRotationRconResponse(new OnMapRotationRconResponse(ServerId, GameType, commandResponse));
+                OnMapRotationRconResponse(new OnMapRotationRconResponse(ServerId, ServerName, GameType, commandResponse));
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"[{ServerId}] Failed to retrieve map rotation");
+                logger.Error(ex, "[{serverName}] Failed to retrieve map rotation", ServerName);
             }
 
             base.GetMapRotation();
@@ -38,17 +38,17 @@ namespace XI.Portal.Services.RconMonitorService.RconMonitors
 
         public override void GetStatus()
         {
-            var rconClient = rconClientFactory.CreateInstance(GameType.CallOfDuty2, Hostname, Port, RconPassword);
+            var rconClient = rconClientFactory.CreateInstance(GameType.CallOfDuty2, ServerName, Hostname, Port, RconPassword);
 
             try
             {
                 var commandResponse = rconClient.PlayerStatus();
 
-                OnStatusRconResponse(new OnStatusRconResponse(ServerId, GameType, commandResponse, MonitorPlayers, MonitorPlayerIPs));
+                OnStatusRconResponse(new OnStatusRconResponse(ServerId, ServerName, GameType, commandResponse, MonitorPlayers, MonitorPlayerIPs));
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"[{ServerId}] Failed to retrieve server status");
+                logger.Error(ex, "[{serverName}] Failed to retrieve server status", ServerName);
             }
 
             base.GetStatus();
