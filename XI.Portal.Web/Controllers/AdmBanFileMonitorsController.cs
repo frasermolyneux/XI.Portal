@@ -27,7 +27,7 @@ namespace XI.Portal.Web.Controllers
             using (var context = ContextProvider.GetContext())
             {
                 var banFileMonitors =
-                    await context.BanFileMonitors.Include(server => server.GameServer).ToListAsync();
+                    await context.BanFileMonitors.Include(server => server.GameServer).OrderBy(s => s.BannerServerListPosition).ToListAsync();
                 return View(banFileMonitors);
             }
         }
