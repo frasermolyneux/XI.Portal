@@ -17,7 +17,6 @@ namespace XI.Portal.Data.Core.Models
 
         public string Username { get; set; }
 
-        [Index(IsUnique = true)]
         public string Guid { get; set; }
         public string IpAddress { get; set; }
 
