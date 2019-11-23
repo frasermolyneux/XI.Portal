@@ -111,17 +111,9 @@ namespace XI.Portal.Web.Controllers
                     .OrderByDescending(cl => cl.Timestamp).AsQueryable();
 
                 if (_search && !string.IsNullOrWhiteSpace(searchString))
-                    switch (searchField)
-                    {
-                        case "Username":
-                            chatLogs = searchOper == "eq"
-                                ? chatLogs.Where(cl => cl.Username == searchString).AsQueryable()
-                                : chatLogs.Where(cl => cl.Username.Contains(searchString)).AsQueryable();
-                            break;
-                        case "Message":
-                            chatLogs = chatLogs.Where(cl => cl.Message.Contains(searchString)).AsQueryable();
-                            break;
-                    }
+                {
+                    chatLogs = chatLogs.Where(cl => cl.Username.Contains(searchString) || cl.Message.Contains(searchString)).AsQueryable();
+                }
 
                 var totalRecords = chatLogs.Count();
                 var skip = (page - 1) * rows;
@@ -181,17 +173,9 @@ namespace XI.Portal.Web.Controllers
                     .OrderByDescending(cl => cl.Timestamp).AsQueryable();
 
                 if (_search && !string.IsNullOrWhiteSpace(searchString))
-                    switch (searchField)
-                    {
-                        case "Username":
-                            chatLogs = searchOper == "eq"
-                                ? chatLogs.Where(cl => cl.Username == searchString).AsQueryable()
-                                : chatLogs.Where(cl => cl.Username.Contains(searchString)).AsQueryable();
-                            break;
-                        case "Message":
-                            chatLogs = chatLogs.Where(cl => cl.Message.Contains(searchString)).AsQueryable();
-                            break;
-                    }
+                {
+                    chatLogs = chatLogs.Where(cl => cl.Username.Contains(searchString) || cl.Message.Contains(searchString)).AsQueryable();
+                }
 
                 var totalRecords = chatLogs.Count();
                 var skip = (page - 1) * rows;

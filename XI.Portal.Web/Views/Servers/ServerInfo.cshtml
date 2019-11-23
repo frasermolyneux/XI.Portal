@@ -27,12 +27,7 @@
 
                 <div class="ibox-content">
 
-                    @{
-                        var mapUrl = $"https://image.gametracker.com/images/maps/160x120/{Model.GameServer.GameType.ToGameTrackerGameType()}/{Model.GameServer.LiveMap}.jpg";
-                    }
-
-                    @Html.GameTypeIcon(Model.GameServer.GameType, Model.GameServer.LiveMap)
-
+                    @Html.MapImage(Model.GameServer.GameType, Model.GameServer.LiveMap)
 
                     @if (Model.Map != null)
                     {
@@ -196,7 +191,7 @@
                                         }
                                     </td>
                                     <td>
-                                        @Html.GameTypeIcon(Model.GameServer.GameType, item.Map.MapName)
+                                        @Html.MapImage(Model.GameServer.GameType, item.Map.MapName)
                                     </td>
                                 </tr>
                             }

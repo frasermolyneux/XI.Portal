@@ -28,11 +28,11 @@ namespace XI.Portal.Web.Controllers
             }
             else
             {
-                DatabaseLogger.CreateUserLogAsync(null, $"Anon loaded controller {controller} with action {action}");
+                if (action != "GameServersList")
+                {
+                    DatabaseLogger.CreateUserLogAsync(null, $"Anon loaded controller {controller} with action {action}");
+                }
             }
-
-
-                
 
             base.OnActionExecuting(filterContext);
         }

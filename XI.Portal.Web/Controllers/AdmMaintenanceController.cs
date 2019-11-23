@@ -28,6 +28,7 @@ namespace XI.Portal.Web.Controllers
             using (var context = ContextProvider.GetContext())
             {
                 ViewBag.SystemLogCount = await context.SystemLogs.CountAsync();
+                ViewBag.UserLogCount = await context.UserLogs.CountAsync();
             }
 
             return View();
@@ -38,6 +39,15 @@ namespace XI.Portal.Web.Controllers
             using (var context = ContextProvider.GetContext())
             {
                 await context.Database.ExecuteSqlCommandAsync("TRUNCATE TABLE SystemLogs");
+                return RedirectToAction("Index");
+            }
+        }
+
+        public async Task<ActionResult> PurgeUserLogs()
+        {
+            using (var context = ContextProvider.GetContext())
+            {
+                await context.Database.ExecuteSqlCommandAsync("TRUNCATE TABLE UserLogs");
                 return RedirectToAction("Index");
             }
         }

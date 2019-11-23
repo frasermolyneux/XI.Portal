@@ -16,6 +16,6 @@ namespace XI.Portal.Library.Configuration
 
         public string MapRedirectBaseUrl => appSettingConfigurationProvider.GetConfigurationItem(ConfigurationKeys.MapRedirectBaseUrl);
 
-        public string MapRedirectKey => appSettingConfigurationProvider.GetConfigurationItem(ConfigurationKeys.MapRedirectKey);
+        public string MapRedirectKey => awsSecretConfigurationProvider.GetConfigurationItem(ConfigurationKeys.MapRedirectKey);
     }
 }

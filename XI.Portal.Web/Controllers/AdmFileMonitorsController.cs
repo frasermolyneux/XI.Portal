@@ -27,7 +27,7 @@ namespace XI.Portal.Web.Controllers
             using (var context = ContextProvider.GetContext())
             {
                 var fileMonitors =
-                    await context.FileMonitors.Include(server => server.GameServer).ToListAsync();
+                    await context.FileMonitors.Include(server => server.GameServer).OrderBy(s => s.GameServer.BannerServerListPosition).ToListAsync();
                 return View(fileMonitors);
             }
         }

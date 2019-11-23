@@ -271,7 +271,7 @@
     <Compile Include="Extensions\MapImageHtmlExtensions.cs" />
     <Compile Include="ViewModels\AdmRconMonitor\CreateRconMonitorViewModel.cs" />
     <Compile Include="ViewModels\AdmRconMonitor\EditRconMonitorViewModel.cs" />
-    <Compile Include="Controllers\MapController.cs" />
+    <Compile Include="Controllers\MapsController.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="ViewModels\Players\GameIndexViewModel.cs" />
     <Compile Include="Controllers\PlayersController.cs" />
@@ -1821,6 +1821,7 @@
     <Content Include="Views\AdmMaintenance\RconMonitorCheck.cshtml" />
     <Content Include="Views\AdmMaintenance\FileMonitorCheck.cshtml" />
     <Content Include="Views\AdmServers\RconStatus.cshtml" />
+    <Content Include="Views\Maps\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
