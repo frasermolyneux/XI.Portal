@@ -33,17 +33,5 @@ namespace XI.Portal.Data.Core.Context
         public DbSet<PlayerIpAddress> PlayerIpAddresses { get; set; }
         public DbSet<PlayerAlias> PlayerAliases { get; set; }
         public DbSet<LivePlayerLocation> LivePlayerLocations { get; set; }
-
-        public static PortalContext Create()
-        {
-            var context = new PortalContext();
-
-            if (context.Database.Exists())
-                return context;
-
-            context.Database.CreateIfNotExists();
-
-            return context;
-        }
     }
 }
