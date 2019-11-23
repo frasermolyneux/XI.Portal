@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using XI.Portal.Library.Configuration;
 using XI.Portal.Plugins.Events;
 using XI.Portal.Plugins.Interfaces;
@@ -24,7 +25,9 @@ namespace XI.Portal.Plugins.LogProxyPlugin
         {
             var eventArgs = (LineReadEventArgs) e;
 
-            if (eventArgs.LineData.ToLower().Contains("!fu")) return; // block !fu command from being proxied, will need to do this with any additional commands
+            var commandsToBlock = new string[] { "!fu", "!like", "!dislike" };
+
+            if (commandsToBlock.Any(c => eventArgs.LineData.StartsWith(c))) return; // block commands from being proxied, will need to do this with any additional commands
 
             var localLogFilePath = $"{statsLogProxyPluginConfiguration.StatsLogBaseDirectory}\\{eventArgs.ServerId}\\games_mp.log";
 

@@ -5,6 +5,7 @@ using Serilog;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.CommonTypes;
+using XI.Portal.Library.Rcon.Interfaces;
 using XI.Portal.Plugins.Events;
 using XI.Portal.Plugins.Interfaces;
 
@@ -14,16 +15,108 @@ namespace XI.Portal.Plugins.MapRotationPlugin
     {
         private readonly ILogger logger;
         private readonly IContextProvider contextProvider;
+        private readonly IRconClientFactory rconClientFactory;
 
-        public MapRotationPlugin(ILogger logger, IContextProvider contextProvider)
+        public MapRotationPlugin(ILogger logger, 
+            IContextProvider contextProvider,
+            IRconClientFactory rconClientFactory)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
+            this.rconClientFactory = rconClientFactory ?? throw new ArgumentNullException(nameof(rconClientFactory));
         }
 
         public void RegisterEventHandlers(IPluginEvents events)
         {
             events.MapRotationRconResponse += Events_MapRotationRconResponse;
+            events.ChatMessage += Events_ChatMessage;
+        }
+
+        private void Events_ChatMessage(object sender, EventArgs e)
+        {
+            var eventArgs = (OnChatMessageEventArgs)e;
+
+            if (!eventArgs.Message.ToLower().StartsWith("!like") || !eventArgs.Message.ToLower().StartsWith("!dislike"))
+            {
+                return;
+            }
+
+            var like = false;
+            if (!eventArgs.Message.ToLower().StartsWith("!like")) like = true;
+
+            logger.Information("[{serverName}] Like/Dislike initiated for {name} with feedback {feedback}", eventArgs.ServerName, eventArgs.Name, like);
+
+            using (var context = contextProvider.GetContext())
+            {
+                var server = context.GameServers.Single(s => s.ServerId == eventArgs.ServerId);
+                var rconClient = rconClientFactory.CreateInstance(eventArgs.GameType, eventArgs.ServerName, server.Hostname, server.QueryPort, server.RconPassword);
+
+                if (server.LiveLastUpdated < DateTime.UtcNow.AddMinutes(-5))
+                {
+                    // TODO: Send a message back saying try again later
+                    logger.Warning("[{serverName}] Like/Dislike for {name} could not be processed as last updated has expired", eventArgs.ServerName, eventArgs.Name);
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(server.LiveMap))
+                {
+                    // TODO: Send a message back saying try again later
+                    logger.Warning("[{serverName}] Like/Dislike for {name} could not be processed as live map is empty", eventArgs.ServerName, eventArgs.Name);
+                    return;
+                }
+
+                var currentMap = server.LiveMap;
+
+                var map = context.Maps.SingleOrDefault(m => m.GameType == eventArgs.GameType && m.MapName == currentMap);
+                if (map == null)
+                {
+                    // TODO: Send a message back saying try again later
+                    logger.Warning("[{serverName}] Like/Dislike for {name} could not be processed as map {map} is not in the database", eventArgs.ServerName, eventArgs.Name, currentMap);
+                    return;
+                }
+
+                var player = context.Players.SingleOrDefault(p => p.GameType == eventArgs.GameType && p.Guid == eventArgs.Guid);
+                if (player == null)
+                {
+                    logger.Error("[{serverName}] Like/Dislike for {name} could not be processed as a matching player record doesn't exist", eventArgs.ServerName, eventArgs.Name);
+                    return;
+                }
+
+                var existingVote = context.MapVotes.SingleOrDefault(mv => mv.Player.PlayerId == player.PlayerId && mv.Map.GameType == eventArgs.GameType && mv.Map.MapName == currentMap);
+                if (existingVote != null)
+                {
+                    if (existingVote.Like != like)
+                    {
+                        existingVote.Timestamp = DateTime.UtcNow;
+                        existingVote.Like = like;
+                        context.SaveChanges();
+
+                        logger.Information("[{serverName}] Like/Dislike for {name} against {map} has been updated to {feedback}", eventArgs.ServerName, eventArgs.Name, currentMap, like);
+                        //TODO: Send a message back saying the vote has been updated
+                    }
+                    else
+                    {
+                        logger.Information("[{serverName}] Like/Dislike for {name} against {map} has already been set to {feedback}", eventArgs.ServerName, eventArgs.Name, currentMap, like);
+                        //TODO: Send a message back saying the vote already existed
+                    }
+                }
+                else
+                {
+                    var newVote = new MapVote()
+                    {
+                        Player = player,
+                        Map = map,
+                        Like = like,
+                        Timestamp = DateTime.UtcNow
+                    };
+
+                    context.MapVotes.Add(newVote);
+                    context.SaveChanges();
+
+                    logger.Information("[{serverName}] Like/Dislike for {name} against {map} created with feedback {feedback}", eventArgs.ServerName, eventArgs.Name, currentMap, like);
+                    //TODO: Send a message back saying the vote has been updated
+                }
+            }
         }
 
         private void Events_MapRotationRconResponse(object sender, EventArgs e)
