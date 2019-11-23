@@ -64,6 +64,7 @@
     <Compile Include="Models\Demo.cs" />
     <Compile Include="Models\FileMonitor.cs" />
     <Compile Include="Models\LivePlayerLocation.cs" />
+    <Compile Include="Models\MapVote.cs" />
     <Compile Include="Models\PlayerAlias.cs" />
     <Compile Include="Models\PlayerIpAddress.cs" />
     <Compile Include="Models\LivePlayer.cs" />

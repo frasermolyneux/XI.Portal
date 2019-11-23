@@ -25,9 +25,10 @@ namespace XI.Portal.Data.Core.Context
         public DbSet<RconMonitor> RconMonitors { get; set; }
         public DbSet<Map> Maps { get; set; }
         public DbSet<MapFile> MapFiles { get; set; }
+        public DbSet<MapRotation> MapRotations { get; set; }
+        public DbSet<MapVote> MapVotes { get; set; }
         public DbSet<UserLog> UserLogs { get; set; }
         public DbSet<SystemLog> SystemLogs { get; set; }
-        public DbSet<MapRotation> MapRotations { get; set; }
         public DbSet<AdminAction> AdminActions { get; set; }
         public DbSet<PlayerIpAddress> PlayerIpAddresses { get; set; }
         public DbSet<PlayerAlias> PlayerAliases { get; set; }
