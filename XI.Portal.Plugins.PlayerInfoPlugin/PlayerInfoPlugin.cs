@@ -20,15 +20,22 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
         private readonly IDatabaseLogger databaseLogger;
         private readonly IGeoLocationApiRepository geoLocationApiRepository;
         private readonly IIpAddressCaching ipAddressCaching;
+        private readonly IPlayerCaching playerCaching;
         private readonly ILogger logger;
 
-        public PlayerInfoPlugin(ILogger logger, IContextProvider contextProvider, IDatabaseLogger databaseLogger, IGeoLocationApiRepository geoLocationApiRepository, IIpAddressCaching ipAddressCaching)
+        public PlayerInfoPlugin(ILogger logger, 
+            IContextProvider contextProvider, 
+            IDatabaseLogger databaseLogger, 
+            IGeoLocationApiRepository geoLocationApiRepository, 
+            IIpAddressCaching ipAddressCaching,
+            IPlayerCaching playerCaching)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
             this.databaseLogger = databaseLogger ?? throw new ArgumentNullException(nameof(databaseLogger));
             this.geoLocationApiRepository = geoLocationApiRepository ?? throw new ArgumentNullException(nameof(geoLocationApiRepository));
             this.ipAddressCaching = ipAddressCaching ?? throw new ArgumentNullException(nameof(ipAddressCaching));
+            this.playerCaching = playerCaching ?? throw new ArgumentNullException(nameof(playerCaching));
         }
 
         public void RegisterEventHandlers(IPluginEvents events)
@@ -128,7 +135,7 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                     UpdateLivePlayerIpAddress(context, ipAddress, eventArgs.ServerName);
                 }
 
-                CleanLivePlayerIps(context);
+                ReduceCaches(context);
             }
         }
 
@@ -167,17 +174,18 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                     UpdateLivePlayerIpAddress(context, ipAddress, eventArgs.ServerName);
                 }
 
-                CleanLivePlayerIps(context);
+                ReduceCaches(context);
             }
         }
 
-        private void CleanLivePlayerIps(PortalContext context)
+        private void ReduceCaches(PortalContext context)
         {
             var livePlayerLocationCutOff = DateTime.UtcNow.AddDays(-1);
             context.LivePlayerLocations.RemoveRange(context.LivePlayerLocations.Where(lpl => lpl.LastSeen < livePlayerLocationCutOff));
             context.SaveChanges();
 
             ipAddressCaching.ReduceCache();
+            playerCaching.ReduceCache();
         }
 
         private void EnsurePlayerExists(GameType gameType, string guid, string name, string serverName)
@@ -185,6 +193,11 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
             if (guid == "allies" || guid == "axis")
             {
                 logger.Warning("[{serverName}] Cannot have guid {guid} for {gameType}", serverName, guid, gameType);
+                return;
+            }
+
+            if (playerCaching.PlayerInCache(gameType, guid, name))
+            {
                 return;
             }
 
@@ -234,6 +247,8 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                 }
 
                 context.SaveChanges();
+
+                playerCaching.AddToCache(gameType, guid, name);
             }
         }
 
