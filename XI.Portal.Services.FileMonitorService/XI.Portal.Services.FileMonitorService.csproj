@@ -154,6 +154,10 @@
       <Project>{8CBE3E34-150E-446F-AB8A-7AC7C2CE199B}</Project>
       <Name>XI.Portal.Plugins.LogProxyPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Plugins.MapRotationPlugin\XI.Portal.Plugins.MapRotationPlugin.csproj">
+      <Project>{9E986B37-A07B-4F2F-93B7-561D3ED15CF0}</Project>
+      <Name>XI.Portal.Plugins.MapRotationPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Plugins.PlayerInfoPlugin\XI.Portal.Plugins.PlayerInfoPlugin.csproj">
       <Project>{6B933FE5-82BC-48E1-8170-EB865A24FBD0}</Project>
       <Name>XI.Portal.Plugins.PlayerInfoPlugin</Name>

@@ -4,6 +4,7 @@ using XI.Portal.Library.CommonTypes;
 using XI.Portal.Plugins.ChatMonitorPlugin;
 using XI.Portal.Plugins.FuckYouPlugin;
 using XI.Portal.Plugins.LogProxyPlugin;
+using XI.Portal.Plugins.MapRotationPlugin;
 using XI.Portal.Plugins.PlayerInfoPlugin;
 using XI.Portal.Services.FileMonitorService.Interfaces;
 using XI.Portal.Services.FileMonitorService.Parsers;
@@ -12,7 +13,12 @@ namespace XI.Portal.Services.FileMonitorService.Factories
 {
     internal class ParserFactory : IParserFactory
     {
-        public ParserFactory(ILogger logger, ChatMonitorPlugin chatMonitorPlugin, PlayerInfoPlugin playerInfoPlugin, FuckYouPlugin fuckYouPlugin, LogProxyPlugin logProxyPlugin)
+        public ParserFactory(ILogger logger, 
+            ChatMonitorPlugin chatMonitorPlugin,
+            PlayerInfoPlugin playerInfoPlugin, 
+            FuckYouPlugin fuckYouPlugin, 
+            LogProxyPlugin logProxyPlugin,
+            MapRotationPlugin mapRotationPlugin)
         {
             Parsers.Add(GameType.CallOfDuty2, new Cod2Parser(logger));
             Parsers.Add(GameType.CallOfDuty4, new Cod4Parser(logger));
@@ -24,6 +30,7 @@ namespace XI.Portal.Services.FileMonitorService.Factories
                 playerInfoPlugin.RegisterEventHandlers(parser.Value);
                 fuckYouPlugin.RegisterEventHandlers(parser.Value);
                 logProxyPlugin.RegisterEventHandlers(parser.Value);
+                mapRotationPlugin.RegisterEventHandlers(parser.Value);
             }
         }
 

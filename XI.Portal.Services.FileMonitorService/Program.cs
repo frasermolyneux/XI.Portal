@@ -1,5 +1,4 @@
-﻿using System;
-using Serilog;
+﻿using Serilog;
 using Topshelf;
 using Topshelf.Unity;
 using Unity;
@@ -15,6 +14,7 @@ using XI.Portal.Plugins.ChatMonitorPlugin;
 using XI.Portal.Plugins.FuckYouPlugin;
 using XI.Portal.Plugins.Interfaces;
 using XI.Portal.Plugins.LogProxyPlugin;
+using XI.Portal.Plugins.MapRotationPlugin;
 using XI.Portal.Plugins.PlayerInfoPlugin;
 using XI.Portal.Plugins.PlayerInfoPlugin.Interfaces;
 using XI.Portal.Plugins.PlayerInfoPlugin.LocalCaching;
@@ -58,6 +58,7 @@ namespace XI.Portal.Services.FileMonitorService
             container.RegisterType<IPlugin, PlayerInfoPlugin>();
             container.RegisterType<IPlugin, FuckYouPlugin>();
             container.RegisterType<IPlugin, LogProxyPlugin>();
+            container.RegisterType<IPlugin, MapRotationPlugin>();
 
 
             HostFactory.Run(x =>
