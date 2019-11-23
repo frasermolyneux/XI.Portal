@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
@@ -8,6 +9,7 @@ using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Auth.XtremeIdiots;
 using XI.Portal.Library.Logging;
 using XI.Portal.Web.Extensions;
+using XI.Portal.Web.ViewModels;
 using XI.Portal.Web.ViewModels.Servers;
 
 namespace XI.Portal.Web.Controllers
@@ -53,18 +55,48 @@ namespace XI.Portal.Web.Controllers
                 var players = await context.LivePlayers.Where(player =>
                     player.GameServer.ServerId == gameServer.ServerId).ToListAsync();
 
-                var map = await context.Maps.Include(m => m.MapFiles).SingleOrDefaultAsync(m =>
+                var currentMap = await context.Maps.Include(m => m.MapFiles).SingleOrDefaultAsync(m =>
                     m.MapName == gameServer.LiveMap && m.GameType == gameServer.GameType);
 
-                var mapRotation = await context.MapRotations.Include(m => m.Map).Include(m => m.Map.MapFiles)
+                var mapRotation = await context.MapRotations
+                    .Include(m => m.Map)
+                    .Include(m => m.Map.MapFiles)
+                    .Include(m => m.Map.MapVotes)
                     .Where(m => m.GameServer.ServerId == gameServer.ServerId).ToListAsync();
+
+                var mapDetails = new List<MapRotationViewModel>();
+
+                foreach (var mapEntry in mapRotation)
+                {
+                    double totalLikes = mapEntry.Map.MapVotes.Where(mv => mv.Like).Count();
+                    double totalDislikes = mapEntry.Map.MapVotes.Where(mv => !mv.Like).Count();
+                    int totalVotes = mapEntry.Map.MapVotes.Count();
+                    double likePercentage = 0;
+                    double dislikePercentage = 0;
+
+                    if (totalVotes > 0)
+                    {
+                        likePercentage = (totalLikes / totalVotes) * 100;
+                        dislikePercentage = (totalDislikes / totalVotes) * 100;
+                    }
+
+                    mapDetails.Add(new MapRotationViewModel
+                    {
+                        MapRotation = mapEntry,
+                        LikePercentage = likePercentage, 
+                        DislikePercentage = dislikePercentage,
+                        TotalLike = totalLikes,
+                        TotalDislike = totalDislikes,
+                        TotalVotes = totalVotes
+                    });
+                }
 
                 var model = new ServerInfoViewModel
                 {
                     GameServer = gameServer,
                     Players = players,
-                    Map = map,
-                    MapRotation = mapRotation
+                    Map = currentMap,
+                    MapRotation = mapDetails
                 };
 
                 return View(model);

@@ -29,7 +29,7 @@ namespace XI.Portal.Web.Controllers
         {
             using (var context = ContextProvider.GetContext())
             {
-                var maps = context.Maps.OrderBy(m => m.MapName).AsQueryable();
+                var maps = context.Maps.Include(m => m.MapVotes).OrderBy(m => m.MapName).AsQueryable();
 
                 if (_search && !string.IsNullOrWhiteSpace(searchString))
                 {
@@ -41,10 +41,30 @@ namespace XI.Portal.Web.Controllers
 
                 var mapList = await maps.Skip(skip).Take(rows).ToListAsync();
 
-                var mapsToReturn = mapList.Select(map => new
+                var mapsToReturn = mapList.Select(map =>
                 {
-                    GameType = map.GameType.ToString(),
-                    map.MapName
+                    double totalLikes = map.MapVotes.Where(mv => mv.Like).Count();
+                    double totalDislikes = map.MapVotes.Where(mv => !mv.Like).Count();
+                    int totalVotes = map.MapVotes.Count();
+                    double likePercentage = 0;
+                    double dislikePercentage = 0;
+
+                    if (totalVotes > 0)
+                    {
+                        likePercentage = (totalLikes / totalVotes) * 100;
+                        dislikePercentage = (totalDislikes / totalVotes) * 100;
+                    }
+
+                    return new
+                    {
+                        GameType = map.GameType.ToString(),
+                        map.MapName,
+                        TotalVotes = totalVotes,
+                        TotalLike = totalLikes,
+                        TotalDislike = totalDislikes,
+                        LikePercentage = likePercentage,
+                        DislikePercentage = dislikePercentage,
+                    };
                 });
 
                 return Json(new

@@ -8,6 +8,6 @@ namespace XI.Portal.Web.ViewModels.Servers
         public GameServer GameServer { get; set; }
         public List<LivePlayer> Players { get; set; }
         public Map Map { get; set; }
-        public List<MapRotation> MapRotation { get; set; }
+        public List<MapRotationViewModel> MapRotation { get; set; }
     }
 }
