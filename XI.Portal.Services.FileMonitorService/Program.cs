@@ -52,6 +52,7 @@ namespace XI.Portal.Services.FileMonitorService
             container.RegisterType<IRconClientFactory, RconClientFactory>();
             container.RegisterType<IGeoLocationApiRepository, GeoLocationApiRepository>();
             container.RegisterType<IIpAddressCaching, IpAddressCaching>();
+            container.RegisterType<IPlayerCaching, PlayerCaching>();
 
             container.RegisterType<IPlugin, ChatMonitorPlugin>();
             container.RegisterType<IPlugin, PlayerInfoPlugin>();

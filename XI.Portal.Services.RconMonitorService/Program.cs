@@ -43,6 +43,7 @@ namespace XI.Portal.Services.RconMonitorService
             container.RegisterType<IRconMonitorFactory, RconMonitorFactory>();
             container.RegisterType<IGeoLocationApiRepository, GeoLocationApiRepository>();
             container.RegisterType<IIpAddressCaching, IpAddressCaching>();
+            container.RegisterType<IPlayerCaching, PlayerCaching>();
 
             HostFactory.Run(x =>
             {

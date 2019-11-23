@@ -58,7 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IIpAddressCaching.cs" />
+    <Compile Include="Interfaces\IPlayerCaching.cs" />
     <Compile Include="LocalCaching\IpAddressCaching.cs" />
+    <Compile Include="LocalCaching\PlayerCaching.cs" />
     <Compile Include="PlayerInfoPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

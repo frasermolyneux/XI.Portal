@@ -28,6 +28,7 @@ namespace XI.Portal.Data.Core.Models
         [Index(IsUnique = true)]
         public Guid LivePlayerId { get; set; }
 
+        [Index(IsUnique = false)]
         public GameServer GameServer { get; set; }
         public string Name { get; set; }
         public int Score { get; set; }
