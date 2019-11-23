@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -22,7 +23,7 @@ namespace XI.Portal.Web.Controllers
         {
             using (var context = ContextProvider.GetContext())
             {
-                var users = await context.Users.ToListAsync();
+                var users = await context.Users.OrderBy(u => u.UserName).ToListAsync();
                 return View(users);
             }
         }
