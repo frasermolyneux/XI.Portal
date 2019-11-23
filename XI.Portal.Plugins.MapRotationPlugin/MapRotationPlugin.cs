@@ -42,7 +42,7 @@ namespace XI.Portal.Plugins.MapRotationPlugin
             }
 
             var like = false;
-            if (!eventArgs.Message.ToLower().StartsWith("!like")) like = true;
+            if (eventArgs.Message.ToLower().StartsWith("!like")) like = true;
 
             logger.Information("[{serverName}] Like/Dislike initiated for {name} with feedback {feedback}", eventArgs.ServerName, eventArgs.Name, like);
 
