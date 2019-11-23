@@ -6,6 +6,26 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
 
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox">
+                <div class="input-group">
+                    <input type="text" id="search-string" class="form-control">
+                    <span class="input-group-btn">
+                        <button type="button" id="search-button" class="btn btn-primary">
+                            Search
+                        </button>
+                        <button type="button" id="clear-button" class="btn btn-primary">
+                            Clear
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <div class="jqGrid_wrapper">
         <table id="chatLog"></table>
         <div id="chatLogPager"></div>
@@ -20,7 +40,7 @@
 @section Scripts {
     @Scripts.Render("~/plugins/jqGrid")
 
-    <script type="text/javascript">
+<script type="text/javascript">
         $(document).ready(function() {
 
             function formatPlayerUrl(cellValue, options, rowObject) {
@@ -96,13 +116,30 @@
                     edit: false,
                     add: false,
                     del: false,
-                    search: true,
-                    refresh: true,
-
-                    searchtext: "Search",
-                    refreshtext: "Refresh"
+                    search: false,
+                    refresh: false
                 });
 
         });
-    </script>
+
+        $("#search-button").button().click(function(){
+            searchString = $.trim($("#search-string").val());
+
+            if(searchString == ""){
+                alert("Please enter something before searching!");
+                $("#search-string").val("").focus();
+            }
+            else{
+                $("#chatLog").jqGrid('setGridParam',{url:'/Servers/GetGlobalChatLogAjax?_search=true&searchString='+searchString});
+                $("#chatLog").jqGrid().trigger('reloadGrid');
+            }
+        });
+
+        $("#clear-button").button().click(function () {
+            $("#search-string").val("").focus();
+            $("#chatLog").jqGrid('setGridParam',{url:'/Servers/GetGlobalChatLogAjax'});
+            $("#chatLog").jqGrid().trigger('reloadGrid');
+        });
+
+</script>
 }
