@@ -57,7 +57,7 @@ namespace XI.Portal.Web.Controllers
                 {
                     var maps = mapRedirectRepository.GetMapEntriesForGame(game.Value);
 
-                    Parallel.ForEach(maps, mapRedirectEntry =>
+                    foreach (var mapRedirectEntry in maps)
                     {
                         var mapName = mapRedirectEntry.MapName;
                         var mapFiles = mapRedirectEntry.MapFiles
@@ -88,7 +88,7 @@ namespace XI.Portal.Web.Controllers
                                 FileName = mf
                             }).ToList();
                         }
-                    });
+                    }
                 }
 
                 await context.SaveChangesAsync();
