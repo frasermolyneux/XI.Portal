@@ -28,7 +28,7 @@ namespace XI.Portal.Web.Controllers
             {
                 var model = new ServersIndexViewModel
                 {
-                    GameServers = await context.GameServers.Where(s => s.ShowOnPortalServerList).ToListAsync(),
+                    GameServers = await context.GameServers.Where(s => s.ShowOnPortalServerList).OrderBy(s => s.BannerServerListPosition).ToListAsync(),
                     LivePlayerLocations = await context.LivePlayerLocations.ToListAsync()
                 };
 
