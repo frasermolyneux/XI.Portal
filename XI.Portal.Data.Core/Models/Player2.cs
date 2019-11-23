@@ -12,10 +12,12 @@ namespace XI.Portal.Data.Core.Models
         [Index(IsUnique = true)]
         public Guid PlayerId { get; set; }
 
+        [Index(IsUnique = false)]
         public GameType GameType { get; set; }
 
         public string Username { get; set; }
 
+        [Index(IsUnique = true)]
         public string Guid { get; set; }
         public string IpAddress { get; set; }
 
