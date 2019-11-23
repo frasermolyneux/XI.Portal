@@ -125,7 +125,7 @@
                 $("#search-string").val("").focus();
             }
             else{
-                $("#playerList").jqGrid('setGridParam',{url:'/Players/GetPlayersIPSearchAjax?_search=true&searchField=Address&searchString='+searchString});
+                $("#playerList").jqGrid('setGridParam',{url:'/Players/GetPlayersIPSearchAjax?_search=true&searchString='+searchString});
                 $("#playerList").jqGrid().trigger('reloadGrid');  
             }
         });

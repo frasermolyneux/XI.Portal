@@ -81,19 +81,9 @@ namespace XI.Portal.Web.Controllers
                     .OrderByDescending(cl => cl.LastSeen).AsQueryable();
 
                 if (_search && !string.IsNullOrWhiteSpace(searchString))
-                    switch (searchField)
-                    {
-                        case "Username":
-                            players = searchOper == "eq"
-                                ? players.Where(cl => cl.Username == searchString).AsQueryable()
-                                : players.Where(cl => cl.Username.Contains(searchString)).AsQueryable();
-                            break;
-                        case "Guid":
-                            players = searchOper == "eq"
-                                ? players.Where(cl => cl.Guid == searchString).AsQueryable()
-                                : players.Where(cl => cl.Guid.Contains(searchString)).AsQueryable();
-                            break;
-                    }
+                {
+                    players = players.Where(cl => cl.Username.Contains(searchString) || cl.Guid.Contains(searchString)).AsQueryable();
+                }
 
                 var totalRecords = players.Count();
                 var skip = (page - 1) * rows;
@@ -135,12 +125,10 @@ namespace XI.Portal.Web.Controllers
                 var ipAddresses = context.PlayerIpAddresses.OrderByDescending(ip => ip.LastUsed).AsQueryable();
 
                 if (_search && !string.IsNullOrWhiteSpace(searchString))
-                    switch (searchField)
-                    {
-                        case "Address":
-                            ipAddresses = ipAddresses.Where(ip => ip.Address.Contains(searchString)).AsQueryable();
-                            break;
-                    }
+                {
+                    ipAddresses = ipAddresses.Where(ip => ip.Address.Contains(searchString)).AsQueryable();
+
+                }
 
                 var totalRecords = ipAddresses.Count();
                 var skip = (page - 1) * rows;
