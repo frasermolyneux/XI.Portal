@@ -8,6 +8,26 @@
     <div class="row">
         <div class="col-sm-12">
 
+            <div class="ibox">
+                <div class="input-group">
+                    <input type="text" id="search-string" class="form-control"> 
+                    <span class="input-group-btn">
+                        <button type="button" id="search-button" class="btn btn-primary">
+                            Search
+                        </button>
+                        <button type="button" id="clear-button" class="btn btn-primary">
+                            Clear
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+
             <div class="jqGrid_wrapper">
                 <table id="playerList"></table>
                 <div id="playerListPager"></div>
@@ -38,7 +58,7 @@
             }
 
             jQuery("#playerList").jqGrid({
-                url: '/Players/GetPlayersIPSearchAjax/',
+                url: '/Players/GetPlayersIPSearchAjax',
                 datatype: 'json',
                 mType: 'GET',
                 colNames: ['Game', 'Player Id', 'Username', 'Address'],
@@ -91,13 +111,30 @@
                     edit: false,
                     add: false,
                     del: false,
-                    search: true,
-                    refresh: true,
-
-                    searchtext: "Search",
-                    refreshtext: "Refresh"
+                    search: false,
+                    refresh: false
                 });
 
         });
+
+        $("#search-button").button().click(function(){
+            searchString = $.trim($("#search-string").val());
+
+            if(searchString == ""){
+                alert("Please enter something before searching!");
+                $("#search-string").val("").focus();
+            }
+            else{
+                $("#playerList").jqGrid('setGridParam',{url:'/Players/GetPlayersIPSearchAjax?_search=true&searchField=Address&searchString='+searchString});
+                $("#playerList").jqGrid().trigger('reloadGrid');  
+            }
+        });
+
+        $("#clear-button").button().click(function () {
+            $("#search-string").val("").focus();
+            $("#playerList").jqGrid('setGridParam',{url:'/Players/GetPlayersIPSearchAjax'});
+            $("#playerList").jqGrid().trigger('reloadGrid');  
+        });
+
     </script>
 }
