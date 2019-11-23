@@ -36,7 +36,7 @@ namespace XI.Portal.Plugins.MapRotationPlugin
         {
             var eventArgs = (OnChatMessageEventArgs)e;
 
-            if (!eventArgs.Message.ToLower().StartsWith("!like") || !eventArgs.Message.ToLower().StartsWith("!dislike"))
+            if (!eventArgs.Message.ToLower().StartsWith("!like") && !eventArgs.Message.ToLower().StartsWith("!dislike"))
             {
                 return;
             }
