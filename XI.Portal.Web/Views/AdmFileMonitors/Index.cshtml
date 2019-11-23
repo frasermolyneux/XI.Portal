@@ -28,9 +28,6 @@
                             <th>
                                 @Html.Label("Last Read")
                             </th>
-                            <th>
-                                @Html.Label("Has Error")
-                            </th>
                             <th></th>
                         </tr>
 
@@ -52,9 +49,6 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.LastRead)
-                                </td>
-                                <td>
-                                    @(string.IsNullOrWhiteSpace(item.LastError) ? Html.Label("No") : Html.Label("Yes"))
                                 </td>
                                 <td>
                                     @Html.ActionLink("Edit", "Edit", new {id = item.FileMonitorId}) |
