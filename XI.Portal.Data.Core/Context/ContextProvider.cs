@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data.Entity;
-using XI.Portal.Data.Core.Migrations;
 using XI.Portal.Library.Configuration;
 
 namespace XI.Portal.Data.Core.Context
@@ -23,7 +21,6 @@ namespace XI.Portal.Data.Core.Context
 
         public PortalContext GetContext()
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<PortalContext, Configuration>());
             var portalContext = new PortalContext(databaseConfiguration.DbConnectionString);
             portalContext.Database.CreateIfNotExists();
 

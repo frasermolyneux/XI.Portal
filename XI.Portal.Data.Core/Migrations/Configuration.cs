@@ -9,6 +9,8 @@ namespace XI.Portal.Data.Core.Migrations
         {
             AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
+
+            ContextKey = "XI.Portal.Data.Core.Context";
         }
 
         protected override void Seed(PortalContext context)
