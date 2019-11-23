@@ -36,6 +36,7 @@ namespace XI.Portal.Web.Navigation
                     ServersMenu(menuItems, true);
                     CommunityMenu(menuItems);
                     DemoManagerMenu(menuItems);
+                    MapsMenu(menuItems);
 
                     //Admins
                     PlayersMenu(menuItems);
@@ -70,6 +71,7 @@ namespace XI.Portal.Web.Navigation
                     ServersMenu(menuItems, true);
                     CommunityMenu(menuItems);
                     DemoManagerMenu(menuItems);
+                    MapsMenu(menuItems);
 
                     //Admins
                     PlayersMenu(menuItems);
@@ -79,6 +81,7 @@ namespace XI.Portal.Web.Navigation
                     ServersMenu(menuItems, false);
                     CommunityMenu(menuItems);
                     DemoManagerMenu(menuItems);
+                    MapsMenu(menuItems);
                     break;
             }
 
@@ -112,6 +115,13 @@ namespace XI.Portal.Web.Navigation
             demoManagerMenu.SubMenuItems.Add(new SubMenuItemModel("Demos", "Demos", "Index"));
             demoManagerMenu.SubMenuItems.Add(new SubMenuItemModel("Upload Demo", "Demos", "UploadDemo"));
             menuItems.Add(demoManagerMenu);
+        }
+
+        private static void MapsMenu(ICollection<MenuItemModel> menuItems)
+        {
+            var mapsMenu = new MenuItemModel("Maps", "Maps", "Index", "download");
+            mapsMenu.SubMenuItems.Add(new SubMenuItemModel("Map List", "Maps", "Index"));
+            menuItems.Add(mapsMenu);
         }
 
         private void PlayersMenu(ICollection<MenuItemModel> menuItems)

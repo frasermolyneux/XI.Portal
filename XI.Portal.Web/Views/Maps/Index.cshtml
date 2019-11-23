@@ -1,0 +1,137 @@
+﻿@{
+    ViewBag.Title = "Global Map List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox">
+                <div class="input-group">
+                    <input type="text" id="search-string" class="form-control">
+                    <span class="input-group-btn">
+                        <button type="button" id="search-button" class="btn btn-primary">
+                            Search
+                        </button>
+                        <button type="button" id="clear-button" class="btn btn-primary">
+                            Clear
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="jqGrid_wrapper">
+        <table id="mapList"></table>
+        <div id="mapListPager"></div>
+    </div>
+
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/jqGrid/jqGridStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/jqGrid")
+
+<script type="text/javascript">
+        $(document).ready(function() {
+
+            function formatGameType(cellValue, options, rowObject) {
+                return "<img src='/Images/icons/" + rowObject.GameType + ".png' alt='" + cellValue + "' width='16' height='16' />";
+            }
+
+            function formatMapImage(cellValue, options, rowObject) {
+                return "<img style=\"border: 5px solid #021a40; display: block; margin: auto;\" src=\"/MapImage/Image?gameType=" + rowObject.GameType + "&mapName=" + rowObject.MapName + "\" alt=\"" + rowObject.MapName + "\" />";
+            }
+
+            jQuery("#mapList").jqGrid({
+                url: '/Maps/GetGlobalMapListAjax',
+                datatype: 'json',
+                mType: 'GET',
+                colNames: ['Game', 'Name', ''],
+                colModel: [
+                    {
+                        name: 'GameType',
+                        index: 'GameType',
+                        hidden: false,
+                        editable: false,
+                        sortable: false,
+                        search: false,
+                        formatter: formatGameType,
+                        width: 30
+                    },
+                    {
+                        name: 'MapName',
+                        index: 'MapName',
+                        editable: false,
+                        width: 20,
+                        sortable: false,
+                        search: false
+                    },
+                    {
+                        name: 'GameType',
+                        index: 'GameType',
+                        hidden: false,
+                        editable: false,
+                        sortable: false,
+                        search: false,
+                        formatter: formatMapImage,
+                        width: 30
+                    }
+                ],
+                pager: '#mapListPager',
+                rowNum: 20,
+                height: 700,
+                autowidth: true,
+                caption: 'Global Map List',
+                guiStyle: "bootstrap4",
+                icons: "fontAwesome",
+                hidegrid: false
+            }).navGrid('#mapListPager',
+                {
+                    edit: false,
+                    add: false,
+                    del: false,
+                    search: false,
+                    refresh: false
+                });
+
+            function submitSearch() {
+                searchString = $.trim($("#search-string").val());
+
+                if(searchString == ""){
+                    alert("Please enter something before searching!");
+                    $("#search-string").val("").focus();
+                }
+                else{
+                    $("#mapList").jqGrid('setGridParam',{url:'/Maps/GetGlobalMapListAjax?_search=true&searchString='+searchString});
+                    $("#mapList").jqGrid().trigger('reloadGrid');
+                }
+            }
+
+            $("#search-button").button().click(submitSearch);
+
+            $("#clear-button").button().click(function () {
+                $("#search-string").val("").focus();
+                $("#mapList").jqGrid('setGridParam',{url:'/Maps/GetGlobalMapListAjax'});
+                $("#mapList").jqGrid().trigger('reloadGrid');
+            });
+
+            $("#search-string").on("keypress", function(event) {
+                if (event.which == 13 && !event.shiftKey) {
+                    event.preventDefault();
+                    submitSearch();
+                }
+            });
+
+        });
+
+</script>
+}
