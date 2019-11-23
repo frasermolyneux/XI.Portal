@@ -27,7 +27,13 @@ namespace XI.Portal.Plugins.LogProxyPlugin
 
             var commandsToBlock = new string[] { "!fu", "!like", "!dislike" };
 
-            if (commandsToBlock.Any(c => eventArgs.LineData.StartsWith(c))) return; // block commands from being proxied, will need to do this with any additional commands
+            foreach (var command in commandsToBlock)
+            {
+                if (eventArgs.LineData.ToLower().Contains(command))
+                {
+                    return; // block commands from being proxied, will need to do this with any additional commands
+                }
+            }
 
             var localLogFilePath = $"{statsLogProxyPluginConfiguration.StatsLogBaseDirectory}\\{eventArgs.ServerId}\\games_mp.log";
 
