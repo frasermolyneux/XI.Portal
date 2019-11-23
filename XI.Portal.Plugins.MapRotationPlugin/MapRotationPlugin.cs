@@ -36,13 +36,13 @@ namespace XI.Portal.Plugins.MapRotationPlugin
         {
             var eventArgs = (OnChatMessageEventArgs)e;
 
-            if (!eventArgs.Message.ToLower().StartsWith("!like") || !eventArgs.Message.ToLower().StartsWith("!dislike"))
+            if (!eventArgs.Message.ToLower().StartsWith("!like") && !eventArgs.Message.ToLower().StartsWith("!dislike"))
             {
                 return;
             }
 
             var like = false;
-            if (!eventArgs.Message.ToLower().StartsWith("!like")) like = true;
+            if (eventArgs.Message.ToLower().StartsWith("!like")) like = true;
 
             logger.Information("[{serverName}] Like/Dislike initiated for {name} with feedback {feedback}", eventArgs.ServerName, eventArgs.Name, like);
 
@@ -116,6 +116,11 @@ namespace XI.Portal.Plugins.MapRotationPlugin
                     logger.Information("[{serverName}] Like/Dislike for {name} against {map} created with feedback {feedback}", eventArgs.ServerName, eventArgs.Name, currentMap, like);
                     //TODO: Send a message back saying the vote has been updated
                 }
+
+                if (like)
+                    rconClient.Say($"{eventArgs.Name} likes this map! - thanks for the feedback");
+                else
+                    rconClient.Say($"{eventArgs.Name} dislikes this map! - thanks for the feedback");
             }
         }
 
