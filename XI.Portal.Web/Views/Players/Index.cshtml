@@ -119,25 +119,34 @@
                     refresh: false
                 });
 
-        });
+            function submitSearch() {
+                searchString = $.trim($("#search-string").val());
 
-        $("#search-button").button().click(function(){
-            searchString = $.trim($("#search-string").val());
+                if(searchString == ""){
+                    alert("Please enter something before searching!");
+                    $("#search-string").val("").focus();
+                }
+                else{
+                    $("#playerList").jqGrid('setGridParam',{url:'/Players/GetPlayersAjax/@Model?_search=true&searchString='+searchString});
+                    $("#playerList").jqGrid().trigger('reloadGrid');  
+                }
+            }
 
-            if(searchString == ""){
-                alert("Please enter something before searching!");
+            $("#search-button").button().click(submitSearch);
+
+            $("#clear-button").button().click(function () {
                 $("#search-string").val("").focus();
-            }
-            else{
-                $("#playerList").jqGrid('setGridParam',{url:'/Players/GetPlayersAjax/@Model?_search=true&searchString='+searchString});
+                $("#playerList").jqGrid('setGridParam',{url:'/Players/GetPlayersAjax/@Model'});
                 $("#playerList").jqGrid().trigger('reloadGrid');  
-            }
-        });
+            });
 
-        $("#clear-button").button().click(function () {
-            $("#search-string").val("").focus();
-            $("#playerList").jqGrid('setGridParam',{url:'/Players/GetPlayersAjax/@Model'});
-            $("#playerList").jqGrid().trigger('reloadGrid');  
+            $("#search-string").on("keypress", function(event) {
+                if (event.which == 13 && !event.shiftKey) {
+                    event.preventDefault();
+                    submitSearch();
+                }
+            });
+
         });
 
     </script>
