@@ -18,5 +18,7 @@ namespace XI.Portal.Data.Core.Models
         public string MapName { get; set; }
 
         public List<MapFile> MapFiles { get; set; }
+
+        public List<MapVote> MapVotes { get; set; }
     }
 }

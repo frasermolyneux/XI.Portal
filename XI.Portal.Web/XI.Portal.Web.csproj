@@ -243,6 +243,7 @@
     <Compile Include="ViewModels\AdmBanFileMonitor\CreateBanFileMonitorViewModel.cs" />
     <Compile Include="ViewModels\AdmBanFileMonitor\EditBanFileMonitorViewModel.cs" />
     <Compile Include="ViewModels\AdmServers\RconStatusResultViewModel.cs" />
+    <Compile Include="ViewModels\Maps\MapRotationViewModel.cs" />
     <Compile Include="ViewModels\Servers\ServersIndexViewModel.cs" />
     <Compile Include="ViewModels\Bans\ClaimBanViewModel.cs" />
     <Compile Include="Controllers\CommunityController.cs" />

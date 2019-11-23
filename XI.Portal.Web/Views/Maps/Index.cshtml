@@ -40,8 +40,10 @@
 @section Scripts {
     @Scripts.Render("~/plugins/jqGrid")
 
-<script type="text/javascript">
-        $(document).ready(function() {
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
 
             function formatGameType(cellValue, options, rowObject) {
                 return "<img src='/Images/icons/" + rowObject.GameType + ".png' alt='" + cellValue + "' width='16' height='16' />";
@@ -51,11 +53,19 @@
                 return "<img style=\"border: 5px solid #021a40; display: block; margin: auto;\" src=\"/MapImage/Image?gameType=" + rowObject.GameType + "&mapName=" + rowObject.MapName + "\" alt=\"" + rowObject.MapName + "\" />";
             }
 
+            function formatLikeDislike(cellValue, options, rowObject) {
+                return  "<div class=\"progress\" id=\"progress-" + rowObject.MapName + "\">" +
+                    "<div class=\"progress-bar bg-info\" role=\"progressbar\" style=\"width: " + rowObject.LikePercentage + "%\" aria-valuenow=\"" + rowObject.TotalLike + "\" aria-valuemin=\"0\" aria-valuemax=\"" + rowObject.TotalVotes + "\"></div>" +
+                    "<div class=\"progress-bar bg-danger\" role=\"progressbar\" style=\"width: " + rowObject.DislikePercentage + "%\" aria-valuenow=\"" + rowObject.TotalDislike + "\" aria-valuemin=\"0\" aria-valuemax=\"" + rowObject.TotalVotes + "\"></div>" +
+                        "</div>" + 
+                "<div class=\"m-t-sm\">" + rowObject.TotalLike + " likes and " + rowObject.TotalDislike + " dislikes out of " + rowObject.TotalVotes + "</div>";
+            }
+
             jQuery("#mapList").jqGrid({
                 url: '/Maps/GetGlobalMapListAjax',
                 datatype: 'json',
                 mType: 'GET',
-                colNames: ['Game', 'Name', ''],
+                colNames: ['Game', 'Name', 'Popularity', ''],
                 colModel: [
                     {
                         name: 'GameType',
@@ -76,8 +86,18 @@
                         search: false
                     },
                     {
-                        name: 'GameType',
-                        index: 'GameType',
+                        name: 'LikeDislike',
+                        index: 'LikeDislike',
+                        hidden: false,
+                        editable: false,
+                        sortable: false,
+                        search: false,
+                        formatter: formatLikeDislike,
+                        width: 30
+                    },
+                    {
+                        name: 'MapImage',
+                        index: 'MapImage',
                         hidden: false,
                         editable: false,
                         sortable: false,
@@ -106,12 +126,12 @@
             function submitSearch() {
                 searchString = $.trim($("#search-string").val());
 
-                if(searchString == ""){
+                if (searchString == "") {
                     alert("Please enter something before searching!");
                     $("#search-string").val("").focus();
                 }
-                else{
-                    $("#mapList").jqGrid('setGridParam',{url:'/Maps/GetGlobalMapListAjax?_search=true&searchString='+searchString});
+                else {
+                    $("#mapList").jqGrid('setGridParam', { url: '/Maps/GetGlobalMapListAjax?_search=true&searchString=' + searchString });
                     $("#mapList").jqGrid().trigger('reloadGrid');
                 }
             }
@@ -120,11 +140,11 @@
 
             $("#clear-button").button().click(function () {
                 $("#search-string").val("").focus();
-                $("#mapList").jqGrid('setGridParam',{url:'/Maps/GetGlobalMapListAjax'});
+                $("#mapList").jqGrid('setGridParam', { url: '/Maps/GetGlobalMapListAjax' });
                 $("#mapList").jqGrid().trigger('reloadGrid');
             });
 
-            $("#search-string").on("keypress", function(event) {
+            $("#search-string").on("keypress", function (event) {
                 if (event.which == 13 && !event.shiftKey) {
                     event.preventDefault();
                     submitSearch();
@@ -133,5 +153,5 @@
 
         });
 
-</script>
+    </script>
 }
