@@ -55,8 +55,9 @@ namespace XI.Portal.Web.Controllers
                 if (gameServer == null)
                     return RedirectToAction("Index");
 
-                var players = await context.LivePlayers.Where(player =>
-                    player.GameServer.ServerId == gameServer.ServerId).ToListAsync();
+                var players = await context.LivePlayers
+                    .Where(player => player.GameServer.ServerId == gameServer.ServerId)
+                    .OrderByDescending(player => player.Score).ToListAsync();
 
                 var currentMap = await context.Maps.Include(m => m.MapFiles).SingleOrDefaultAsync(m =>
                     m.MapName == gameServer.LiveMap && m.GameType == gameServer.GameType);
