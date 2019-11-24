@@ -28,10 +28,15 @@ namespace XI.Portal.Web.Controllers
         {
             using (var context = ContextProvider.GetContext())
             {
+                var gameServersTask = context.GameServers.Where(s => s.ShowOnPortalServerList).OrderBy(s => s.BannerServerListPosition).ToListAsync();
+                var livePlayersTask = context.LivePlayerLocations.ToListAsync();
+
+                Task.WaitAll(gameServersTask, livePlayersTask);
+
                 var model = new ServersIndexViewModel
                 {
-                    GameServers = await context.GameServers.Where(s => s.ShowOnPortalServerList).OrderBy(s => s.BannerServerListPosition).ToListAsync(),
-                    LivePlayerLocations = await context.LivePlayerLocations.ToListAsync()
+                    GameServers = gameServersTask.Result,
+                    LivePlayerLocations = livePlayersTask.Result
                 };
 
                 return View(model);
