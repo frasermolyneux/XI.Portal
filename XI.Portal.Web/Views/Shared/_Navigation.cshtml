@@ -7,30 +7,43 @@
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
 
-                <div class="dropdown profile-element">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="dropdown profile-element">
 
-                    <img alt="image" class="rounded-circle" src="@User.Identity.XtremeIdiotsPhotoUrl()" style="max-height: 170px; max-width: 170px"/>
+                        <img alt="image" class="rounded-circle" src="@User.Identity.XtremeIdiotsPhotoUrl()" style="max-height: 170px; max-width: 170px" />
 
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <span class="block m-t-xs font-bold">@Html.Raw(User.Identity.XtremeIdiotsFormattedName())</span>
-                        <span class="text-muted text-xs block">
-                            @Html.Raw(User.Identity.XtremeIdiotsPrimaryGroupIdFormattedName())
-                            <b class="caret"></b>
-                        </span>
-                    </a>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="block m-t-xs font-bold">@Html.Raw(User.Identity.XtremeIdiotsFormattedName())</span>
+                            <span class="text-muted text-xs block">
+                                @Html.Raw(User.Identity.XtremeIdiotsPrimaryGroupIdFormattedName())
+                                <b class="caret"></b>
+                            </span>
+                        </a>
 
-                    <ul class="dropdown-menu animated fadeInRight m-t-xs" style="left: 0px; position: absolute; top: 91px; will-change: top, left;">
-                        <li>
-                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm"}))
-                            {
-                                @Html.AntiForgeryToken()
-                            }
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs" style="left: 0px; position: absolute; top: 91px; will-change: top, left;">
+                            <li>
+                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                }
 
-                            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-                        </li>
-                    </ul>
+                                <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                            </li>
+                        </ul>
 
-                </div>
+                    </div>
+                }
+                else
+                {
+                    using (Html.BeginForm("ExternalLogin", "Account", FormMethod.Post, new { id = "externalLogin" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("provider", "XtremeIdiots")
+
+                        <input type="submit" class="btn btn-primary" value="XtremeIdiots Logon"/>
+                    }
+                }
 
                 <div class="logo-element">
                     >XI<

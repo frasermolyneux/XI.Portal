@@ -3,12 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using XI.Portal.Data.Core.Context;
-using XI.Portal.Library.Auth.XtremeIdiots;
 using XI.Portal.Library.Logging;
 
 namespace XI.Portal.Web.Controllers
 {
-    [Authorize(Roles = XtremeIdiotsRoles.LoggedInUser)]
+    [AllowAnonymous]
     public class MapsController : BaseController
     {
         public MapsController(

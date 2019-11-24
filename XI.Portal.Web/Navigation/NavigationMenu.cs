@@ -23,8 +23,14 @@ namespace XI.Portal.Web.Navigation
         {
             var menuItems = new List<MenuItemModel>();
 
-            if (identity == null)
+            if (!identity.IsAuthenticated)
+            {
+                HomeMenu(menuItems);
+                ServersMenu(menuItems, false);
+                CommunityMenu(menuItems);
+                MapsMenu(menuItems);
                 return menuItems;
+            }
 
             var primaryGroup = (XtremeIdiotsGroups) Convert.ToInt32(identity.XtremeIdiotsPrimaryGroupId());
 
@@ -33,6 +39,7 @@ namespace XI.Portal.Web.Navigation
                 case XtremeIdiotsGroups.Webmaster:
                 case XtremeIdiotsGroups.SeniorAdmin:
                     //All Users
+                    HomeMenu(menuItems);
                     ServersMenu(menuItems, true);
                     CommunityMenu(menuItems);
                     DemoManagerMenu(menuItems);
@@ -68,6 +75,7 @@ namespace XI.Portal.Web.Navigation
                 case XtremeIdiotsGroups.Rs2Admin:
                 case XtremeIdiotsGroups.Rs2HeadAdmin:
                     //All Users
+                    HomeMenu(menuItems);
                     ServersMenu(menuItems, true);
                     CommunityMenu(menuItems);
                     DemoManagerMenu(menuItems);
@@ -78,6 +86,7 @@ namespace XI.Portal.Web.Navigation
                     break;
                 default:
                     //All Users
+                    HomeMenu(menuItems);
                     ServersMenu(menuItems, false);
                     CommunityMenu(menuItems);
                     DemoManagerMenu(menuItems);
@@ -97,6 +106,12 @@ namespace XI.Portal.Web.Navigation
                 livePlayersMenu.SubMenuItems.Add(new SubMenuItemModel("Global ChatLog", "Servers", "GlobalChatLog"));
 
             menuItems.Add(livePlayersMenu);
+        }
+
+        private static void HomeMenu(ICollection<MenuItemModel> menuItems)
+        {
+            var homeMenu = new MenuItemModel("Home", "Landing", "Index", "home");
+            menuItems.Add(homeMenu);
         }
 
         private static void CommunityMenu(ICollection<MenuItemModel> menuItems)

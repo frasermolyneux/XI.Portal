@@ -14,7 +14,7 @@ using XI.Portal.Web.ViewModels.Servers;
 
 namespace XI.Portal.Web.Controllers
 {
-    [Authorize(Roles = XtremeIdiotsRoles.LoggedInUser)]
+    [AllowAnonymous]
     public class ServersController : BaseController
     {
         public ServersController(
@@ -107,8 +107,8 @@ namespace XI.Portal.Web.Controllers
             }
         }
 
-        [Authorize(Roles = XtremeIdiotsRoles.AdminAndModerators)]
         [HttpGet]
+        [Authorize(Roles = XtremeIdiotsRoles.AdminAndModerators)]
         public async Task<ActionResult> ChatLog(string id)
         {
             if (!Guid.TryParse(id, out var idAsGuid))
@@ -190,8 +190,9 @@ namespace XI.Portal.Web.Controllers
             }
         }
 
-        [Authorize(Roles = XtremeIdiotsRoles.AdminAndModerators)]
+        
         [HttpGet]
+        [Authorize(Roles = XtremeIdiotsRoles.AdminAndModerators)]
         public ActionResult GlobalChatLog()
         {
             return View();
