@@ -174,19 +174,9 @@ namespace XI.Portal.Web.Controllers
                     .AsQueryable();
 
                 if (_search && !string.IsNullOrWhiteSpace(searchString))
-                    switch (searchField)
-                    {
-                        case "Username":
-                            adminActions = searchOper == "eq"
-                                ? adminActions.Where(aa => aa.Player.Username == searchString).AsQueryable()
-                                : adminActions.Where(aa => aa.Player.Username.Contains(searchString)).AsQueryable();
-                            break;
-                        case "Guid":
-                            adminActions = searchOper == "eq"
-                                ? adminActions.Where(aa => aa.Player.Guid == searchString).AsQueryable()
-                                : adminActions.Where(aa => aa.Player.Guid.Contains(searchString)).AsQueryable();
-                            break;
-                    }
+                {
+                    adminActions = adminActions.Where(aa => aa.Player.Username.Contains(searchString) || aa.Player.Guid.Contains(searchString)).AsQueryable();
+                }
 
                 var totalRecords = adminActions.Count();
                 var skip = (page - 1) * rows;
