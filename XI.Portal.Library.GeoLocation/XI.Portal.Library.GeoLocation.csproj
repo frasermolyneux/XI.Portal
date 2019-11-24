@@ -61,9 +61,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XI.Portal.Library.Configuration\XI.Portal.Library.Configuration.csproj">
-      <Project>{48248EAE-811C-4361-9051-3EB705C50C9C}</Project>
-      <Name>XI.Portal.Library.Configuration</Name>
+    <ProjectReference Include="..\XI.Portal.Configuration\XI.Portal.Configuration.csproj">
+      <Project>{2A4F0282-D9C2-47C9-87BE-3E3A8110693D}</Project>
+      <Name>XI.Portal.Configuration</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -7,19 +7,19 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using XI.Portal.Configuration.Interfaces;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.CommonTypes;
-using XI.Portal.Library.Configuration;
 
 namespace XI.Portal.Library.Forums
 {
     public class ManageTopics : IManageTopics
     {
         private readonly IContextProvider contextProvider;
-        private readonly XtremeIdiotsForumsConfiguration xtremeIdiotsForumsConfiguration;
+        private readonly IForumsConfiguration xtremeIdiotsForumsConfiguration;
 
-        public ManageTopics(XtremeIdiotsForumsConfiguration xtremeIdiotsForumsConfiguration, IContextProvider contextProvider)
+        public ManageTopics(IForumsConfiguration xtremeIdiotsForumsConfiguration, IContextProvider contextProvider)
         {
             this.xtremeIdiotsForumsConfiguration = xtremeIdiotsForumsConfiguration ?? throw new ArgumentNullException(nameof(xtremeIdiotsForumsConfiguration));
             this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
@@ -97,7 +97,7 @@ namespace XI.Portal.Library.Forums
             {
                 var requestParams = new NameValueCollection
                 {
-                    {"key", xtremeIdiotsForumsConfiguration.XtremeIdiotsForumsApiKey},
+                    {"key", xtremeIdiotsForumsConfiguration.ApiKey},
                     {"forum", forumId.ToString()},
                     {"author", authorId.ToString()},
                     {"title", title},
@@ -123,7 +123,7 @@ namespace XI.Portal.Library.Forums
             {
                 var requestParams = new NameValueCollection
                 {
-                    {"key", xtremeIdiotsForumsConfiguration.XtremeIdiotsForumsApiKey},
+                    {"key", xtremeIdiotsForumsConfiguration.ApiKey},
                     {"author", authorId.ToString()},
                     {"post", post}
                 };

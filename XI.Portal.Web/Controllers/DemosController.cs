@@ -12,13 +12,13 @@ using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.AspNet.Identity;
+using XI.Portal.Configuration.Interfaces;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Auth;
 using XI.Portal.Library.Auth.Extensions;
 using XI.Portal.Library.Auth.XtremeIdiots;
 using XI.Portal.Library.CommonTypes;
-using XI.Portal.Library.Configuration;
 using XI.Portal.Library.DemoManager.Extensions;
 using XI.Portal.Library.DemoManager.Models;
 using XI.Portal.Library.Logging;
@@ -30,13 +30,13 @@ namespace XI.Portal.Web.Controllers
     public class DemosController : BaseController
     {
         private readonly ApplicationUserManager applicationUserManager;
-        private readonly DemoManagerConfiguration demoManagerConfiguration;
+        private readonly IDemosConfiguration demoManagerConfiguration;
 
         public DemosController(
             IContextProvider contextProvider,
             IDatabaseLogger databaseLogger,
             ApplicationUserManager applicationUserManager,
-            DemoManagerConfiguration demoManagerConfiguration) : base(contextProvider, databaseLogger)
+            IDemosConfiguration demoManagerConfiguration) : base(contextProvider, databaseLogger)
         {
             this.applicationUserManager = applicationUserManager ?? throw new ArgumentNullException(nameof(applicationUserManager));
             this.demoManagerConfiguration = demoManagerConfiguration ?? throw new ArgumentNullException(nameof(demoManagerConfiguration));
@@ -287,7 +287,7 @@ namespace XI.Portal.Web.Controllers
 
                 using (var client = new WebClient())
                 {
-                    var uri = $"https://s3.us-east-2.amazonaws.com/{demoManagerConfiguration.DemoBucketName}/demos/{demo.Game}/{demo.FileName}";
+                    var uri = $"https://s3.us-east-2.amazonaws.com/{demoManagerConfiguration.S3BucketName}/demos/{demo.Game}/{demo.FileName}";
                     var file = client.DownloadData(uri);
 
                     var cd = new ContentDisposition
@@ -316,7 +316,7 @@ namespace XI.Portal.Web.Controllers
 
                 using (var client = new WebClient())
                 {
-                    var uri = $"https://s3.us-east-2.amazonaws.com/{demoManagerConfiguration.DemoBucketName}/demos/{demo.Game}/{demo.FileName}";
+                    var uri = $"https://s3.us-east-2.amazonaws.com/{demoManagerConfiguration.S3BucketName}/demos/{demo.Game}/{demo.FileName}";
                     var file = client.DownloadData(uri);
 
                     var cd = new ContentDisposition
@@ -383,8 +383,8 @@ namespace XI.Portal.Web.Controllers
 
         private void SaveToS3(string filePath, GameType gameType)
         {
-            var s3BucketName = demoManagerConfiguration.DemoBucketName;
-            var client = new AmazonS3Client(new BasicAWSCredentials(demoManagerConfiguration.AwsAccessKey, demoManagerConfiguration.AwsSecretKey), demoManagerConfiguration.AwsRegion);
+            var s3BucketName = demoManagerConfiguration.S3BucketName;
+            var client = new AmazonS3Client(new BasicAWSCredentials(demoManagerConfiguration.AccessKey, demoManagerConfiguration.SecretKey), demoManagerConfiguration.Region);
 
             var fileInfo = new FileInfo(filePath);
             var key = $"demos/{gameType}/{fileInfo.Name}";

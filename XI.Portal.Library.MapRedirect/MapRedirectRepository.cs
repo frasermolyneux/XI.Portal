@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
-using XI.Portal.Library.Configuration;
+using XI.Portal.Configuration.Interfaces;
 using XI.Portal.Library.MapRedirect.Models;
 
 namespace XI.Portal.Library.MapRedirect
 {
     public class MapRedirectRepository : IMapRedirectRepository
     {
-        private readonly MapRedirectConfiguration mapRedirectConfiguration;
+        private readonly IMapsConfiguration mapRedirectConfiguration;
 
-        public MapRedirectRepository(MapRedirectConfiguration mapRedirectConfiguration)
+        public MapRedirectRepository(IMapsConfiguration mapRedirectConfiguration)
         {
             this.mapRedirectConfiguration = mapRedirectConfiguration ?? throw new ArgumentNullException(nameof(mapRedirectConfiguration));
         }

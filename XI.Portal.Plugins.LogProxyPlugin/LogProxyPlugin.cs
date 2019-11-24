@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using XI.Portal.Library.Configuration;
+using XI.Portal.Configuration.Interfaces;
 using XI.Portal.Plugins.Events;
 using XI.Portal.Plugins.Interfaces;
 
@@ -9,9 +8,9 @@ namespace XI.Portal.Plugins.LogProxyPlugin
 {
     public class LogProxyPlugin : IPlugin
     {
-        private readonly StatsLogProxyPluginConfiguration statsLogProxyPluginConfiguration;
+        private readonly ILogProxyPluginConfiguration statsLogProxyPluginConfiguration;
 
-        public LogProxyPlugin(StatsLogProxyPluginConfiguration statsLogProxyPluginConfiguration)
+        public LogProxyPlugin(ILogProxyPluginConfiguration statsLogProxyPluginConfiguration)
         {
             this.statsLogProxyPluginConfiguration = statsLogProxyPluginConfiguration ?? throw new ArgumentNullException(nameof(statsLogProxyPluginConfiguration));
         }
@@ -35,7 +34,7 @@ namespace XI.Portal.Plugins.LogProxyPlugin
                 }
             }
 
-            var localLogFilePath = $"{statsLogProxyPluginConfiguration.StatsLogBaseDirectory}\\{eventArgs.ServerId}\\games_mp.log";
+            var localLogFilePath = $"{statsLogProxyPluginConfiguration.LogBaseDirectory}\\{eventArgs.ServerId}\\games_mp.log";
 
             Directory.CreateDirectory(Path.GetDirectoryName(localLogFilePath));
 

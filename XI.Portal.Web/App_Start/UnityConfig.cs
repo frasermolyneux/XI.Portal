@@ -8,11 +8,18 @@ using System.Web;
 using Unity;
 using Unity.Injection;
 using Unity.Lifetime;
+using XI.Portal.Configuration.AwsSecrets;
+using XI.Portal.Configuration.Database;
+using XI.Portal.Configuration.Demos;
+using XI.Portal.Configuration.Forums;
+using XI.Portal.Configuration.GeoLocation;
+using XI.Portal.Configuration.Interfaces;
+using XI.Portal.Configuration.LogProxyPlugin;
+using XI.Portal.Configuration.Maps;
+using XI.Portal.Configuration.Providers;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Auth;
-using XI.Portal.Library.Configuration;
-using XI.Portal.Library.Configuration.Providers;
 using XI.Portal.Library.Forums;
 using XI.Portal.Library.GameTracker;
 using XI.Portal.Library.GeoLocation.Repository;
@@ -47,15 +54,21 @@ namespace XI.Portal.Web.Portal
 
             container.RegisterFactory<ILogger>((ctr, type, name) => logger, new ContainerControlledLifetimeManager());
 
-            container.RegisterType<AppSettingConfigurationProvider>();
-            container.RegisterType<AwsSecretConfigurationProvider>();
-            container.RegisterType<AwsConfiguration>();
-            container.RegisterType<DatabaseConfiguration>();
-            container.RegisterType<XtremeIdiotsForumsConfiguration>();
-            container.RegisterType<DemoManagerConfiguration>();
-            container.RegisterType<GeoLocationConfiguration>();
-            container.RegisterType<MapRedirectConfiguration>();
+            // Configuration Providers
+            container.RegisterType<IConfigurationProvider, ConfigurationProvider>();
+            container.RegisterType<IAwsSecretConfigurationProvider, AwsSecretConfigurationProvider>();
+            container.RegisterType<ILocalConfigurationProvider, LocalConfigurationProvider>();
 
+            // Configurations
+            container.RegisterType<IAwsSecretsConfiguration, AwsSecretsConfiguration>();
+            container.RegisterType<IDatabaseConfiguration, DatabaseConfiguration>();
+            container.RegisterType<IDemosConfiguration, DemosConfiguration>();
+            container.RegisterType<IForumsConfiguration, ForumsConfiguration>();
+            container.RegisterType<IGeoLocationConfiguration, GeoLocationConfiguration>();
+            container.RegisterType<ILogProxyPluginConfiguration, LogProxyPluginConfiguration>();
+            container.RegisterType<IMapsConfiguration, MapsConfiguration>();
+
+            // Other
             container.RegisterType<IContextProvider, ContextProvider>();
             container.RegisterType<INavigationMenu, NavigationMenu>();
             container.RegisterType<IMapImageRepository, MapImageRepository>();
@@ -65,8 +78,8 @@ namespace XI.Portal.Web.Portal
             container.RegisterType<IManageTopics, ManageTopics>();
             container.RegisterType<IRconClientFactory, RconClientFactory>();
 
-            var contextProvider = container.Resolve<DatabaseConfiguration>();
-            container.RegisterType<DbContext, PortalContext>(new InjectionConstructor(contextProvider.DbConnectionString));
+            var contextProvider = container.Resolve<IDatabaseConfiguration>();
+            container.RegisterType<DbContext, PortalContext>(new InjectionConstructor(contextProvider.PortalDbConnectionString));
             var context = container.Resolve<DbContext>();
 
             container.RegisterType<ApplicationSignInManager>();

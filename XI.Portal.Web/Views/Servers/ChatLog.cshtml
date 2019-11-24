@@ -22,6 +22,9 @@
                         <button type="button" id="clear-button" class="btn btn-primary">
                             Clear
                         </button>
+                        <button type="button" id="refresh-button" class="btn btn-primary">
+                            Refresh
+                        </button>
                     </span>
                 </div>
             </div>
@@ -149,6 +152,10 @@
                     event.preventDefault();
                     submitSearch();
                 }
+            });
+
+            $("#refresh-button").button().click(function () {
+                $("#chatLog").jqGrid().trigger('reloadGrid');
             });
 
         });

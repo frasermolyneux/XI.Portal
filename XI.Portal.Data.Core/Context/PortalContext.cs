@@ -20,7 +20,7 @@ namespace XI.Portal.Data.Core.Context
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<PortalContext, Configuration>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<PortalContext, PortalDbMigrationConfiguration>());
             base.OnModelCreating(modelBuilder);
         }
 

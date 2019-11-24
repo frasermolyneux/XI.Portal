@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Serilog;
 using XI.Portal.Library.CommonTypes;
 using XI.Portal.Plugins.Events;
