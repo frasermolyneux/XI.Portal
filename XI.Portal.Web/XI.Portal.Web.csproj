@@ -56,6 +56,9 @@
     <Reference Include="AWSSDK.S3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
       <HintPath>..\packages\AWSSDK.S3.3.3.102.5\lib\net45\AWSSDK.S3.dll</HintPath>
     </Reference>
+    <Reference Include="AWSSDK.SecretsManager, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.SecretsManager.3.3.100.28\lib\net45\AWSSDK.SecretsManager.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetOpenAuth.AspNet, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetOpenAuth.AspNet.4.3.4.13329\lib\net45-full\DotNetOpenAuth.AspNet.dll</HintPath>
     </Reference>
@@ -1838,6 +1841,10 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\XI.Portal.Configuration\XI.Portal.Configuration.csproj">
+      <Project>{2A4F0282-D9C2-47C9-87BE-3E3A8110693D}</Project>
+      <Name>XI.Portal.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Data.Core\XI.Portal.Data.Core.csproj">
       <Project>{a667b4a5-35c2-4953-ab21-07de8ff07ce5}</Project>
       <Name>XI.Portal.Data.Core</Name>
@@ -1849,10 +1856,6 @@
     <ProjectReference Include="..\XI.Portal.Library.CommonTypes\XI.Portal.Library.CommonTypes.csproj">
       <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
       <Name>XI.Portal.Library.CommonTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XI.Portal.Library.Configuration\XI.Portal.Library.Configuration.csproj">
-      <Project>{48248EAE-811C-4361-9051-3EB705C50C9C}</Project>
-      <Name>XI.Portal.Library.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.DemoManager\XI.Portal.Library.DemoManager.csproj">
       <Project>{92948eb3-e964-4106-9c9f-d1651786bc26}</Project>
@@ -1885,6 +1888,7 @@
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\AWSSDK.S3.3.3.102.5\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
+    <Analyzer Include="..\packages\AWSSDK.SecretsManager.3.3.100.28\analyzers\dotnet\cs\AWSSDK.SecretsManager.CodeAnalysis.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

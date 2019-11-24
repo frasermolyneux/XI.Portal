@@ -3,9 +3,9 @@ namespace XI.Portal.Data.Core.Migrations
     using System.Data.Entity.Migrations;
     using XI.Portal.Data.Core.Context;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<PortalContext>
+    internal sealed class PortalDbMigrationConfiguration : DbMigrationsConfiguration<PortalContext>
     {
-        public Configuration()
+        public PortalDbMigrationConfiguration()
         {
             AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;

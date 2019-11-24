@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Auth.XtremeIdiots;
-using XI.Portal.Library.CommonTypes;
 using XI.Portal.Library.Logging;
 using XI.Portal.Library.Rcon.Interfaces;
 

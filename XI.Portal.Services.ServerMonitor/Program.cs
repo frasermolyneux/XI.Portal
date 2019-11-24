@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Threading;
 using Serilog;
 using Topshelf;
 using Topshelf.Unity;
 using Unity;
-using Unity.Injection;
 using Unity.Lifetime;
+using XI.Portal.Configuration.AwsSecrets;
+using XI.Portal.Configuration.Database;
+using XI.Portal.Configuration.Demos;
+using XI.Portal.Configuration.Forums;
+using XI.Portal.Configuration.GeoLocation;
+using XI.Portal.Configuration.Interfaces;
+using XI.Portal.Configuration.LogProxyPlugin;
+using XI.Portal.Configuration.Maps;
+using XI.Portal.Configuration.Providers;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
-using XI.Portal.Library.Configuration;
-using XI.Portal.Library.Configuration.Providers;
 using XI.Portal.Library.Logging;
-using XI.Portal.Library.Logging.Sinks;
 using XI.Portal.Library.ServerInfo;
 
 namespace XI.Portal.Services.ServerMonitor
@@ -31,13 +35,23 @@ namespace XI.Portal.Services.ServerMonitor
                 .CreateLogger();
             Log.Logger = logger;
 
-            container.RegisterType<AppSettingConfigurationProvider>();
-            container.RegisterType<AwsSecretConfigurationProvider>();
-            container.RegisterType<AwsConfiguration>();
-            container.RegisterType<DatabaseConfiguration>();
-
             container.RegisterFactory<ILogger>((ctr, type, name) => logger, new ContainerControlledLifetimeManager());
 
+            // Configuration Providers
+            container.RegisterType<IConfigurationProvider, ConfigurationProvider>();
+            container.RegisterType<IAwsSecretConfigurationProvider, AwsSecretConfigurationProvider>();
+            container.RegisterType<ILocalConfigurationProvider, LocalConfigurationProvider>();
+
+            // Configurations
+            container.RegisterType<IAwsSecretsConfiguration, AwsSecretsConfiguration>();
+            container.RegisterType<IDatabaseConfiguration, DatabaseConfiguration>();
+            container.RegisterType<IDemosConfiguration, DemosConfiguration>();
+            container.RegisterType<IForumsConfiguration, ForumsConfiguration>();
+            container.RegisterType<IGeoLocationConfiguration, GeoLocationConfiguration>();
+            container.RegisterType<ILogProxyPluginConfiguration, LogProxyPluginConfiguration>();
+            container.RegisterType<IMapsConfiguration, MapsConfiguration>();
+
+            // Other
             container.RegisterType<IContextProvider, ContextProvider>();
             container.RegisterType<IDatabaseLogger, DatabaseLogger>();
 

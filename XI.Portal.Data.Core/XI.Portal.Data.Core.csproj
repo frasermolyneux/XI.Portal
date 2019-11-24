@@ -57,7 +57,7 @@
     <Compile Include="Context\ConnectionStringHack.cs" />
     <Compile Include="Context\PortalContext.cs" />
     <Compile Include="Context\ContextProvider.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\PortalDbMigrationConfiguration.cs" />
     <Compile Include="Models\AdminAction.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\BanFileMonitor.cs" />
@@ -84,13 +84,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\XI.Portal.Configuration\XI.Portal.Configuration.csproj">
+      <Project>{2A4F0282-D9C2-47C9-87BE-3E3A8110693D}</Project>
+      <Name>XI.Portal.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.CommonTypes\XI.Portal.Library.CommonTypes.csproj">
       <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
       <Name>XI.Portal.Library.CommonTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XI.Portal.Library.Configuration\XI.Portal.Library.Configuration.csproj">
-      <Project>{48248EAE-811C-4361-9051-3EB705C50C9C}</Project>
-      <Name>XI.Portal.Library.Configuration</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

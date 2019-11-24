@@ -1,5 +1,5 @@
 ﻿using System;
-using XI.Portal.Library.Configuration;
+using XI.Portal.Configuration.Interfaces;
 
 namespace XI.Portal.Data.Core.Context
 {
@@ -10,18 +10,18 @@ namespace XI.Portal.Data.Core.Context
 
     public class ContextProvider : IContextProvider
     {
-        private readonly DatabaseConfiguration databaseConfiguration;
+        private readonly IDatabaseConfiguration databaseConfiguration;
 
         private bool disposed;
 
-        public ContextProvider(DatabaseConfiguration databaseConfiguration)
+        public ContextProvider(IDatabaseConfiguration databaseConfiguration)
         {
             this.databaseConfiguration = databaseConfiguration;
         }
 
         public PortalContext GetContext()
         {
-            var portalContext = new PortalContext(databaseConfiguration.DbConnectionString);
+            var portalContext = new PortalContext(databaseConfiguration.PortalDbConnectionString);
             portalContext.Database.CreateIfNotExists();
 
             return portalContext;

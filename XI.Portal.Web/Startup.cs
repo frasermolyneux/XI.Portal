@@ -5,11 +5,11 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using Unity;
+using XI.Portal.Configuration.Interfaces;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Auth;
 using XI.Portal.Library.Auth.Extensions;
 using XI.Portal.Library.Auth.XtremeIdiots;
-using XI.Portal.Library.Configuration;
 using XI.Portal.Web;
 using XI.Portal.Web.Portal;
 
@@ -37,12 +37,12 @@ namespace XI.Portal.Web
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
 
-            var xtremeIdiotsForumsConfiguration = UnityConfig.Container.Resolve<XtremeIdiotsForumsConfiguration>();
+            var xtremeIdiotsForumsConfiguration = UnityConfig.Container.Resolve<IForumsConfiguration>();
 
             app.UseXtremeIdiotsAuthentication(new XtremeIdiotsOAuth2AuthenticationOptions
             {
-                ClientId = xtremeIdiotsForumsConfiguration.XtremeIdiotsOAuthClientId,
-                ClientSecret = xtremeIdiotsForumsConfiguration.XtremeIdiotsOAuthClientSecret
+                ClientId = xtremeIdiotsForumsConfiguration.OAuthClientId,
+                ClientSecret = xtremeIdiotsForumsConfiguration.OAuthClientSecret
             });
         }
     }

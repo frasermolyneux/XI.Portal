@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Polly;
 using Serilog;
-using XI.Portal.Library.Configuration;
+using XI.Portal.Configuration.Interfaces;
 using XI.Portal.Library.GeoLocation.Models;
 
 namespace XI.Portal.Library.GeoLocation.Repository
 {
     public class GeoLocationApiRepository : IGeoLocationApiRepository
     {
-        private readonly GeoLocationConfiguration geoLocationConfiguration;
+        private readonly IGeoLocationConfiguration geoLocationConfiguration;
         private readonly ILogger logger;
 
-        public GeoLocationApiRepository(ILogger logger, GeoLocationConfiguration geoLocationConfiguration)
+        public GeoLocationApiRepository(ILogger logger, IGeoLocationConfiguration geoLocationConfiguration)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.geoLocationConfiguration = geoLocationConfiguration ?? throw new ArgumentNullException(nameof(geoLocationConfiguration));
