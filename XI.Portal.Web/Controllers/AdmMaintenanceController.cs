@@ -60,6 +60,25 @@ namespace XI.Portal.Web.Controllers
                 var servers = await context.GameServers.ToListAsync();
 
                 foreach (var gameServer in servers)
+                {
+                    if (string.IsNullOrWhiteSpace(gameServer.FtpHostname))
+                    {
+                        results.Add(gameServer.Title, "FtpHostname is empty");
+                        continue;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(gameServer.FtpUsername))
+                    {
+                        results.Add(gameServer.Title, "FtpUsername is empty");
+                        continue;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(gameServer.FtpPassword))
+                    {
+                        results.Add(gameServer.Title, "FtpPassword is empty");
+                        continue;
+                    }
+
                     try
                     {
                         var request = (FtpWebRequest) WebRequest.Create($"ftp://{gameServer.FtpHostname}/");
@@ -73,6 +92,7 @@ namespace XI.Portal.Web.Controllers
                     {
                         results.Add(gameServer.Title, ex.Message);
                     }
+                }
             }
 
             return View(results);
