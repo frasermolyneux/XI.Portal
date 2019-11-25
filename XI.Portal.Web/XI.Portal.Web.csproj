@@ -295,9 +295,7 @@
     <Compile Include="ViewModels\AdmRconMonitor\EditRconMonitorViewModel.cs" />
     <Compile Include="Controllers\MapsController.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
-    <Compile Include="ViewModels\Players\GameIndexViewModel.cs" />
     <Compile Include="Controllers\PlayersController.cs" />
-    <Compile Include="ViewModels\Players\PlayersIndexViewModel.cs" />
     <Compile Include="Controllers\ServersController.cs" />
     <Compile Include="Extensions\PlayerHtmlExtensions.cs" />
     <Compile Include="Extensions\ServerHtmlExtensions.cs" />
@@ -1859,6 +1857,10 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\XI.Portal.BLL\XI.Portal.BLL.csproj">
+      <Project>{73B448CD-DBE9-4993-ADE3-86E6BFD2E653}</Project>
+      <Name>XI.Portal.BLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Configuration\XI.Portal.Configuration.csproj">
       <Project>{2A4F0282-D9C2-47C9-87BE-3E3A8110693D}</Project>
       <Name>XI.Portal.Configuration</Name>
@@ -1902,6 +1904,10 @@
     <ProjectReference Include="..\XI.Portal.Library.Rcon\XI.Portal.Library.Rcon.csproj">
       <Project>{4DF50DC6-1FDE-4D75-B557-42EABCF4728C}</Project>
       <Name>XI.Portal.Library.Rcon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Repositories\XI.Portal.Repositories.csproj">
+      <Project>{F4938DFF-270C-41BD-9B86-F159063DDFF6}</Project>
+      <Name>XI.Portal.Repositories</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

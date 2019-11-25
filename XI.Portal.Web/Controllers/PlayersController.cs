@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using XI.Portal.BLL.Interfaces;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Auth.XtremeIdiots;
@@ -21,47 +22,22 @@ namespace XI.Portal.Web.Controllers
     public class PlayersController : BaseController
     {
         private readonly IGeoLocationApiRepository geoLocationApiRepository;
+        private readonly IPortalIndex portalIndex;
 
         public PlayersController(
             IContextProvider contextProvider,
             IDatabaseLogger databaseLogger,
-            IGeoLocationApiRepository geoLocationApiRepository) : base(contextProvider, databaseLogger)
+            IGeoLocationApiRepository geoLocationApiRepository, 
+            IPortalIndex portalIndex) : base(contextProvider, databaseLogger)
         {
             this.geoLocationApiRepository = geoLocationApiRepository ?? throw new ArgumentNullException(nameof(geoLocationApiRepository));
+            this.portalIndex = portalIndex ?? throw new ArgumentNullException(nameof(portalIndex));
         }
 
         [HttpGet]
         public async Task<ActionResult> Home()
         {
-            using (var context = ContextProvider.GetContext())
-            {
-                var model = new PlayersIndexViewModel
-                {
-                    TotalTrackedPlayers = await context.Players.CountAsync(),
-                    TotalOnlinePlayers = await context.LivePlayers.CountAsync(),
-                    TotalBannedPlayers = await context.AdminActions.Where(aa => aa.Type == AdminActionType.Ban && aa.Expires == null
-                                                                                || aa.Type == AdminActionType.TempBan && aa.Expires > DateTime.UtcNow).CountAsync(),
-                    TotalUnclaimedBans = await context.AdminActions.Where(aa => aa.Type == AdminActionType.Ban && aa.Expires == null && aa.Admin == null).CountAsync()
-                };
-
-                var games = await context.Players.Select(p => p.GameType).Distinct().ToListAsync();
-
-                foreach (var gameType in games.OrderBy(gt => gt.ToString()))
-                {
-                    var gameModel = new GameIndexViewModel
-                    {
-                        GameType = gameType,
-                        TrackedPlayers = await context.Players.Where(p => p.GameType == gameType).CountAsync(),
-                        BannedPlayers = await context.AdminActions.Where(aa => aa.Player.GameType == gameType
-                                                                               && (aa.Type == AdminActionType.Ban && aa.Expires == null
-                                                                                   || aa.Type == AdminActionType.TempBan && aa.Expires > DateTime.UtcNow)).CountAsync()
-                    };
-
-                    model.GameIndexViewModels.Add(gameModel);
-                }
-
-                return View(model);
-            }
+            return View(await portalIndex.GetPortalIndexViewModel());
         }
 
         [HttpGet]

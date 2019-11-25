@@ -8,6 +8,8 @@ using System.Web;
 using Unity;
 using Unity.Injection;
 using Unity.Lifetime;
+using XI.Portal.BLL.Interfaces;
+using XI.Portal.BLL.PlayerManagement;
 using XI.Portal.Configuration.AwsSecrets;
 using XI.Portal.Configuration.Database;
 using XI.Portal.Configuration.Demos;
@@ -27,6 +29,8 @@ using XI.Portal.Library.Logging;
 using XI.Portal.Library.MapRedirect;
 using XI.Portal.Library.Rcon.Factories;
 using XI.Portal.Library.Rcon.Interfaces;
+using XI.Portal.Repositories;
+using XI.Portal.Repositories.Interfaces;
 using XI.Portal.Web.Navigation;
 
 namespace XI.Portal.Web.Portal
@@ -67,6 +71,14 @@ namespace XI.Portal.Web.Portal
             container.RegisterType<IGeoLocationConfiguration, GeoLocationConfiguration>();
             container.RegisterType<ILogProxyPluginConfiguration, LogProxyPluginConfiguration>();
             container.RegisterType<IMapsConfiguration, MapsConfiguration>();
+
+            // BLL
+            container.RegisterType<IPortalIndex, PortalIndex>();
+
+            // Repositories
+            container.RegisterType<IAdminActionsRepositories, AdminActionsRepositories>();
+            container.RegisterType<ILivePlayersRepository, LivePlayersRepository>();
+            container.RegisterType<IPlayersRepository, PlayersRepository>();
 
             // Other
             container.RegisterType<IContextProvider, ContextProvider>();
