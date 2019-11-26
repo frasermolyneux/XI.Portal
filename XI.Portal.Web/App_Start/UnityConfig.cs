@@ -8,8 +8,8 @@ using System.Web;
 using Unity;
 using Unity.Injection;
 using Unity.Lifetime;
+using XI.Portal.BLL;
 using XI.Portal.BLL.Interfaces;
-using XI.Portal.BLL.PlayerManagement;
 using XI.Portal.Configuration.AwsSecrets;
 using XI.Portal.Configuration.Database;
 using XI.Portal.Configuration.Demos;
@@ -74,6 +74,7 @@ namespace XI.Portal.Web.Portal
 
             // BLL
             container.RegisterType<IPortalIndex, PortalIndex>();
+            container.RegisterType<IPlayersList, PlayersList>();
 
             // Repositories
             container.RegisterType<IAdminActionsRepositories, AdminActionsRepositories>();

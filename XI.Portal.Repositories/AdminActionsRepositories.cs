@@ -17,24 +17,19 @@ namespace XI.Portal.Repositories
             this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
         }
 
-        public async Task<int> GetActiveBansCount()
+        public async Task<int> GetActiveBansCount(GameType playerGame = GameType.Unknown)
         {
             using (var context = contextProvider.GetContext())
             {
-                return await context.AdminActions.Where(aa => aa.Type == AdminActionType.Ban && aa.Expires == null
-                    || aa.Type == AdminActionType.TempBan && aa.Expires > DateTime.UtcNow)
-                    .CountAsync();
-            }
-        }
+                var adminActions = context.AdminActions.Where(aa => aa.Type == AdminActionType.Ban && aa.Expires == null
+                    || aa.Type == AdminActionType.TempBan && aa.Expires > DateTime.UtcNow).AsQueryable();
 
-        public async Task<int> GetActiveBansCount(GameType playerGame)
-        {
-            using (var context = contextProvider.GetContext())
-            {
-                return await context.AdminActions.Where(aa => aa.Player.GameType == playerGame &&
-                    (aa.Type == AdminActionType.Ban && aa.Expires == null
-                    || aa.Type == AdminActionType.TempBan && aa.Expires > DateTime.UtcNow))
-                    .CountAsync();
+                if (playerGame != GameType.Unknown)
+                {
+                    adminActions = adminActions.Where(aa => aa.Player.GameType == playerGame).AsQueryable();
+                }
+
+                return await adminActions.CountAsync();
             }
         }
 

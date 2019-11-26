@@ -2,9 +2,10 @@
 using System.Threading.Tasks;
 using XI.Portal.BLL.Interfaces;
 using XI.Portal.BLL.ViewModels;
+using XI.Portal.Library.CommonTypes;
 using XI.Portal.Repositories.Interfaces;
 
-namespace XI.Portal.BLL.PlayerManagement
+namespace XI.Portal.BLL
 {
     public class PortalIndex : IPortalIndex
     {
@@ -25,7 +26,7 @@ namespace XI.Portal.BLL.PlayerManagement
         {
             var portalIndexViewModel = new PortalIndexViewModel
             {
-                TrackedPlayerCount = await playersRepository.GetTrackedPlayerCount(),
+                TrackedPlayerCount = await playersRepository.GetPlayerCount(),
                 OnlinePlayerCount = await livePlayersRepository.GetOnlinePlayerCount(),
                 ActiveBanCount = await adminActionsRepository.GetActiveBansCount(),
                 UnclaimedBanCount = await adminActionsRepository.GetUnclaimedBansCount(),
@@ -39,7 +40,7 @@ namespace XI.Portal.BLL.PlayerManagement
                 var gameIndexViewModel = new GameIndexViewModel
                 {
                     GameType = playerGame,
-                    TrackedPlayerCount = await playersRepository.GetTrackedPlayerCount(playerGame),
+                    TrackedPlayerCount = await playersRepository.GetPlayerCount(playerGame),
                     ActiveBanCount = await adminActionsRepository.GetActiveBansCount(playerGame)
                 };
 

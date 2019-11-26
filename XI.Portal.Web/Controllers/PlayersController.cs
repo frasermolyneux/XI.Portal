@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using XI.Portal.BLL.Interfaces;
+using XI.Portal.BLL.Models;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Auth.XtremeIdiots;
@@ -23,15 +24,18 @@ namespace XI.Portal.Web.Controllers
     {
         private readonly IGeoLocationApiRepository geoLocationApiRepository;
         private readonly IPortalIndex portalIndex;
+        private readonly IPlayersList playersList;
 
         public PlayersController(
             IContextProvider contextProvider,
             IDatabaseLogger databaseLogger,
             IGeoLocationApiRepository geoLocationApiRepository, 
-            IPortalIndex portalIndex) : base(contextProvider, databaseLogger)
+            IPortalIndex portalIndex,
+            IPlayersList playersList) : base(contextProvider, databaseLogger)
         {
             this.geoLocationApiRepository = geoLocationApiRepository ?? throw new ArgumentNullException(nameof(geoLocationApiRepository));
             this.portalIndex = portalIndex ?? throw new ArgumentNullException(nameof(portalIndex));
+            this.playersList = playersList ?? throw new ArgumentNullException(nameof(playersList));
         }
 
         [HttpGet]
@@ -51,38 +55,18 @@ namespace XI.Portal.Web.Controllers
             // ReSharper disable once InconsistentNaming
             bool _search, string searchField, string searchString, string searchOper)
         {
-            using (var context = ContextProvider.GetContext())
+            var playerListCount = await playersList.GetPlayerListCount(id, PlayersListFilter.UsernameAndGuid, searchString);
+            var playersToSkip = (page - 1) * rows;
+
+            var playersListEntries = await playersList.GetPlayerList(id, PlayersListFilter.UsernameAndGuid, searchString, playersToSkip, rows);
+
+            return Json(new
             {
-                var players = context.Players.Where(p => p.GameType == id)
-                    .OrderByDescending(cl => cl.LastSeen).AsQueryable();
-
-                if (_search && !string.IsNullOrWhiteSpace(searchString))
-                {
-                    players = players.Where(cl => cl.Username.Contains(searchString) || cl.Guid.Contains(searchString)).AsQueryable();
-                }
-
-                var totalRecords = players.Count();
-                var skip = (page - 1) * rows;
-
-                var playerList = await players.Skip(skip).Take(rows).ToListAsync();
-
-                var playersToReturn = playerList.Select(p => new
-                {
-                    p.PlayerId,
-                    p.Username,
-                    p.Guid,
-                    FirstSeen = p.FirstSeen.ToString(CultureInfo.InvariantCulture),
-                    LastSeen = p.LastSeen.ToString(CultureInfo.InvariantCulture)
-                });
-
-                return Json(new
-                {
-                    total = totalRecords / rows,
-                    page,
-                    records = totalRecords,
-                    rows = playersToReturn
-                }, JsonRequestBehavior.AllowGet);
-            }
+                total = playerListCount / rows,
+                page,
+                records = playerListCount,
+                rows = playersListEntries
+            }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

@@ -5,8 +5,7 @@ namespace XI.Portal.Repositories.Interfaces
 {
     public interface IAdminActionsRepositories
     {
-        Task<int> GetActiveBansCount();
         Task<int> GetUnclaimedBansCount();
-        Task<int> GetActiveBansCount(GameType playerGame);
+        Task<int> GetActiveBansCount(GameType playerGame = GameType.Unknown);
     }
 }
