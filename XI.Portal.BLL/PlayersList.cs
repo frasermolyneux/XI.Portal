@@ -33,9 +33,11 @@ namespace XI.Portal.BLL
 
             var playerListEntryViewModels = players.Select(p => new PlayerListEntryViewModel
             {
+                GameType = p.GameType.ToString(),
                 PlayerId = p.PlayerId,
                 Username = p.Username,
                 Guid = p.Guid,
+                IpAddress = p.IpAddress,
                 FirstSeen = p.FirstSeen.ToString(CultureInfo.InvariantCulture),
                 LastSeen = p.LastSeen.ToString(CultureInfo.InvariantCulture)
             }).ToList();

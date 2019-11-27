@@ -22,14 +22,22 @@ namespace XI.Portal.Repositories.Extensions
                 switch (filterModel.Filter)
                 {
                     case GetPlayersFilterModel.FilterType.UsernameAndGuid:
-                        players = players.Where(p => p.Username.Contains(filterModel.FilterString) || p.Guid.Contains(filterModel.FilterString)).AsQueryable();
+                        players = players.Where(p => p.Username.Contains(filterModel.FilterString) || 
+                            p.Guid.Contains(filterModel.FilterString))
+                            .AsQueryable();
                         break;
                     case GetPlayersFilterModel.FilterType.IpAddress:
-                        players = players.Where(p => p.IpAddress.Contains(filterModel.FilterString)).AsQueryable();
+                        players = players.Where(p => p.IpAddress.Contains(filterModel.FilterString) || 
+                            p.IpAddresses.Any(ip => ip.Address.Contains(filterModel.FilterString)))
+                            .AsQueryable();
                         break;
                     default:
                         break;
                 }
+            }
+            else if (filterModel.Filter == GetPlayersFilterModel.FilterType.IpAddress)
+            {
+                players = players.Where(p => p.IpAddress != "" && p.IpAddress != null).AsQueryable();
             }
 
             switch (filterModel.Order)

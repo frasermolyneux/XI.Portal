@@ -61,41 +61,41 @@
                 url: '/Players/GetPlayersIPSearchAjax',
                 datatype: 'json',
                 mType: 'GET',
-                colNames: ['Game', 'Player Id', 'Username', 'Address'],
+                colNames: ['Game', 'Player Id', 'Username', 'Guid', 'IP Address',  'First Seen', 'Last Seen'],
                 colModel: [
                     {
                         name: 'GameType',
                         index: 'GameType',
-                        hidden: false,
-                        editable: false,
-                        sortable: false,
-                        search: false,
                         formatter: formatGameType,
                         width: 30
                     },
                     {
                         name: 'PlayerId',
-                        index: 'PlayerId',
-                        hidden: false,
-                        editable: false,
-                        sortable: false,
-                        search: false
+                        index: 'PlayerId'
                     },
                     {
                         name: 'Username',
                         index: 'Username',
-                        editable: false,
-                        sortable: false,
-                        search: false,
                         formatter: formatPlayerUrl
                     },
                     {
-                        name: 'Address',
-                        index: 'Address',
-                        editable: false,
-                        sortable: false,
-                        search: true,
-                        searchoptions: { sopt: ["cn"] }
+                        name: 'Guid',
+                        index: 'Guid',
+                        hidden: true
+                    },
+                    {
+                        name: 'IpAddress',
+                        index: 'IpAddress'
+                    },
+                    {
+                        name: 'FirstSeen',
+                        index: 'FirstSeen',
+                        hidden: true
+                    },
+                    {
+                        name: 'LastSeen',
+                        index: 'LastSeen',
+                        hidden: true
                     }
                 ],
                 pager: '#playerListPager',

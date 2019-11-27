@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using XI.Portal.Library.CommonTypes;
@@ -22,5 +23,7 @@ namespace XI.Portal.Data.Core.Models
 
         public DateTime FirstSeen { get; set; }
         public DateTime LastSeen { get; set; }
+
+        public List<PlayerIpAddress> IpAddresses { get; set; }
     }
 }

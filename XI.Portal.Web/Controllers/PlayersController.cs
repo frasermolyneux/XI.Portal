@@ -91,37 +91,28 @@ namespace XI.Portal.Web.Controllers
             // ReSharper disable once InconsistentNaming
             bool _search, string searchField, string searchString, string searchOper)
         {
-            using (var context = ContextProvider.GetContext())
+            var playerListCount = await playersList.GetPlayerListCount(new GetPlayersFilterModel
             {
-                var ipAddresses = context.PlayerIpAddresses.OrderByDescending(ip => ip.LastUsed).AsQueryable();
+                Filter = GetPlayersFilterModel.FilterType.IpAddress,
+                FilterString = searchString
+            });
+            var playersToSkip = (page - 1) * rows;
 
-                if (_search && !string.IsNullOrWhiteSpace(searchString))
-                {
-                    ipAddresses = ipAddresses.Where(ip => ip.Address.Contains(searchString)).AsQueryable();
+            var playersListEntries = await playersList.GetPlayerList(new GetPlayersFilterModel
+            {
+                Filter = GetPlayersFilterModel.FilterType.IpAddress,
+                FilterString = searchString,
+                SkipPlayers = playersToSkip,
+                TakePlayers = rows
+            });
 
-                }
-
-                var totalRecords = ipAddresses.Count();
-                var skip = (page - 1) * rows;
-
-                var playerIpAddresses = await ipAddresses.Skip(skip).Take(rows).Include(p => p.Player).ToListAsync();
-
-                var playersToReturn = playerIpAddresses.Select(ip => new
-                {
-                    GameType = ip.Player.GameType.ToString(),
-                    ip.Player.PlayerId,
-                    ip.Player.Username,
-                    ip.Address
-                });
-
-                return Json(new
-                {
-                    total = totalRecords / rows,
-                    page,
-                    records = totalRecords,
-                    rows = playersToReturn
-                }, JsonRequestBehavior.AllowGet);
-            }
+            return Json(new
+            {
+                total = playerListCount / rows,
+                page,
+                records = playerListCount,
+                rows = playersListEntries
+            }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

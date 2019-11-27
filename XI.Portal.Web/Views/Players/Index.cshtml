@@ -60,46 +60,39 @@
                 url: '/Players/GetPlayersAjax/@Model',
                 datatype: 'json',
                 mType: 'GET',
-                colNames: ['Player Id', 'Username', 'Guid', 'First Seen', 'Last Seen'],
+                colNames: ['Game', 'Player Id', 'Username', 'Guid', 'IP Address',  'First Seen', 'Last Seen'],
                 colModel: [
+                    {
+                        name: 'GameType',
+                        index: 'GameType',
+                        hidden: true
+                    },
                     {
                         name: 'PlayerId',
                         index: 'PlayerId',
-                        hidden: true,
-                        editable: false,
-                        sortable: false,
-                        search: false
+                        hidden: true
                     },
                     {
                         name: 'Username',
                         index: 'Username',
-                        editable: false,
-                        sortable: false,
-                        search: true,
-                        searchoptions: { sopt: ["eq", "cn"] },
                         formatter: formatPlayerUrl
                     },
                     {
                         name: 'Guid',
-                        index: 'Guid',
-                        editable: false,
-                        sortable: false,
-                        search: true,
-                        searchoptions: { sopt: ["eq", "cn"] }
+                        index: 'Guid'
+                    },
+                    {
+                        name: 'Address',
+                        index: 'Address',
+                        hidden: true
                     },
                     {
                         name: 'FirstSeen',
-                        index: 'FirstSeen',
-                        editable: false,
-                        sortable: false,
-                        search: false
+                        index: 'FirstSeen'
                     },
                     {
                         name: 'LastSeen',
-                        index: 'LastSeen',
-                        editable: false,
-                        sortable: false,
-                        search: false
+                        index: 'LastSeen'
                     }
                 ],
                 pager: '#playerListPager',
