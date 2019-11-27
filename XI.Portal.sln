@@ -67,9 +67,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XI.Portal.Configuration", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repositories", "Repositories", "{73A6FF3E-C5CD-4A69-8F83-23E24CA8B327}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XI.Portal.Repositories", "XI.Portal.Repositories\XI.Portal.Repositories.csproj", "{F4938DFF-270C-41BD-9B86-F159063DDFF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XI.Portal.Repositories", "XI.Portal.Repositories\XI.Portal.Repositories.csproj", "{F4938DFF-270C-41BD-9B86-F159063DDFF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XI.Portal.BLL", "XI.Portal.BLL\XI.Portal.BLL.csproj", "{73B448CD-DBE9-4993-ADE3-86E6BFD2E653}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XI.Portal.BLL", "XI.Portal.BLL\XI.Portal.BLL.csproj", "{73B448CD-DBE9-4993-ADE3-86E6BFD2E653}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XI.Portal.BLL.Contracts", "XI.Portal.BLL.Contracts\XI.Portal.BLL.Contracts.csproj", "{644CFD13-6A28-4916-B034-965AA2D76B5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -240,6 +242,12 @@ Global
 		{73B448CD-DBE9-4993-ADE3-86E6BFD2E653}.DevCI|Any CPU.Build.0 = Debug|Any CPU
 		{73B448CD-DBE9-4993-ADE3-86E6BFD2E653}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73B448CD-DBE9-4993-ADE3-86E6BFD2E653}.Release|Any CPU.Build.0 = Release|Any CPU
+		{644CFD13-6A28-4916-B034-965AA2D76B5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{644CFD13-6A28-4916-B034-965AA2D76B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{644CFD13-6A28-4916-B034-965AA2D76B5B}.DevCI|Any CPU.ActiveCfg = Debug|Any CPU
+		{644CFD13-6A28-4916-B034-965AA2D76B5B}.DevCI|Any CPU.Build.0 = Debug|Any CPU
+		{644CFD13-6A28-4916-B034-965AA2D76B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{644CFD13-6A28-4916-B034-965AA2D76B5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -272,6 +280,7 @@ Global
 		{2A4F0282-D9C2-47C9-87BE-3E3A8110693D} = {D4129FD5-D140-45BC-B454-8B491431ACB6}
 		{F4938DFF-270C-41BD-9B86-F159063DDFF6} = {73A6FF3E-C5CD-4A69-8F83-23E24CA8B327}
 		{73B448CD-DBE9-4993-ADE3-86E6BFD2E653} = {73A6FF3E-C5CD-4A69-8F83-23E24CA8B327}
+		{644CFD13-6A28-4916-B034-965AA2D76B5B} = {73A6FF3E-C5CD-4A69-8F83-23E24CA8B327}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6422965F-E244-42EA-9792-F2ECA17F513E}

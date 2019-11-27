@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using XI.Portal.BLL.Contracts.Models;
 using XI.Portal.BLL.Interfaces;
 using XI.Portal.BLL.ViewModels;
-using XI.Portal.Library.CommonTypes;
 using XI.Portal.Repositories.Interfaces;
 
 namespace XI.Portal.BLL
@@ -26,7 +26,7 @@ namespace XI.Portal.BLL
         {
             var portalIndexViewModel = new PortalIndexViewModel
             {
-                TrackedPlayerCount = await playersRepository.GetPlayerCount(),
+                TrackedPlayerCount = await playersRepository.GetPlayerCount(new GetPlayersFilterModel()),
                 OnlinePlayerCount = await livePlayersRepository.GetOnlinePlayerCount(),
                 ActiveBanCount = await adminActionsRepository.GetActiveBansCount(),
                 UnclaimedBanCount = await adminActionsRepository.GetUnclaimedBansCount(),
@@ -40,7 +40,10 @@ namespace XI.Portal.BLL
                 var gameIndexViewModel = new GameIndexViewModel
                 {
                     GameType = playerGame,
-                    TrackedPlayerCount = await playersRepository.GetPlayerCount(playerGame),
+                    TrackedPlayerCount = await playersRepository.GetPlayerCount(new GetPlayersFilterModel
+                    {
+                        GameType = playerGame
+                    }),
                     ActiveBanCount = await adminActionsRepository.GetActiveBansCount(playerGame)
                 };
 

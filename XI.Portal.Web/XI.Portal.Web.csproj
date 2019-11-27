@@ -1857,6 +1857,10 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\XI.Portal.BLL.Contracts\XI.Portal.BLL.Contracts.csproj">
+      <Project>{644CFD13-6A28-4916-B034-965AA2D76B5B}</Project>
+      <Name>XI.Portal.BLL.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.BLL\XI.Portal.BLL.csproj">
       <Project>{73B448CD-DBE9-4993-ADE3-86E6BFD2E653}</Project>
       <Name>XI.Portal.BLL</Name>

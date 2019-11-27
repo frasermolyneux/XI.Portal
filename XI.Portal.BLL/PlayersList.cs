@@ -2,10 +2,9 @@
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using XI.Portal.BLL.Contracts.Models;
 using XI.Portal.BLL.Interfaces;
-using XI.Portal.BLL.Models;
 using XI.Portal.BLL.ViewModels;
-using XI.Portal.Library.CommonTypes;
 using XI.Portal.Repositories.Interfaces;
 
 namespace XI.Portal.BLL
@@ -19,9 +18,18 @@ namespace XI.Portal.BLL
             this.playersRepository = playersRepository ?? throw new System.ArgumentNullException(nameof(playersRepository));
         }
 
-        public async Task<List<PlayerListEntryViewModel>> GetPlayerList(GameType gameType, PlayersListFilter playerListFilter, string filterString, int playersToSkip, int entriesToTake)
+        public async Task<int> GetPlayerListCount(GetPlayersFilterModel filterModel = null)
         {
-            var players = await playersRepository.GetPlayers(gameType, playerListFilter.ToString(), filterString, playersToSkip, entriesToTake);
+            if (filterModel == null) filterModel = new GetPlayersFilterModel();
+
+            return await playersRepository.GetPlayerCount(filterModel);
+        }
+
+        public async Task<List<PlayerListEntryViewModel>> GetPlayerList(GetPlayersFilterModel filterModel = null)
+        {
+            if (filterModel == null) filterModel = new GetPlayersFilterModel();
+
+            var players = await playersRepository.GetPlayers(filterModel);
 
             var playerListEntryViewModels = players.Select(p => new PlayerListEntryViewModel
             {
@@ -33,11 +41,6 @@ namespace XI.Portal.BLL
             }).ToList();
 
             return playerListEntryViewModels;
-        }
-
-        public async Task<int> GetPlayerListCount(GameType gameType, PlayersListFilter playerListFilter, string filterString)
-        {
-            return await playersRepository.GetPlayerCount(gameType, playerListFilter.ToString(), filterString);
         }
     }
 }

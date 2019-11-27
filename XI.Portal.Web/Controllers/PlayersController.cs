@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using XI.Portal.BLL.Contracts.Models;
 using XI.Portal.BLL.Interfaces;
-using XI.Portal.BLL.Models;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Auth.XtremeIdiots;
@@ -55,10 +54,22 @@ namespace XI.Portal.Web.Controllers
             // ReSharper disable once InconsistentNaming
             bool _search, string searchField, string searchString, string searchOper)
         {
-            var playerListCount = await playersList.GetPlayerListCount(id, PlayersListFilter.UsernameAndGuid, searchString);
+            var playerListCount = await playersList.GetPlayerListCount(new GetPlayersFilterModel
+            {
+                GameType = id,
+                Filter = GetPlayersFilterModel.FilterType.UsernameAndGuid,
+                FilterString = searchString
+            });
             var playersToSkip = (page - 1) * rows;
 
-            var playersListEntries = await playersList.GetPlayerList(id, PlayersListFilter.UsernameAndGuid, searchString, playersToSkip, rows);
+            var playersListEntries = await playersList.GetPlayerList(new GetPlayersFilterModel
+            {
+                GameType = id,
+                Filter = GetPlayersFilterModel.FilterType.UsernameAndGuid,
+                FilterString = searchString,
+                SkipPlayers = playersToSkip,
+                TakePlayers = rows
+            });
 
             return Json(new
             {

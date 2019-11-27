@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\XI.Portal.BLL.Contracts\XI.Portal.BLL.Contracts.csproj" />
     <ProjectReference Include="..\XI.Portal.Data.Core\XI.Portal.Data.Core.csproj" />
   </ItemGroup>
 
