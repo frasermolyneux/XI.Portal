@@ -24,17 +24,20 @@ namespace XI.Portal.Web.Controllers
         private readonly IGeoLocationApiRepository geoLocationApiRepository;
         private readonly IPortalIndex portalIndex;
         private readonly IPlayersList playersList;
+        private readonly IAdminActionsList adminActionList;
 
         public PlayersController(
             IContextProvider contextProvider,
             IDatabaseLogger databaseLogger,
             IGeoLocationApiRepository geoLocationApiRepository, 
             IPortalIndex portalIndex,
-            IPlayersList playersList) : base(contextProvider, databaseLogger)
+            IPlayersList playersList,
+            IAdminActionsList adminActionList) : base(contextProvider, databaseLogger)
         {
             this.geoLocationApiRepository = geoLocationApiRepository ?? throw new ArgumentNullException(nameof(geoLocationApiRepository));
             this.portalIndex = portalIndex ?? throw new ArgumentNullException(nameof(portalIndex));
             this.playersList = playersList ?? throw new ArgumentNullException(nameof(playersList));
+            this.adminActionList = adminActionList ?? throw new ArgumentNullException(nameof(adminActionList));
         }
 
         [HttpGet]
@@ -126,42 +129,28 @@ namespace XI.Portal.Web.Controllers
             // ReSharper disable once InconsistentNaming
             bool _search, string searchField, string searchString, string searchOper)
         {
-            using (var context = ContextProvider.GetContext())
+            var adminActionsListCount = await adminActionList.GetAdminActionsListCount(new AdminActionsFilterModel
             {
-                var adminActions = context.AdminActions.Include(aa => aa.Player)
-                    .Where(aa => aa.Player.GameType == id
-                                 && (aa.Type == AdminActionType.Ban && aa.Expires == null
-                                     || aa.Type == AdminActionType.TempBan && aa.Expires > DateTime.UtcNow))
-                    .OrderByDescending(aa => aa.Created)
-                    .AsQueryable();
+                GameType = id,
+                Filter = AdminActionsFilterModel.FilterType.ActiveBans
+            });
+            var adminActionsToSkip = (page - 1) * rows;
 
-                if (_search && !string.IsNullOrWhiteSpace(searchString))
-                {
-                    adminActions = adminActions.Where(aa => aa.Player.Username.Contains(searchString) || aa.Player.Guid.Contains(searchString)).AsQueryable();
-                }
+            var adminActionsListEntry = await adminActionList.GetAdminActionsList(new AdminActionsFilterModel
+            {
+                GameType = id,
+                Filter = AdminActionsFilterModel.FilterType.ActiveBans,
+                SkipEntries = adminActionsToSkip,
+                TakeEntries = rows
+            });
 
-                var totalRecords = adminActions.Count();
-                var skip = (page - 1) * rows;
-
-                var playerList = await adminActions.Skip(skip).Take(rows).ToListAsync();
-
-                var playersToReturn = playerList.Select(aa => new
-                {
-                    aa.Player.PlayerId,
-                    aa.Player.Username,
-                    aa.Player.Guid,
-                    Type = aa.Type.ToString(),
-                    Expires = aa.Type == AdminActionType.Ban ? "Never" : aa.Expires.ToString()
-                });
-
-                return Json(new
-                {
-                    total = totalRecords / rows,
-                    page,
-                    records = totalRecords,
-                    rows = playersToReturn
-                }, JsonRequestBehavior.AllowGet);
-            }
+            return Json(new
+            {
+                total = adminActionsListCount / rows,
+                page,
+                records = adminActionsListCount,
+                rows = adminActionsListEntry
+            }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

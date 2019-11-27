@@ -75,9 +75,10 @@ namespace XI.Portal.Web.Portal
             // BLL
             container.RegisterType<IPortalIndex, PortalIndex>();
             container.RegisterType<IPlayersList, PlayersList>();
+            container.RegisterType<IAdminActionsList, AdminActionsList>();
 
             // Repositories
-            container.RegisterType<IAdminActionsRepositories, AdminActionsRepositories>();
+            container.RegisterType<IAdminActionsRepository, AdminActionsRepository>();
             container.RegisterType<ILivePlayersRepository, LivePlayersRepository>();
             container.RegisterType<IPlayersRepository, PlayersRepository>();
 

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using XI.Portal.BLL.Contracts.Models;
 using XI.Portal.BLL.Interfaces;
 using XI.Portal.BLL.ViewModels;
+using XI.Portal.Library.CommonTypes;
 using XI.Portal.Repositories.Interfaces;
 
 namespace XI.Portal.BLL
@@ -11,11 +12,11 @@ namespace XI.Portal.BLL
     {
         private readonly IPlayersRepository playersRepository;
         private readonly ILivePlayersRepository livePlayersRepository;
-        private readonly IAdminActionsRepositories adminActionsRepository;
+        private readonly IAdminActionsRepository adminActionsRepository;
 
         public PortalIndex(IPlayersRepository playersRepository,
             ILivePlayersRepository livePlayersRepository,
-            IAdminActionsRepositories adminActionsRepository)
+            IAdminActionsRepository adminActionsRepository)
         {
             this.playersRepository = playersRepository ?? throw new System.ArgumentNullException(nameof(playersRepository));
             this.livePlayersRepository = livePlayersRepository ?? throw new System.ArgumentNullException(nameof(livePlayersRepository));
@@ -28,8 +29,14 @@ namespace XI.Portal.BLL
             {
                 TrackedPlayerCount = await playersRepository.GetPlayerCount(new PlayersFilterModel()),
                 OnlinePlayerCount = await livePlayersRepository.GetOnlinePlayerCount(),
-                ActiveBanCount = await adminActionsRepository.GetActiveBansCount(),
-                UnclaimedBanCount = await adminActionsRepository.GetUnclaimedBansCount(),
+                ActiveBanCount = await adminActionsRepository.GetAdminActionsCount(new AdminActionsFilterModel
+                {
+                    Filter = AdminActionsFilterModel.FilterType.ActiveBans
+                }),
+                UnclaimedBanCount = await adminActionsRepository.GetAdminActionsCount(new AdminActionsFilterModel
+                {
+                    Filter = AdminActionsFilterModel.FilterType.UnclaimedBans
+                }),
                 GameIndexViewModels = new List<GameIndexViewModel>()
             };
 
@@ -44,7 +51,11 @@ namespace XI.Portal.BLL
                     {
                         GameType = playerGame
                     }),
-                    ActiveBanCount = await adminActionsRepository.GetActiveBansCount(playerGame)
+                    ActiveBanCount = await adminActionsRepository.GetAdminActionsCount(new AdminActionsFilterModel
+                    {
+                        GameType = playerGame,
+                        Filter = AdminActionsFilterModel.FilterType.ActiveBans
+                    })
                 };
 
                 portalIndexViewModel.GameIndexViewModels.Add(gameIndexViewModel);
