@@ -7,7 +7,7 @@ namespace XI.Portal.BLL.Interfaces
 {
     public interface IPlayersList
     {
-        Task<int> GetPlayerListCount(GetPlayersFilterModel filterModel = null);
-        Task<List<PlayerListEntryViewModel>> GetPlayerList(GetPlayersFilterModel filterModel = null);
+        Task<int> GetPlayerListCount(PlayersFilterModel filterModel = null);
+        Task<List<PlayerListEntryViewModel>> GetPlayerList(PlayersFilterModel filterModel = null);
     }
 }

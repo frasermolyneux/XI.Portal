@@ -18,16 +18,16 @@ namespace XI.Portal.BLL
             this.playersRepository = playersRepository ?? throw new System.ArgumentNullException(nameof(playersRepository));
         }
 
-        public async Task<int> GetPlayerListCount(GetPlayersFilterModel filterModel = null)
+        public async Task<int> GetPlayerListCount(PlayersFilterModel filterModel = null)
         {
-            if (filterModel == null) filterModel = new GetPlayersFilterModel();
+            if (filterModel == null) filterModel = new PlayersFilterModel();
 
             return await playersRepository.GetPlayerCount(filterModel);
         }
 
-        public async Task<List<PlayerListEntryViewModel>> GetPlayerList(GetPlayersFilterModel filterModel = null)
+        public async Task<List<PlayerListEntryViewModel>> GetPlayerList(PlayersFilterModel filterModel = null)
         {
-            if (filterModel == null) filterModel = new GetPlayersFilterModel();
+            if (filterModel == null) filterModel = new PlayersFilterModel();
 
             var players = await playersRepository.GetPlayers(filterModel);
 

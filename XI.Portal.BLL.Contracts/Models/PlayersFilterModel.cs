@@ -2,7 +2,7 @@
 
 namespace XI.Portal.BLL.Contracts.Models
 {
-    public class GetPlayersFilterModel
+    public class PlayersFilterModel
     {
         public GameType GameType { get; set; }
         public FilterType Filter { get; set; } = FilterType.None;

@@ -9,7 +9,7 @@ namespace XI.Portal.Repositories.Interfaces
     public interface IPlayersRepository
     {
         Task<GameType[]> GetPlayerGames();
-        Task<int> GetPlayerCount(GetPlayersFilterModel filterModel);
-        Task<List<Player2>> GetPlayers(GetPlayersFilterModel filterModel);
+        Task<int> GetPlayerCount(PlayersFilterModel filterModel);
+        Task<List<Player2>> GetPlayers(PlayersFilterModel filterModel);
     }
 }

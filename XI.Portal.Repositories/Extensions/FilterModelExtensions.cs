@@ -8,7 +8,7 @@ namespace XI.Portal.Repositories.Extensions
 {
     public static class FilterModelExtensions
     {
-        public static IQueryable<Player2> ApplyFilter(this GetPlayersFilterModel filterModel, PortalContext context)
+        public static IQueryable<Player2> ApplyFilter(this PlayersFilterModel filterModel, PortalContext context)
         {
             var players = context.Players.AsQueryable();
 
@@ -17,16 +17,16 @@ namespace XI.Portal.Repositories.Extensions
                 players = players.Where(p => p.GameType == filterModel.GameType).AsQueryable();
             }
 
-            if (filterModel.Filter != GetPlayersFilterModel.FilterType.None && !string.IsNullOrWhiteSpace(filterModel.FilterString))
+            if (filterModel.Filter != PlayersFilterModel.FilterType.None && !string.IsNullOrWhiteSpace(filterModel.FilterString))
             {
                 switch (filterModel.Filter)
                 {
-                    case GetPlayersFilterModel.FilterType.UsernameAndGuid:
+                    case PlayersFilterModel.FilterType.UsernameAndGuid:
                         players = players.Where(p => p.Username.Contains(filterModel.FilterString) || 
                             p.Guid.Contains(filterModel.FilterString))
                             .AsQueryable();
                         break;
-                    case GetPlayersFilterModel.FilterType.IpAddress:
+                    case PlayersFilterModel.FilterType.IpAddress:
                         players = players.Where(p => p.IpAddress.Contains(filterModel.FilterString) || 
                             p.IpAddresses.Any(ip => ip.Address.Contains(filterModel.FilterString)))
                             .AsQueryable();
@@ -35,17 +35,17 @@ namespace XI.Portal.Repositories.Extensions
                         break;
                 }
             }
-            else if (filterModel.Filter == GetPlayersFilterModel.FilterType.IpAddress)
+            else if (filterModel.Filter == PlayersFilterModel.FilterType.IpAddress)
             {
                 players = players.Where(p => p.IpAddress != "" && p.IpAddress != null).AsQueryable();
             }
 
             switch (filterModel.Order)
             {
-                case GetPlayersFilterModel.OrderBy.LastSeen:
+                case PlayersFilterModel.OrderBy.LastSeen:
                     players = players.OrderByDescending(p => p.LastSeen).AsQueryable();
                     break;
-                case GetPlayersFilterModel.OrderBy.Username:
+                case PlayersFilterModel.OrderBy.Username:
                     players = players.OrderBy(p => p.Username).AsQueryable();
                     break;
                 default:

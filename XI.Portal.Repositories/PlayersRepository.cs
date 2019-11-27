@@ -28,7 +28,7 @@ namespace XI.Portal.Repositories
             }
         }
 
-        public async Task<int> GetPlayerCount(GetPlayersFilterModel filterModel)
+        public async Task<int> GetPlayerCount(PlayersFilterModel filterModel)
         {
             using (var context = contextProvider.GetContext())
             {
@@ -36,7 +36,7 @@ namespace XI.Portal.Repositories
             }
         }
 
-        public async Task<List<Player2>> GetPlayers(GetPlayersFilterModel filterModel)
+        public async Task<List<Player2>> GetPlayers(PlayersFilterModel filterModel)
         {
             using (var context = contextProvider.GetContext())
             {

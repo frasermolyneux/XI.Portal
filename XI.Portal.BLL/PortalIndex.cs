@@ -26,7 +26,7 @@ namespace XI.Portal.BLL
         {
             var portalIndexViewModel = new PortalIndexViewModel
             {
-                TrackedPlayerCount = await playersRepository.GetPlayerCount(new GetPlayersFilterModel()),
+                TrackedPlayerCount = await playersRepository.GetPlayerCount(new PlayersFilterModel()),
                 OnlinePlayerCount = await livePlayersRepository.GetOnlinePlayerCount(),
                 ActiveBanCount = await adminActionsRepository.GetActiveBansCount(),
                 UnclaimedBanCount = await adminActionsRepository.GetUnclaimedBansCount(),
@@ -40,7 +40,7 @@ namespace XI.Portal.BLL
                 var gameIndexViewModel = new GameIndexViewModel
                 {
                     GameType = playerGame,
-                    TrackedPlayerCount = await playersRepository.GetPlayerCount(new GetPlayersFilterModel
+                    TrackedPlayerCount = await playersRepository.GetPlayerCount(new PlayersFilterModel
                     {
                         GameType = playerGame
                     }),

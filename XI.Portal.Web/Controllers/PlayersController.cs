@@ -54,18 +54,18 @@ namespace XI.Portal.Web.Controllers
             // ReSharper disable once InconsistentNaming
             bool _search, string searchField, string searchString, string searchOper)
         {
-            var playerListCount = await playersList.GetPlayerListCount(new GetPlayersFilterModel
+            var playerListCount = await playersList.GetPlayerListCount(new PlayersFilterModel
             {
                 GameType = id,
-                Filter = GetPlayersFilterModel.FilterType.UsernameAndGuid,
+                Filter = PlayersFilterModel.FilterType.UsernameAndGuid,
                 FilterString = searchString
             });
             var playersToSkip = (page - 1) * rows;
 
-            var playersListEntries = await playersList.GetPlayerList(new GetPlayersFilterModel
+            var playersListEntries = await playersList.GetPlayerList(new PlayersFilterModel
             {
                 GameType = id,
-                Filter = GetPlayersFilterModel.FilterType.UsernameAndGuid,
+                Filter = PlayersFilterModel.FilterType.UsernameAndGuid,
                 FilterString = searchString,
                 SkipPlayers = playersToSkip,
                 TakePlayers = rows
@@ -91,16 +91,16 @@ namespace XI.Portal.Web.Controllers
             // ReSharper disable once InconsistentNaming
             bool _search, string searchField, string searchString, string searchOper)
         {
-            var playerListCount = await playersList.GetPlayerListCount(new GetPlayersFilterModel
+            var playerListCount = await playersList.GetPlayerListCount(new PlayersFilterModel
             {
-                Filter = GetPlayersFilterModel.FilterType.IpAddress,
+                Filter = PlayersFilterModel.FilterType.IpAddress,
                 FilterString = searchString
             });
             var playersToSkip = (page - 1) * rows;
 
-            var playersListEntries = await playersList.GetPlayerList(new GetPlayersFilterModel
+            var playersListEntries = await playersList.GetPlayerList(new PlayersFilterModel
             {
-                Filter = GetPlayersFilterModel.FilterType.IpAddress,
+                Filter = PlayersFilterModel.FilterType.IpAddress,
                 FilterString = searchString,
                 SkipPlayers = playersToSkip,
                 TakePlayers = rows
