@@ -35,7 +35,7 @@
       <HintPath>..\packages\AWSSDK.Core.3.3.103.71\lib\net45\AWSSDK.Core.dll</HintPath>
     </Reference>
     <Reference Include="AWSSDK.SecretsManager, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
-      <HintPath>..\packages\AWSSDK.SecretsManager.3.3.100.28\lib\net45\AWSSDK.SecretsManager.dll</HintPath>
+      <HintPath>..\packages\AWSSDK.SecretsManager.3.3.101.56\lib\net45\AWSSDK.SecretsManager.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -103,7 +103,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\packages\AWSSDK.SecretsManager.3.3.100.28\analyzers\dotnet\cs\AWSSDK.SecretsManager.CodeAnalysis.dll" />
+    <Analyzer Include="..\packages\AWSSDK.SecretsManager.3.3.101.56\analyzers\dotnet\cs\AWSSDK.SecretsManager.CodeAnalysis.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
