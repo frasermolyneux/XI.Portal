@@ -1855,15 +1855,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XI.Portal.BLL.Contracts\XI.Portal.BLL.Contracts.csproj">
-      <Project>{644CFD13-6A28-4916-B034-965AA2D76B5B}</Project>
+      <Project>{56642DB9-DD3D-4533-9094-A5D301A0E9A5}</Project>
       <Name>XI.Portal.BLL.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.BLL\XI.Portal.BLL.csproj">
-      <Project>{73B448CD-DBE9-4993-ADE3-86E6BFD2E653}</Project>
+      <Project>{EA236A5D-C039-47C0-8742-51ED61677047}</Project>
       <Name>XI.Portal.BLL</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Configuration\XI.Portal.Configuration.csproj">
-      <Project>{2A4F0282-D9C2-47C9-87BE-3E3A8110693D}</Project>
+      <Project>{B6A4CF45-1318-4F3D-A46E-BDE47195C0B2}</Project>
       <Name>XI.Portal.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Data.Core\XI.Portal.Data.Core.csproj">
@@ -1907,7 +1907,7 @@
       <Name>XI.Portal.Library.Rcon</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Repositories\XI.Portal.Repositories.csproj">
-      <Project>{F4938DFF-270C-41BD-9B86-F159063DDFF6}</Project>
+      <Project>{3E17E1C5-3592-4B8E-BC41-C3E246BB91A7}</Project>
       <Name>XI.Portal.Repositories</Name>
     </ProjectReference>
   </ItemGroup>

@@ -54,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XI.Portal.Configuration\XI.Portal.Configuration.csproj">
-      <Project>{2A4F0282-D9C2-47C9-87BE-3E3A8110693D}</Project>
+      <Project>{B6A4CF45-1318-4F3D-A46E-BDE47195C0B2}</Project>
       <Name>XI.Portal.Configuration</Name>
     </ProjectReference>
   </ItemGroup>
