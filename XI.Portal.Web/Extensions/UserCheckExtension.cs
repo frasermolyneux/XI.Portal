@@ -6,7 +6,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Unity;
 using XI.Portal.Library.Auth;
-using XI.Portal.Web.Portal;
 
 namespace XI.Portal.Web.Extensions
 {

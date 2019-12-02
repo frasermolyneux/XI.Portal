@@ -1,5 +1,5 @@
 ﻿@using XI.Portal.Web.Extensions
-@model XI.Portal.Web.ViewModels.Players.PlayersIndexViewModel
+@model XI.Portal.BLL.ViewModels.PortalIndexViewModel
 
 @{
     ViewBag.Title = "Player Management";
@@ -18,7 +18,7 @@
                     </div>
                     <div class="col-lg-8 text-right">
                         <span> Total Players </span>
-                        <h2 class="font-bold">@Model.TotalTrackedPlayers</h2>
+                        <h2 class="font-bold">@Model.TrackedPlayerCount</h2>
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-lg-8 text-right">
                         <span> Online Players </span>
-                        <h2 class="font-bold">@Model.TotalOnlinePlayers</h2>
+                        <h2 class="font-bold">@Model.OnlinePlayerCount</h2>
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                     </div>
                     <div class="col-lg-8 text-right">
                         <span> Banned Players </span>
-                        <h2 class="font-bold">@Model.TotalBannedPlayers</h2>
+                        <h2 class="font-bold">@Model.ActiveBanCount</h2>
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@
                     </div>
                     <div class="col-lg-8 text-right">
                         <span> Unclaimed Bans </span>
-                        <h2 class="font-bold">@Model.TotalUnclaimedBans</h2>
+                        <h2 class="font-bold">@Model.UnclaimedBanCount</h2>
                     </div>
                 </div>
             </div>
@@ -78,12 +78,12 @@
                         <li>
                             <span class="fa fa-server m-r-xs"></span>
                             <label>Total Players:</label>
-                            @item.TrackedPlayers
+                            @item.TrackedPlayerCount
                         </li>
                         <li>
                             <span class="fa fa-server m-r-xs"></span>
                             <label>Ban List:</label>
-                            @Html.ActionLink($"{item.BannedPlayers} Banned Players", "Banned", "Players", new {id = item.GameType}, new {})
+                            @Html.ActionLink($"{item.ActiveBanCount} Banned Players", "Banned", "Players", new {id = item.GameType}, new {})
                         </li>
                     </ul>
 

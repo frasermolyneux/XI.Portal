@@ -11,7 +11,6 @@ using XI.Portal.Library.Auth;
 using XI.Portal.Library.Auth.Extensions;
 using XI.Portal.Library.Auth.XtremeIdiots;
 using XI.Portal.Web;
-using XI.Portal.Web.Portal;
 
 [assembly: OwinStartup(typeof(Startup))]
 

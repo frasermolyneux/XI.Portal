@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using XI.Portal.BLL.Contracts.Models;
+using XI.Portal.BLL.Interfaces;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Auth.XtremeIdiots;
@@ -21,47 +22,28 @@ namespace XI.Portal.Web.Controllers
     public class PlayersController : BaseController
     {
         private readonly IGeoLocationApiRepository geoLocationApiRepository;
+        private readonly IPortalIndex portalIndex;
+        private readonly IPlayersList playersList;
+        private readonly IAdminActionsList adminActionList;
 
         public PlayersController(
             IContextProvider contextProvider,
             IDatabaseLogger databaseLogger,
-            IGeoLocationApiRepository geoLocationApiRepository) : base(contextProvider, databaseLogger)
+            IGeoLocationApiRepository geoLocationApiRepository, 
+            IPortalIndex portalIndex,
+            IPlayersList playersList,
+            IAdminActionsList adminActionList) : base(contextProvider, databaseLogger)
         {
             this.geoLocationApiRepository = geoLocationApiRepository ?? throw new ArgumentNullException(nameof(geoLocationApiRepository));
+            this.portalIndex = portalIndex ?? throw new ArgumentNullException(nameof(portalIndex));
+            this.playersList = playersList ?? throw new ArgumentNullException(nameof(playersList));
+            this.adminActionList = adminActionList ?? throw new ArgumentNullException(nameof(adminActionList));
         }
 
         [HttpGet]
         public async Task<ActionResult> Home()
         {
-            using (var context = ContextProvider.GetContext())
-            {
-                var model = new PlayersIndexViewModel
-                {
-                    TotalTrackedPlayers = await context.Players.CountAsync(),
-                    TotalOnlinePlayers = await context.LivePlayers.CountAsync(),
-                    TotalBannedPlayers = await context.AdminActions.Where(aa => aa.Type == AdminActionType.Ban && aa.Expires == null
-                                                                                || aa.Type == AdminActionType.TempBan && aa.Expires > DateTime.UtcNow).CountAsync(),
-                    TotalUnclaimedBans = await context.AdminActions.Where(aa => aa.Type == AdminActionType.Ban && aa.Expires == null && aa.Admin == null).CountAsync()
-                };
-
-                var games = await context.Players.Select(p => p.GameType).Distinct().ToListAsync();
-
-                foreach (var gameType in games.OrderBy(gt => gt.ToString()))
-                {
-                    var gameModel = new GameIndexViewModel
-                    {
-                        GameType = gameType,
-                        TrackedPlayers = await context.Players.Where(p => p.GameType == gameType).CountAsync(),
-                        BannedPlayers = await context.AdminActions.Where(aa => aa.Player.GameType == gameType
-                                                                               && (aa.Type == AdminActionType.Ban && aa.Expires == null
-                                                                                   || aa.Type == AdminActionType.TempBan && aa.Expires > DateTime.UtcNow)).CountAsync()
-                    };
-
-                    model.GameIndexViewModels.Add(gameModel);
-                }
-
-                return View(model);
-            }
+            return View(await portalIndex.GetPortalIndexViewModel());
         }
 
         [HttpGet]
@@ -75,38 +57,30 @@ namespace XI.Portal.Web.Controllers
             // ReSharper disable once InconsistentNaming
             bool _search, string searchField, string searchString, string searchOper)
         {
-            using (var context = ContextProvider.GetContext())
+            var playerListCount = await playersList.GetPlayerListCount(new PlayersFilterModel
             {
-                var players = context.Players.Where(p => p.GameType == id)
-                    .OrderByDescending(cl => cl.LastSeen).AsQueryable();
+                GameType = id,
+                Filter = PlayersFilterModel.FilterType.UsernameAndGuid,
+                FilterString = searchString
+            });
+            var playersToSkip = (page - 1) * rows;
 
-                if (_search && !string.IsNullOrWhiteSpace(searchString))
-                {
-                    players = players.Where(cl => cl.Username.Contains(searchString) || cl.Guid.Contains(searchString)).AsQueryable();
-                }
+            var playersListEntries = await playersList.GetPlayerList(new PlayersFilterModel
+            {
+                GameType = id,
+                Filter = PlayersFilterModel.FilterType.UsernameAndGuid,
+                FilterString = searchString,
+                SkipPlayers = playersToSkip,
+                TakePlayers = rows
+            });
 
-                var totalRecords = players.Count();
-                var skip = (page - 1) * rows;
-
-                var playerList = await players.Skip(skip).Take(rows).ToListAsync();
-
-                var playersToReturn = playerList.Select(p => new
-                {
-                    p.PlayerId,
-                    p.Username,
-                    p.Guid,
-                    FirstSeen = p.FirstSeen.ToString(CultureInfo.InvariantCulture),
-                    LastSeen = p.LastSeen.ToString(CultureInfo.InvariantCulture)
-                });
-
-                return Json(new
-                {
-                    total = totalRecords / rows,
-                    page,
-                    records = totalRecords,
-                    rows = playersToReturn
-                }, JsonRequestBehavior.AllowGet);
-            }
+            return Json(new
+            {
+                total = playerListCount / rows,
+                page,
+                records = playerListCount,
+                rows = playersListEntries
+            }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -120,37 +94,28 @@ namespace XI.Portal.Web.Controllers
             // ReSharper disable once InconsistentNaming
             bool _search, string searchField, string searchString, string searchOper)
         {
-            using (var context = ContextProvider.GetContext())
+            var playerListCount = await playersList.GetPlayerListCount(new PlayersFilterModel
             {
-                var ipAddresses = context.PlayerIpAddresses.OrderByDescending(ip => ip.LastUsed).AsQueryable();
+                Filter = PlayersFilterModel.FilterType.IpAddress,
+                FilterString = searchString
+            });
+            var playersToSkip = (page - 1) * rows;
 
-                if (_search && !string.IsNullOrWhiteSpace(searchString))
-                {
-                    ipAddresses = ipAddresses.Where(ip => ip.Address.Contains(searchString)).AsQueryable();
+            var playersListEntries = await playersList.GetPlayerList(new PlayersFilterModel
+            {
+                Filter = PlayersFilterModel.FilterType.IpAddress,
+                FilterString = searchString,
+                SkipPlayers = playersToSkip,
+                TakePlayers = rows
+            });
 
-                }
-
-                var totalRecords = ipAddresses.Count();
-                var skip = (page - 1) * rows;
-
-                var playerIpAddresses = await ipAddresses.Skip(skip).Take(rows).Include(p => p.Player).ToListAsync();
-
-                var playersToReturn = playerIpAddresses.Select(ip => new
-                {
-                    GameType = ip.Player.GameType.ToString(),
-                    ip.Player.PlayerId,
-                    ip.Player.Username,
-                    ip.Address
-                });
-
-                return Json(new
-                {
-                    total = totalRecords / rows,
-                    page,
-                    records = totalRecords,
-                    rows = playersToReturn
-                }, JsonRequestBehavior.AllowGet);
-            }
+            return Json(new
+            {
+                total = playerListCount / rows,
+                page,
+                records = playerListCount,
+                rows = playersListEntries
+            }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -164,42 +129,28 @@ namespace XI.Portal.Web.Controllers
             // ReSharper disable once InconsistentNaming
             bool _search, string searchField, string searchString, string searchOper)
         {
-            using (var context = ContextProvider.GetContext())
+            var adminActionsListCount = await adminActionList.GetAdminActionsListCount(new AdminActionsFilterModel
             {
-                var adminActions = context.AdminActions.Include(aa => aa.Player)
-                    .Where(aa => aa.Player.GameType == id
-                                 && (aa.Type == AdminActionType.Ban && aa.Expires == null
-                                     || aa.Type == AdminActionType.TempBan && aa.Expires > DateTime.UtcNow))
-                    .OrderByDescending(aa => aa.Created)
-                    .AsQueryable();
+                GameType = id,
+                Filter = AdminActionsFilterModel.FilterType.ActiveBans
+            });
+            var adminActionsToSkip = (page - 1) * rows;
 
-                if (_search && !string.IsNullOrWhiteSpace(searchString))
-                {
-                    adminActions = adminActions.Where(aa => aa.Player.Username.Contains(searchString) || aa.Player.Guid.Contains(searchString)).AsQueryable();
-                }
+            var adminActionsListEntry = await adminActionList.GetAdminActionsList(new AdminActionsFilterModel
+            {
+                GameType = id,
+                Filter = AdminActionsFilterModel.FilterType.ActiveBans,
+                SkipEntries = adminActionsToSkip,
+                TakeEntries = rows
+            });
 
-                var totalRecords = adminActions.Count();
-                var skip = (page - 1) * rows;
-
-                var playerList = await adminActions.Skip(skip).Take(rows).ToListAsync();
-
-                var playersToReturn = playerList.Select(aa => new
-                {
-                    aa.Player.PlayerId,
-                    aa.Player.Username,
-                    aa.Player.Guid,
-                    Type = aa.Type.ToString(),
-                    Expires = aa.Type == AdminActionType.Ban ? "Never" : aa.Expires.ToString()
-                });
-
-                return Json(new
-                {
-                    total = totalRecords / rows,
-                    page,
-                    records = totalRecords,
-                    rows = playersToReturn
-                }, JsonRequestBehavior.AllowGet);
-            }
+            return Json(new
+            {
+                total = adminActionsListCount / rows,
+                page,
+                records = adminActionsListCount,
+                rows = adminActionsListEntry
+            }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
