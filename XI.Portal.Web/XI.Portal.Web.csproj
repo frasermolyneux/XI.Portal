@@ -1920,21 +1920,25 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XI.Portal.BLL.Contracts\XI.Portal.BLL.Contracts.csproj">
-      <Project>{56642DB9-DD3D-4533-9094-A5D301A0E9A5}</Project>
-      <Name>XI.Portal.BLL.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XI.Portal.BLL\XI.Portal.BLL.csproj">
-      <Project>{EA236A5D-C039-47C0-8742-51ED61677047}</Project>
-      <Name>XI.Portal.BLL</Name>
+    <ProjectReference Include="..\XI.Portal.BLL.Web\XI.Portal.BLL.Web.csproj">
+      <Project>{ec73f230-d65f-4066-8922-599a5da9878a}</Project>
+      <Name>XI.Portal.BLL.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Configuration\XI.Portal.Configuration.csproj">
       <Project>{B6A4CF45-1318-4F3D-A46E-BDE47195C0B2}</Project>
       <Name>XI.Portal.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Data.Contracts\XI.Portal.Data.Contracts.csproj">
+      <Project>{F7F76FFD-5222-43F9-B21A-CFCC69300FFB}</Project>
+      <Name>XI.Portal.Data.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Data.Core\XI.Portal.Data.Core.csproj">
       <Project>{a667b4a5-35c2-4953-ab21-07de8ff07ce5}</Project>
       <Name>XI.Portal.Data.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Data.Repositories\XI.Portal.Data.Repositories.csproj">
+      <Project>{fbe388de-f32c-4793-b81e-42853a8f4d37}</Project>
+      <Name>XI.Portal.Data.Repositories</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.Auth\XI.Portal.Library.Auth.csproj">
       <Project>{b529783f-e92c-413a-9503-8bce3e96634e}</Project>
@@ -1971,10 +1975,6 @@
     <ProjectReference Include="..\XI.Portal.Library.Rcon\XI.Portal.Library.Rcon.csproj">
       <Project>{4DF50DC6-1FDE-4D75-B557-42EABCF4728C}</Project>
       <Name>XI.Portal.Library.Rcon</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XI.Portal.Repositories\XI.Portal.Repositories.csproj">
-      <Project>{3E17E1C5-3592-4B8E-BC41-C3E246BB91A7}</Project>
-      <Name>XI.Portal.Repositories</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

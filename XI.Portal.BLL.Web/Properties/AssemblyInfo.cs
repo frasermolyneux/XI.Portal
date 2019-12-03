@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("XI.Portal.Configuration")]
+[assembly: AssemblyTitle("XI.Portal.BLL.Web")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("XI.Portal.Configuration")]
+[assembly: AssemblyProduct("XI.Portal.BLL.Web")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b6a4cf45-1318-4f3d-a46e-bde47195c0b2")]
+[assembly: Guid("ec73f230-d65f-4066-8922-599a5da9878a")]
 
 // Version information for an assembly consists of the following four values:
 //
