@@ -75,6 +75,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XI.Portal.Services.GameTrac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XI.Portal.Data.CommonTypes", "XI.Portal.Data.CommonTypes\XI.Portal.Data.CommonTypes.csproj", "{46BE6073-D271-49ED-A1E4-E1566B9EEAC8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Build", "0 - Build", "{046125F9-C369-4A32-9439-E14F9C531C61}"
+	ProjectSection(SolutionItems) = preProject
+		Build\Rename-TokenFiles.ps1 = Build\Rename-TokenFiles.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
