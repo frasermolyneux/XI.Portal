@@ -1,6 +1,6 @@
 ﻿using System;
 using Serilog;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Library.Rcon.Interfaces;
 using XI.Portal.Plugins.Events;
 

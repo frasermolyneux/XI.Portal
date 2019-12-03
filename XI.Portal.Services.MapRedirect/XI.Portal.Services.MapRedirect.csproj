@@ -54,6 +54,10 @@
       <Project>{b6a4cf45-1318-4f3d-a46e-bde47195c0b2}</Project>
       <Name>XI.Portal.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Data.CommonTypes\XI.Portal.Data.CommonTypes.csproj">
+      <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
+      <Name>XI.Portal.Data.CommonTypes</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

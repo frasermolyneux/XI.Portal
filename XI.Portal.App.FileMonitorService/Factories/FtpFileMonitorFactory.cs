@@ -2,7 +2,7 @@
 using System.Threading;
 using Serilog;
 using XI.Portal.App.FileMonitorService.Interfaces;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.App.FileMonitorService.Monitors;
 
 namespace XI.Portal.App.FileMonitorService.Factories

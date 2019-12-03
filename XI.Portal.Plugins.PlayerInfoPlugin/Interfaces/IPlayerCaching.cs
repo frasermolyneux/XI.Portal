@@ -1,5 +1,5 @@
 ﻿
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 
 namespace XI.Portal.Plugins.PlayerInfoPlugin.Interfaces
 {

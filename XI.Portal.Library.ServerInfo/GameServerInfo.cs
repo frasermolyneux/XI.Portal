@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Library.ServerInfo.Extensions;
 using XI.Portal.Library.ServerInfo.Protocols;
 

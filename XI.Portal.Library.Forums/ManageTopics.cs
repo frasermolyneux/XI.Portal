@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using XI.Portal.Configuration.Interfaces;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 
 namespace XI.Portal.Library.Forums
 {

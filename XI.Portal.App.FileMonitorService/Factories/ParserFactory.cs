@@ -2,7 +2,7 @@
 using Serilog;
 using XI.Portal.App.FileMonitorService.Interfaces;
 using XI.Portal.App.FileMonitorService.Parsers;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Plugins.ChatMonitorPlugin;
 using XI.Portal.Plugins.FuckYouPlugin;
 using XI.Portal.Plugins.LogProxyPlugin;

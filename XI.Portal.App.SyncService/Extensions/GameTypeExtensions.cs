@@ -2,7 +2,7 @@
 using System.IO;
 using Unity;
 using XI.Portal.App.SyncService.Configuration;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 
 namespace XI.Portal.App.SyncService.Extensions
 {

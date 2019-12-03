@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Plugins.PlayerInfoPlugin.Interfaces;
 
 namespace XI.Portal.Plugins.PlayerInfoPlugin.LocalCaching

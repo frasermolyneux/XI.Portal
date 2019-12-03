@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Serilog;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Plugins.Events;
 
 namespace XI.Portal.App.FileMonitorService.Parsers

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 
 namespace XI.Portal.Data.Core.Models
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Plugins.Interfaces;
 
 namespace XI.Portal.App.RconMonitorService.Interfaces

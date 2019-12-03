@@ -54,13 +54,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XI.Portal.Library.CommonTypes\XI.Portal.Library.CommonTypes.csproj">
-      <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
-      <Name>XI.Portal.Library.CommonTypes</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\XI.Portal.Data.CommonTypes\XI.Portal.Data.CommonTypes.csproj">
+      <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
+      <Name>XI.Portal.Data.CommonTypes</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

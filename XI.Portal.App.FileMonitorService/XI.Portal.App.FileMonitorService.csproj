@@ -152,13 +152,13 @@
       <Project>{B6A4CF45-1318-4F3D-A46E-BDE47195C0B2}</Project>
       <Name>XI.Portal.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Data.CommonTypes\XI.Portal.Data.CommonTypes.csproj">
+      <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
+      <Name>XI.Portal.Data.CommonTypes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Data.Core\XI.Portal.Data.Core.csproj">
       <Project>{a667b4a5-35c2-4953-ab21-07de8ff07ce5}</Project>
       <Name>XI.Portal.Data.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XI.Portal.Library.CommonTypes\XI.Portal.Library.CommonTypes.csproj">
-      <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
-      <Name>XI.Portal.Library.CommonTypes</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.GeoLocation\XI.Portal.Library.GeoLocation.csproj">
       <Project>{f13a754a-6bac-4e7e-ae23-0d513f64ba69}</Project>

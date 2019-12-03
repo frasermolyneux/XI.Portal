@@ -73,6 +73,10 @@
       <Project>{B6A4CF45-1318-4F3D-A46E-BDE47195C0B2}</Project>
       <Name>XI.Portal.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Data.CommonTypes\XI.Portal.Data.CommonTypes.csproj">
+      <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
+      <Name>XI.Portal.Data.CommonTypes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Plugins\XI.Portal.Plugins.csproj">
       <Project>{DECA7C71-871A-43C4-95D1-AF7E825ACFC3}</Project>
       <Name>XI.Portal.Plugins</Name>

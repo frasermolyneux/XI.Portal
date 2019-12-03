@@ -5,7 +5,7 @@ using Serilog;
 using XI.Portal.App.SyncService.Models;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Library.Forums;
 
 namespace XI.Portal.App.SyncService.PlayerSync

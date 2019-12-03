@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using XI.Portal.Data.Core.Models;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 
 namespace XI.Portal.Web.Extensions
 {

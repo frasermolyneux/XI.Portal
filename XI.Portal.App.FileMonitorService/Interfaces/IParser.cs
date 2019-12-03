@@ -1,5 +1,5 @@
 ﻿using System;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Plugins.Interfaces;
 
 namespace XI.Portal.App.FileMonitorService.Interfaces

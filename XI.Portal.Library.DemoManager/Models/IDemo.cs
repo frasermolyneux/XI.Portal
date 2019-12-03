@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 
 namespace XI.Portal.Library.DemoManager.Models
 {

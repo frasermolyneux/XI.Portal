@@ -61,6 +61,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\XI.Portal.Data.CommonTypes\XI.Portal.Data.CommonTypes.csproj">
+      <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
+      <Name>XI.Portal.Data.CommonTypes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Data.Contracts\XI.Portal.Data.Contracts.csproj">
       <Project>{F7F76FFD-5222-43F9-B21A-CFCC69300FFB}</Project>
       <Name>XI.Portal.Data.Contracts</Name>
@@ -68,10 +72,6 @@
     <ProjectReference Include="..\XI.Portal.Data.Core\XI.Portal.Data.Core.csproj">
       <Project>{A667B4A5-35C2-4953-AB21-07DE8FF07CE5}</Project>
       <Name>XI.Portal.Data.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XI.Portal.Library.CommonTypes\XI.Portal.Library.CommonTypes.csproj">
-      <Project>{46BE6073-D271-49ED-A1E4-E1566B9EEAC8}</Project>
-      <Name>XI.Portal.Library.CommonTypes</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -7,8 +7,8 @@
     <ProjectGuid>{46BE6073-D271-49ED-A1E4-E1566B9EEAC8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>XI.Portal.Library.CommonTypes</RootNamespace>
-    <AssemblyName>XI.Portal.Library.CommonTypes</AssemblyName>
+    <RootNamespace>XI.Portal.Data.CommonTypes</RootNamespace>
+    <AssemblyName>XI.Portal.Data.CommonTypes</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

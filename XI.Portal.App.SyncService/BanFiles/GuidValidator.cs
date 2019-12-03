@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using XI.Portal.App.SyncService.Extensions;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 
 namespace XI.Portal.App.SyncService.BanFiles
 {

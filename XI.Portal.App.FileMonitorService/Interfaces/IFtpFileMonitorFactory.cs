@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.App.FileMonitorService.Monitors;
 
 namespace XI.Portal.App.FileMonitorService.Interfaces

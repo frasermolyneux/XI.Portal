@@ -18,7 +18,7 @@ using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Auth;
 using XI.Portal.Library.Auth.Extensions;
 using XI.Portal.Library.Auth.XtremeIdiots;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Library.DemoManager.Extensions;
 using XI.Portal.Library.DemoManager.Models;
 using XI.Portal.Library.Logging;

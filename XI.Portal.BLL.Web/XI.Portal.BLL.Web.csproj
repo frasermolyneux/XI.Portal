@@ -54,6 +54,10 @@
     <Compile Include="ViewModels\PortalIndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\XI.Portal.Data.CommonTypes\XI.Portal.Data.CommonTypes.csproj">
+      <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
+      <Name>XI.Portal.Data.CommonTypes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Data.Contracts\XI.Portal.Data.Contracts.csproj">
       <Project>{f7f76ffd-5222-43f9-b21a-cfcc69300ffb}</Project>
       <Name>XI.Portal.Data.Contracts</Name>
@@ -65,10 +69,6 @@
     <ProjectReference Include="..\XI.Portal.Data.Repositories\XI.Portal.Data.Repositories.csproj">
       <Project>{fbe388de-f32c-4793-b81e-42853a8f4d37}</Project>
       <Name>XI.Portal.Data.Repositories</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XI.Portal.Library.CommonTypes\XI.Portal.Library.CommonTypes.csproj">
-      <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
-      <Name>XI.Portal.Library.CommonTypes</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

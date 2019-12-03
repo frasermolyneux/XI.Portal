@@ -1,5 +1,5 @@
 ﻿using System;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 
 namespace XI.Portal.Library.DemoManager.Extensions
 {

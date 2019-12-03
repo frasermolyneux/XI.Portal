@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 
 namespace XI.Portal.App.SyncService.BanSource
 {

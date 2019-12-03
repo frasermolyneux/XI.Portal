@@ -3,7 +3,7 @@ using System.Linq;
 using XI.Portal.Data.Contracts.FilterModels;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 
 namespace XI.Portal.Data.Repositories.Extensions
 {

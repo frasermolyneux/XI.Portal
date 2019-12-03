@@ -1928,6 +1928,10 @@
       <Project>{B6A4CF45-1318-4F3D-A46E-BDE47195C0B2}</Project>
       <Name>XI.Portal.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Data.CommonTypes\XI.Portal.Data.CommonTypes.csproj">
+      <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
+      <Name>XI.Portal.Data.CommonTypes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Data.Contracts\XI.Portal.Data.Contracts.csproj">
       <Project>{F7F76FFD-5222-43F9-B21A-CFCC69300FFB}</Project>
       <Name>XI.Portal.Data.Contracts</Name>
@@ -1943,10 +1947,6 @@
     <ProjectReference Include="..\XI.Portal.Library.Auth\XI.Portal.Library.Auth.csproj">
       <Project>{b529783f-e92c-413a-9503-8bce3e96634e}</Project>
       <Name>XI.Portal.Library.Auth</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XI.Portal.Library.CommonTypes\XI.Portal.Library.CommonTypes.csproj">
-      <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
-      <Name>XI.Portal.Library.CommonTypes</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.DemoManager\XI.Portal.Library.DemoManager.csproj">
       <Project>{92948eb3-e964-4106-9c9f-d1651786bc26}</Project>

@@ -5,7 +5,7 @@ using XI.Portal.BLL.Web.Interfaces;
 using XI.Portal.BLL.Web.ViewModels;
 using XI.Portal.Data.Contracts.FilterModels;
 using XI.Portal.Data.Contracts.Repositories;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 
 namespace XI.Portal.BLL.Web
 {

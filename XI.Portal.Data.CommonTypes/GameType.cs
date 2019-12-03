@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace XI.Portal.Library.CommonTypes
+namespace XI.Portal.Data.CommonTypes
 {
     public enum GameType
     {
