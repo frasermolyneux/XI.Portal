@@ -2,8 +2,8 @@
 using System.Web.Mvc;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.CommonTypes;
-using XI.Portal.Library.GameTracker;
 using XI.Portal.Library.Logging;
+using XI.Portal.Services.GameTracker.Interfaces;
 
 namespace XI.Portal.Web.Controllers
 {

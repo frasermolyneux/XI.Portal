@@ -3,9 +3,9 @@ using System.IO;
 using System.Net;
 using XI.Portal.Library.CommonTypes;
 using XI.Portal.Library.GameTracker.Extensions;
-using XI.Portal.Library.GameTracker.Properties;
+using XI.Portal.Services.GameTracker.Interfaces;
 
-namespace XI.Portal.Library.GameTracker
+namespace XI.Portal.Services.GameTracker.Repositories
 {
     public class MapImageRepository : IMapImageRepository
     {
@@ -14,7 +14,7 @@ namespace XI.Portal.Library.GameTracker
             if (!Directory.Exists(FileStoreBasePath)) Directory.CreateDirectory(FileStoreBasePath);
 
             var noImageFile = Path.Combine(FileStoreBasePath, "NoMapImage.jpg");
-            if (!File.Exists(noImageFile)) Resources.noimage.Save(noImageFile);
+            if (!File.Exists(noImageFile)) Properties.Resources.noimage.Save(noImageFile);
         }
 
         public string FileStoreBasePath { get; set; } = @"C:\Temp\GameTrackerImages";

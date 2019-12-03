@@ -1,6 +1,6 @@
 ﻿using XI.Portal.Library.CommonTypes;
 
-namespace XI.Portal.Library.GameTracker
+namespace XI.Portal.Services.GameTracker.Interfaces
 {
     public interface IMapImageRepository
     {

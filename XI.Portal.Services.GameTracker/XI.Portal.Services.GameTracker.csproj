@@ -7,8 +7,8 @@
     <ProjectGuid>{C680CEEC-F2A8-45E8-A7A4-846D97742937}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>XI.Portal.Library.GameTracker</RootNamespace>
-    <AssemblyName>XI.Portal.Library.GameTracker</AssemblyName>
+    <RootNamespace>XI.Portal.Services.GameTracker</RootNamespace>
+    <AssemblyName>XI.Portal.Services.GameTracker</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -43,8 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\GameTypeExtensions.cs" />
-    <Compile Include="IMapImageRepository.cs" />
-    <Compile Include="MapImageRepository.cs" />
+    <Compile Include="Interfaces\IMapImageRepository.cs" />
+    <Compile Include="Repositories\MapImageRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
