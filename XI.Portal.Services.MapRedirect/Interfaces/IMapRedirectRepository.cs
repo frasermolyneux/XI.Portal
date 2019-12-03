@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using XI.Portal.Library.MapRedirect.Models;
+using XI.Portal.Services.MapRedirect.Models;
 
-namespace XI.Portal.Library.MapRedirect
+namespace XI.Portal.Services.MapRedirect.Interfaces
 {
     public interface IMapRedirectRepository
     {

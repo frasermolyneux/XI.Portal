@@ -28,9 +28,10 @@ using XI.Portal.Library.Forums;
 using XI.Portal.Library.GameTracker;
 using XI.Portal.Library.GeoLocation.Repository;
 using XI.Portal.Library.Logging;
-using XI.Portal.Library.MapRedirect;
 using XI.Portal.Library.Rcon.Factories;
 using XI.Portal.Library.Rcon.Interfaces;
+using XI.Portal.Services.MapRedirect.Interfaces;
+using XI.Portal.Services.MapRedirect.Repositories;
 using XI.Portal.Web.Navigation;
 
 namespace XI.Portal.Web

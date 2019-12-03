@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
 using XI.Portal.Configuration.Interfaces;
-using XI.Portal.Library.MapRedirect.Models;
+using XI.Portal.Services.MapRedirect.Interfaces;
+using XI.Portal.Services.MapRedirect.Models;
 
-namespace XI.Portal.Library.MapRedirect
+namespace XI.Portal.Services.MapRedirect.Repositories
 {
     public class MapRedirectRepository : IMapRedirectRepository
     {

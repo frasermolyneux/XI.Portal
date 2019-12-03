@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace XI.Portal.Library.MapRedirect.Models
+namespace XI.Portal.Services.MapRedirect.Models
 {
     public class MapRedirectEntry
     {

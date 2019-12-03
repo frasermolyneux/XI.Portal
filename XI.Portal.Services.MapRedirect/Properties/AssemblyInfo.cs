@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("XI.Portal.Library.MapRedirect")]
+[assembly: AssemblyTitle("XI.Portal.Services.MapRedirect")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("XI.Portal.Library.MapRedirect")]
+[assembly: AssemblyProduct("XI.Portal.Services.MapRedirect")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1bb932a2-734b-495f-87d6-133d22c1e110")]
+[assembly: Guid("ab803e35-b670-45f6-96cf-2f4c28737df5")]
 
 // Version information for an assembly consists of the following four values:
 //

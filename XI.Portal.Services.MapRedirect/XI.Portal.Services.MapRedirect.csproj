@@ -4,14 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1BB932A2-734B-495F-87D6-133D22C1E110}</ProjectGuid>
+    <ProjectGuid>{AB803E35-B670-45F6-96CF-2F4C28737DF5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>XI.Portal.Library.MapRedirect</RootNamespace>
-    <AssemblyName>XI.Portal.Library.MapRedirect</AssemblyName>
+    <RootNamespace>XI.Portal.Services.MapRedirect</RootNamespace>
+    <AssemblyName>XI.Portal.Services.MapRedirect</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,14 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IMapRedirectRepository.cs" />
-    <Compile Include="MapRedirectRepository.cs" />
+    <Compile Include="Interfaces\IMapRedirectRepository.cs" />
+    <Compile Include="Repositories\MapRedirectRepository.cs" />
     <Compile Include="Models\MapRedirectEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XI.Portal.Configuration\XI.Portal.Configuration.csproj">
-      <Project>{B6A4CF45-1318-4F3D-A46E-BDE47195C0B2}</Project>
+      <Project>{b6a4cf45-1318-4f3d-a46e-bde47195c0b2}</Project>
       <Name>XI.Portal.Configuration</Name>
     </ProjectReference>
   </ItemGroup>
