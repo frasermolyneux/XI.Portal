@@ -1,5 +1,5 @@
 ﻿@using XI.Portal.Library.Auth.Extensions
-@using XI.Portal.Library.CommonTypes
+@using XI.Portal.Data.CommonTypes
 @using Microsoft.AspNet.Identity
 @model List<XI.Portal.Data.Core.Models.AdminAction>
 
@@ -30,7 +30,7 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
                         <h2>
-                            @item.Type Record for @Html.ActionLink(item.Player.Username, "Details", "Players", new {id = item.Player.PlayerId}, new {})
+                            @item.Type Record for @Html.ActionLink(item.Player.Username, "Details", "Players", new { id = item.Player.PlayerId }, new { })
                         </h2>
                         <p>
                             @if (item.Admin == null)
@@ -43,23 +43,23 @@
                                 @item.Admin.UserName
                             }
 
-                            <br/>
+                            <br />
                             <strong>Created:</strong> @item.Created
 
                             @if (item.Type == AdminActionType.TempBan && item.Expires > DateTime.UtcNow)
                             {
-                                <br/>
+                                <br />
                                 <text><strong>Expires:</strong> @item.Expires</text>
                             }
                             else if (item.Type == AdminActionType.TempBan)
                             {
-                                <br/>
+                                <br />
                                 <text><strong>Expired:</strong> @item.Expires</text>
                             }
 
                             @if (item.Type == AdminActionType.Ban && item.Expires != null)
                             {
-                                <br/>
+                                <br />
                                 <text><strong>Ban Lifted:</strong> @item.Expires</text>
                             }
                         </p>
