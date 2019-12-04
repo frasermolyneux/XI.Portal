@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using Serilog;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Library.GeoLocation.Extensions;
 using XI.Portal.Library.GeoLocation.Repository;
 using XI.Portal.Library.Logging;

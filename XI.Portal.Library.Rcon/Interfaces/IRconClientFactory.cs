@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 
 namespace XI.Portal.Library.Rcon.Interfaces
 {

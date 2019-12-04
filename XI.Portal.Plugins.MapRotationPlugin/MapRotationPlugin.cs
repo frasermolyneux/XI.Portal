@@ -4,7 +4,7 @@ using System.Linq;
 using Serilog;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Library.Rcon.Interfaces;
 using XI.Portal.Plugins.Events;
 using XI.Portal.Plugins.Interfaces;

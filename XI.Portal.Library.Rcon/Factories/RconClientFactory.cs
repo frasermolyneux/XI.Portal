@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Serilog;
-using XI.Portal.Library.CommonTypes;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Library.Rcon.Clients;
 using XI.Portal.Library.Rcon.Interfaces;
 

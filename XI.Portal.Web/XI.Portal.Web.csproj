@@ -1920,29 +1920,33 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XI.Portal.BLL.Contracts\XI.Portal.BLL.Contracts.csproj">
-      <Project>{56642DB9-DD3D-4533-9094-A5D301A0E9A5}</Project>
-      <Name>XI.Portal.BLL.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XI.Portal.BLL\XI.Portal.BLL.csproj">
-      <Project>{EA236A5D-C039-47C0-8742-51ED61677047}</Project>
-      <Name>XI.Portal.BLL</Name>
+    <ProjectReference Include="..\XI.Portal.BLL.Web\XI.Portal.BLL.Web.csproj">
+      <Project>{ec73f230-d65f-4066-8922-599a5da9878a}</Project>
+      <Name>XI.Portal.BLL.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Configuration\XI.Portal.Configuration.csproj">
       <Project>{B6A4CF45-1318-4F3D-A46E-BDE47195C0B2}</Project>
       <Name>XI.Portal.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Data.CommonTypes\XI.Portal.Data.CommonTypes.csproj">
+      <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
+      <Name>XI.Portal.Data.CommonTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Data.Contracts\XI.Portal.Data.Contracts.csproj">
+      <Project>{F7F76FFD-5222-43F9-B21A-CFCC69300FFB}</Project>
+      <Name>XI.Portal.Data.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Data.Core\XI.Portal.Data.Core.csproj">
       <Project>{a667b4a5-35c2-4953-ab21-07de8ff07ce5}</Project>
       <Name>XI.Portal.Data.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Data.Repositories\XI.Portal.Data.Repositories.csproj">
+      <Project>{fbe388de-f32c-4793-b81e-42853a8f4d37}</Project>
+      <Name>XI.Portal.Data.Repositories</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.Auth\XI.Portal.Library.Auth.csproj">
       <Project>{b529783f-e92c-413a-9503-8bce3e96634e}</Project>
       <Name>XI.Portal.Library.Auth</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XI.Portal.Library.CommonTypes\XI.Portal.Library.CommonTypes.csproj">
-      <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
-      <Name>XI.Portal.Library.CommonTypes</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.DemoManager\XI.Portal.Library.DemoManager.csproj">
       <Project>{92948eb3-e964-4106-9c9f-d1651786bc26}</Project>
@@ -1952,10 +1956,6 @@
       <Project>{a8e12bc0-f530-4ccd-862b-73267c71d07d}</Project>
       <Name>XI.Portal.Library.Forums</Name>
     </ProjectReference>
-    <ProjectReference Include="..\XI.Portal.Library.GameTracker\XI.Portal.Library.GameTracker.csproj">
-      <Project>{c680ceec-f2a8-45e8-a7a4-846d97742937}</Project>
-      <Name>XI.Portal.Library.GameTracker</Name>
-    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.GeoLocation\XI.Portal.Library.GeoLocation.csproj">
       <Project>{f13a754a-6bac-4e7e-ae23-0d513f64ba69}</Project>
       <Name>XI.Portal.Library.GeoLocation</Name>
@@ -1964,17 +1964,17 @@
       <Project>{38c09894-2c92-4517-9332-35415375e62a}</Project>
       <Name>XI.Portal.Library.Logging</Name>
     </ProjectReference>
-    <ProjectReference Include="..\XI.Portal.Library.MapRedirect\XI.Portal.Library.MapRedirect.csproj">
-      <Project>{1bb932a2-734b-495f-87d6-133d22c1e110}</Project>
-      <Name>XI.Portal.Library.MapRedirect</Name>
-    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.Rcon\XI.Portal.Library.Rcon.csproj">
       <Project>{4DF50DC6-1FDE-4D75-B557-42EABCF4728C}</Project>
       <Name>XI.Portal.Library.Rcon</Name>
     </ProjectReference>
-    <ProjectReference Include="..\XI.Portal.Repositories\XI.Portal.Repositories.csproj">
-      <Project>{3E17E1C5-3592-4B8E-BC41-C3E246BB91A7}</Project>
-      <Name>XI.Portal.Repositories</Name>
+    <ProjectReference Include="..\XI.Portal.Services.GameTracker\XI.Portal.Services.GameTracker.csproj">
+      <Project>{c680ceec-f2a8-45e8-a7a4-846d97742937}</Project>
+      <Name>XI.Portal.Services.GameTracker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Services.MapRedirect\XI.Portal.Services.MapRedirect.csproj">
+      <Project>{ab803e35-b670-45f6-96cf-2f4c28737df5}</Project>
+      <Name>XI.Portal.Services.MapRedirect</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
