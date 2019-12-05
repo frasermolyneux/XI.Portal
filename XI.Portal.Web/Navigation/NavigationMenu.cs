@@ -192,7 +192,6 @@ namespace XI.Portal.Web.Navigation
         {
             var mapsMenu = new MenuItemModel("AdmMaps", "AdmMaps", "Index", "cog");
             mapsMenu.SubMenuItems.Add(new SubMenuItemModel("Maps", "AdmMaps", "Index"));
-            mapsMenu.SubMenuItems.Add(new SubMenuItemModel("Sync Maps", "AdmMaps", "SyncWithRedirect"));
             menuItems.Add(mapsMenu);
         }
 
