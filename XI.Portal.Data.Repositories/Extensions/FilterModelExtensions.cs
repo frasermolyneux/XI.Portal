@@ -32,8 +32,6 @@ namespace XI.Portal.Data.Repositories.Extensions
                             p.IpAddresses.Any(ip => ip.Address.Contains(filterModel.FilterString)))
                             .AsQueryable();
                         break;
-                    default:
-                        break;
                 }
             }
             else if (filterModel.Filter == PlayersFilterModel.FilterType.IpAddress)
@@ -48,8 +46,6 @@ namespace XI.Portal.Data.Repositories.Extensions
                     break;
                 case PlayersFilterModel.OrderBy.Username:
                     players = players.OrderBy(p => p.Username).AsQueryable();
-                    break;
-                default:
                     break;
             }
 
@@ -84,16 +80,12 @@ namespace XI.Portal.Data.Repositories.Extensions
                         && aa.Admin == null)
                         .AsQueryable();
                     break;
-                default:
-                    break;
             }
 
             switch (filterModel.Order)
             {
                 case AdminActionsFilterModel.OrderBy.Created:
                     adminActions = adminActions.OrderByDescending(aa => aa.Created).AsQueryable();
-                    break;
-                default:
                     break;
             }
 
@@ -105,6 +97,37 @@ namespace XI.Portal.Data.Repositories.Extensions
             }
 
             return adminActions;
+        }
+
+        public static IQueryable<Map> ApplyFilter(this MapsFilterModel filterModel, PortalContext context)
+        {
+            var maps = context.Maps.AsQueryable();
+
+            if (filterModel.GameType != GameType.Unknown)
+            {
+                maps = maps.Where(m => m.GameType == filterModel.GameType).AsQueryable();
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterModel.FilterString))
+            {
+                maps = maps.Where(m => m.MapName.Contains(filterModel.FilterString)).AsQueryable();
+            }
+
+            switch (filterModel.Order)
+            {
+                case MapsFilterModel.OrderBy.MapName:
+                    maps = maps.OrderByDescending(m => m.MapName).AsQueryable();
+                    break;
+            }
+
+            maps = maps.Skip(filterModel.SkipEntries).AsQueryable();
+
+            if (filterModel.TakeEntries != 0)
+            {
+                maps = maps.Take(filterModel.TakeEntries).AsQueryable();
+            }
+
+            return maps;
         }
 
     }

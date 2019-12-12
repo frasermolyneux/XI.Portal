@@ -41,10 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FilterModels\MapsFilterModel.cs" />
     <Compile Include="FilterModels\PlayersFilterModel.cs" />
     <Compile Include="FilterModels\AdminActionsFilterModel.cs" />
     <Compile Include="Repositories\IAdminActionsRepository.cs" />
     <Compile Include="Repositories\ILivePlayersRepository.cs" />
+    <Compile Include="Repositories\IMapsRepository.cs" />
     <Compile Include="Repositories\IPlayersRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -43,17 +43,24 @@
   <ItemGroup>
     <Compile Include="AdminActionsList.cs" />
     <Compile Include="Interfaces\IAdminActionsList.cs" />
+    <Compile Include="Interfaces\IMapsList.cs" />
     <Compile Include="Interfaces\IPlayersList.cs" />
     <Compile Include="Interfaces\IPortalIndex.cs" />
+    <Compile Include="MapsList.cs" />
     <Compile Include="PlayersList.cs" />
     <Compile Include="PortalIndex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AdminActionListEntryViewModel.cs" />
     <Compile Include="ViewModels\GameIndexViewModel.cs" />
+    <Compile Include="ViewModels\MapsListEntryViewModel.cs" />
     <Compile Include="ViewModels\PlayerListEntryViewModel.cs" />
     <Compile Include="ViewModels\PortalIndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\XI.Portal.Configuration\XI.Portal.Configuration.csproj">
+      <Project>{B6A4CF45-1318-4F3D-A46E-BDE47195C0B2}</Project>
+      <Name>XI.Portal.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Data.CommonTypes\XI.Portal.Data.CommonTypes.csproj">
       <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
       <Name>XI.Portal.Data.CommonTypes</Name>

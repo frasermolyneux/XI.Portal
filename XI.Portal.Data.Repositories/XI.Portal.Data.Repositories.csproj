@@ -60,6 +60,7 @@
     <Compile Include="AdminActionsRepository.cs" />
     <Compile Include="Extensions\FilterModelExtensions.cs" />
     <Compile Include="LivePlayersRepository.cs" />
+    <Compile Include="MapsRepository.cs" />
     <Compile Include="PlayersRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

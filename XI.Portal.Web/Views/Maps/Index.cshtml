@@ -45,6 +45,24 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
+            function formatMapFiles(cellValue, options, rowObject) {
+
+                if (cellValue === undefined || cellValue === null || cellValue.length === 0) {
+                    return "No Map Files";
+                }
+
+                console.log(cellValue);
+
+                var mapFiles = cellValue;
+                var outputText = "";
+
+                for (var key in mapFiles) {
+                    outputText += "<li><a href='" + mapFiles[key] + "'>" + key + "</a></li>";
+                }
+
+                return outputText;
+            }
+
             function formatGameType(cellValue, options, rowObject) {
                 return "<img src='/Images/icons/" + rowObject.GameType + ".png' alt='" + cellValue + "' width='16' height='16' />";
             }
@@ -55,17 +73,17 @@
 
             function formatLikeDislike(cellValue, options, rowObject) {
                 return  "<div class=\"progress\" id=\"progress-" + rowObject.MapName + "\">" +
-                    "<div class=\"progress-bar bg-info\" role=\"progressbar\" style=\"width: " + rowObject.LikePercentage + "%\" aria-valuenow=\"" + rowObject.TotalLike + "\" aria-valuemin=\"0\" aria-valuemax=\"" + rowObject.TotalVotes + "\"></div>" +
+                    "<div class=\"progress-bar bg-info\" role=\"progressbar\" style=\"width: " + rowObject.LikePercentage + "%\" aria-valuenow=\"" + rowObject.TotalLikes + "\" aria-valuemin=\"0\" aria-valuemax=\"" + rowObject.TotalVotes + "\"></div>" +
                     "<div class=\"progress-bar bg-danger\" role=\"progressbar\" style=\"width: " + rowObject.DislikePercentage + "%\" aria-valuenow=\"" + rowObject.TotalDislike + "\" aria-valuemin=\"0\" aria-valuemax=\"" + rowObject.TotalVotes + "\"></div>" +
                         "</div>" + 
-                "<div class=\"m-t-sm\">" + rowObject.TotalLike + " likes and " + rowObject.TotalDislike + " dislikes out of " + rowObject.TotalVotes + "</div>";
+                "<div class=\"m-t-sm\">" + rowObject.TotalLikes + " likes and " + rowObject.TotalDislike + " dislikes out of " + rowObject.TotalVotes + "</div>";
             }
 
             jQuery("#mapList").jqGrid({
                 url: '/Maps/GetGlobalMapListAjax',
                 datatype: 'json',
                 mType: 'GET',
-                colNames: ['Game', 'Name', 'Popularity', ''],
+                colNames: ['Game', 'Name', 'Map Files', 'Popularity', ''],
                 colModel: [
                     {
                         name: 'GameType',
@@ -75,7 +93,7 @@
                         sortable: false,
                         search: false,
                         formatter: formatGameType,
-                        width: 30
+                        width: 10
                     },
                     {
                         name: 'MapName',
@@ -84,6 +102,16 @@
                         width: 20,
                         sortable: false,
                         search: false
+                    },
+                    {
+                        name: 'MapFiles',
+                        index: 'MapFiles',
+                        hidden: false,
+                        editable: false,
+                        sortable: false,
+                        search: false,
+                        formatter: formatMapFiles,
+                        width: 30
                     },
                     {
                         name: 'LikeDislike',
