@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using XI.Portal.BLL.Web.Interfaces;
+using XI.Portal.Data.Contracts.FilterModels;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Logging;
 
@@ -10,10 +12,14 @@ namespace XI.Portal.Web.Controllers
     [AllowAnonymous]
     public class MapsController : BaseController
     {
+        private readonly IMapsList mapList;
+
         public MapsController(
             IContextProvider contextProvider,
-            IDatabaseLogger databaseLogger) : base(contextProvider, databaseLogger)
+            IDatabaseLogger databaseLogger, 
+            IMapsList mapList) : base(contextProvider, databaseLogger)
         {
+            this.mapList = mapList ?? throw new System.ArgumentNullException(nameof(mapList));
         }
 
         public ActionResult Index()
@@ -26,54 +32,26 @@ namespace XI.Portal.Web.Controllers
         // ReSharper disable once InconsistentNaming
         bool _search, string searchField, string searchString, string searchOper)
         {
-            using (var context = ContextProvider.GetContext())
+            var mapListCount = await mapList.GetMapListCount(new MapsFilterModel
             {
-                var maps = context.Maps.Include(m => m.MapVotes).OrderBy(m => m.MapName).AsQueryable();
+                FilterString = searchString
+            });
+            var mapsToSkip = (page - 1) * rows;
 
-                if (_search && !string.IsNullOrWhiteSpace(searchString))
-                {
-                    maps = maps.Where(cl => cl.MapName.Contains(searchString)).AsQueryable();
-                }
+            var mapListEntries = await mapList.GetMapList(new MapsFilterModel
+            {
+                FilterString = searchString,
+                SkipEntries = mapsToSkip,
+                TakeEntries = rows
+            });
 
-                var totalRecords = maps.Count();
-                var skip = (page - 1) * rows;
-
-                var mapList = await maps.Skip(skip).Take(rows).ToListAsync();
-
-                var mapsToReturn = mapList.Select(map =>
-                {
-                    double totalLikes = map.MapVotes.Where(mv => mv.Like).Count();
-                    double totalDislikes = map.MapVotes.Where(mv => !mv.Like).Count();
-                    int totalVotes = map.MapVotes.Count();
-                    double likePercentage = 0;
-                    double dislikePercentage = 0;
-
-                    if (totalVotes > 0)
-                    {
-                        likePercentage = (totalLikes / totalVotes) * 100;
-                        dislikePercentage = (totalDislikes / totalVotes) * 100;
-                    }
-
-                    return new
-                    {
-                        GameType = map.GameType.ToString(),
-                        map.MapName,
-                        TotalVotes = totalVotes,
-                        TotalLike = totalLikes,
-                        TotalDislike = totalDislikes,
-                        LikePercentage = likePercentage,
-                        DislikePercentage = dislikePercentage,
-                    };
-                });
-
-                return Json(new
-                {
-                    total = totalRecords / rows,
-                    page,
-                    records = totalRecords,
-                    rows = mapsToReturn
-                }, JsonRequestBehavior.AllowGet);
-            }
+            return Json(new
+            {
+                total = mapListCount / rows,
+                page,
+                records = mapListCount,
+                rows = mapListEntries
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

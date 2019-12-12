@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="AdminActionType.cs" />
     <Compile Include="ChatType.cs" />
+    <Compile Include="Extensions\GameTypeExtensions.cs" />
     <Compile Include="GameType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

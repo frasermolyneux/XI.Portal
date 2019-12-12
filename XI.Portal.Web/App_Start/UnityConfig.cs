@@ -96,11 +96,13 @@ namespace XI.Portal.Web
             container.RegisterType<IAdminActionsRepository, AdminActionsRepository>();
             container.RegisterType<ILivePlayersRepository, LivePlayersRepository>();
             container.RegisterType<IPlayersRepository, PlayersRepository>();
+            container.RegisterType<IMapsRepository, MapsRepository>();
 
             // BLL
             container.RegisterType<IAdminActionsList, AdminActionsList>();
             container.RegisterType<IPlayersList, PlayersList>();
             container.RegisterType<IPortalIndex, PortalIndex>();
+            container.RegisterType<IMapsList, MapsList>();
 
             // Other
             container.RegisterType<IContextProvider, ContextProvider>();
