@@ -25,5 +25,6 @@ namespace XI.Portal.Data.Core.Models
         public DateTime LastSeen { get; set; }
 
         public List<PlayerIpAddress> IpAddresses { get; set; }
+        public List<PlayerAlias> Aliases { get; set; }
     }
 }

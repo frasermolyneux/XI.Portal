@@ -24,7 +24,8 @@ namespace XI.Portal.Data.Repositories.Extensions
                 {
                     case PlayersFilterModel.FilterType.UsernameAndGuid:
                         players = players.Where(p => p.Username.Contains(filterModel.FilterString) ||
-                            p.Guid.Contains(filterModel.FilterString))
+                            p.Guid.Contains(filterModel.FilterString) || 
+                            p.Aliases.Any(a => a.Name.Contains(filterModel.FilterString)))
                             .AsQueryable();
                         break;
                     case PlayersFilterModel.FilterType.IpAddress:
