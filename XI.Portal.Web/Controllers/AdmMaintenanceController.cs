@@ -168,24 +168,6 @@ namespace XI.Portal.Web.Controllers
             return View(results);
         }
 
-        private long GetFileSize(string hostname, string filePath, string username, string password)
-        {
-            var request = (FtpWebRequest)WebRequest.Create($"ftp://{hostname}/{filePath}");
-            request.Method = WebRequestMethods.Ftp.GetFileSize;
-            request.Credentials = new NetworkCredential(username, password);
-
-             return ((FtpWebResponse)request.GetResponse()).ContentLength;
-        }
-
-        private DateTime GetLastModified(string hostname, string filePath, string username, string password)
-        {
-            var request = (FtpWebRequest)WebRequest.Create($"ftp://{hostname}/{filePath}");
-            request.Method = WebRequestMethods.Ftp.GetDateTimestamp;
-            request.Credentials = new NetworkCredential(username, password);
-
-            return ((FtpWebResponse)request.GetResponse()).LastModified;
-        }
-
         public async Task<ActionResult> RconMonitorCheck()
         {
             var results = new Dictionary<string, string>();
@@ -226,7 +208,7 @@ namespace XI.Portal.Web.Controllers
 
         public async Task<ActionResult> FileMonitorCheck()
         {
-            var results = new Dictionary<string, string>();
+            var results = new List<FileMonitorStatusViewModel>();
 
             using (var context = ContextProvider.GetContext())
             {
@@ -235,21 +217,51 @@ namespace XI.Portal.Web.Controllers
                 foreach (var fileMonitor in fileMonitors)
                     try
                     {
-                        var request = (FtpWebRequest) WebRequest.Create($"ftp://{fileMonitor.GameServer.FtpHostname}/{fileMonitor.FilePath}");
-                        request.Method = WebRequestMethods.Ftp.GetFileSize;
-                        request.Credentials = new NetworkCredential(fileMonitor.GameServer.FtpUsername, fileMonitor.GameServer.FtpPassword);
+                        var fileSize = GetFileSize(fileMonitor.GameServer.Hostname, fileMonitor.FilePath, fileMonitor.GameServer.FtpUsername, fileMonitor.GameServer.FtpPassword);
+                        var lastModified = GetLastModified(fileMonitor.GameServer.Hostname, fileMonitor.FilePath, fileMonitor.GameServer.FtpUsername, fileMonitor.GameServer.FtpPassword);
 
-                        var fileSize = ((FtpWebResponse) request.GetResponse()).ContentLength;
+                        var somethingMayBeWrong = lastModified < DateTime.Now.AddHours(-1);
 
-                        results.Add($"{fileMonitor.GameServer.Title} - {fileMonitor.FilePath}", $"Success, file size: {fileSize}");
+                        results.Add(new FileMonitorStatusViewModel
+                        {
+                            FileMonitor = fileMonitor,
+                            GameServer = fileMonitor.GameServer,
+                            FileSize = fileSize,
+                            LastModified = lastModified,
+                            SomethingMayBeWrong = somethingMayBeWrong
+                        });
                     }
                     catch (Exception ex)
                     {
-                        results.Add($"{fileMonitor.GameServer.Title} - {fileMonitor.FilePath}", ex.Message);
+                        results.Add(new FileMonitorStatusViewModel
+                        {
+                            FileMonitor = fileMonitor,
+                            GameServer = fileMonitor.GameServer,
+                            HasError = true,
+                            ErrorMessage = ex.Message
+                        });
                     }
             }
 
             return View(results);
+        }
+
+        private long GetFileSize(string hostname, string filePath, string username, string password)
+        {
+            var request = (FtpWebRequest)WebRequest.Create($"ftp://{hostname}/{filePath}");
+            request.Method = WebRequestMethods.Ftp.GetFileSize;
+            request.Credentials = new NetworkCredential(username, password);
+
+            return ((FtpWebResponse)request.GetResponse()).ContentLength;
+        }
+
+        private DateTime GetLastModified(string hostname, string filePath, string username, string password)
+        {
+            var request = (FtpWebRequest)WebRequest.Create($"ftp://{hostname}/{filePath}");
+            request.Method = WebRequestMethods.Ftp.GetDateTimestamp;
+            request.Credentials = new NetworkCredential(username, password);
+
+            return ((FtpWebResponse)request.GetResponse()).LastModified;
         }
     }
 }
