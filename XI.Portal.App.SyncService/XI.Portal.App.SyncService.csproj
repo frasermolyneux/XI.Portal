@@ -156,7 +156,6 @@
     <Compile Include="BanSource\IExternalBanSource.cs" />
     <Compile Include="Configuration\ConfigurationWrapper.cs" />
     <Compile Include="Configuration\IConfigurationWrapper.cs" />
-    <Compile Include="Extensions\BanSyncExtensions.cs" />
     <Compile Include="Extensions\GameTypeExtensions.cs" />
     <Compile Include="BanFiles\GuidValidator.cs" />
     <Compile Include="Models\LocalPlayer.cs" />
@@ -201,6 +200,10 @@
     <ProjectReference Include="..\XI.Portal.Library.Forums\XI.Portal.Library.Forums.csproj">
       <Project>{a8e12bc0-f530-4ccd-862b-73267c71d07d}</Project>
       <Name>XI.Portal.Library.Forums</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Library.Ftp\XI.Portal.Library.Ftp.csproj">
+      <Project>{0489e968-204b-497f-a156-16ea6336115b}</Project>
+      <Name>XI.Portal.Library.Ftp</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.Logging\XI.Portal.Library.Logging.csproj">
       <Project>{38c09894-2c92-4517-9332-35415375e62a}</Project>

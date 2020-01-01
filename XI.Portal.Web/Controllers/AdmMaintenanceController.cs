@@ -9,6 +9,7 @@ using XI.Portal.Data.Contracts.FilterModels;
 using XI.Portal.Data.Contracts.Repositories;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Auth.XtremeIdiots;
+using XI.Portal.Library.Ftp.Interfaces;
 using XI.Portal.Library.Logging;
 using XI.Portal.Library.Rcon.Interfaces;
 using XI.Portal.Web.ViewModels.AdmMaintenance;
@@ -20,15 +21,18 @@ namespace XI.Portal.Web.Controllers
     {
         private readonly IRconClientFactory rconClientFactory;
         private readonly IAdminActionsRepository adminActionsRepository;
+        private readonly IFtpHelper ftpHelper;
 
         public AdmMaintenanceController(
             IContextProvider contextProvider, 
             IDatabaseLogger databaseLogger, 
             IRconClientFactory rconClientFactory,
-            IAdminActionsRepository adminActionsRepository) : base(contextProvider, databaseLogger)
+            IAdminActionsRepository adminActionsRepository, 
+            IFtpHelper ftpHelper) : base(contextProvider, databaseLogger)
         {
             this.rconClientFactory = rconClientFactory ?? throw new ArgumentNullException(nameof(rconClientFactory));
             this.adminActionsRepository = adminActionsRepository ?? throw new ArgumentNullException(nameof(adminActionsRepository));
+            this.ftpHelper = ftpHelper ?? throw new ArgumentNullException(nameof(ftpHelper));
         }
 
         public async Task<ActionResult> Index()
@@ -118,8 +122,8 @@ namespace XI.Portal.Web.Controllers
                 foreach (var banFileMonitor in banFileMonitors)
                     try
                     {
-                        var fileSize = GetFileSize(banFileMonitor.GameServer.FtpHostname, banFileMonitor.FilePath, banFileMonitor.GameServer.FtpUsername, banFileMonitor.GameServer.FtpPassword);
-                        var lastModified = GetLastModified(banFileMonitor.GameServer.FtpHostname, banFileMonitor.FilePath, banFileMonitor.GameServer.FtpUsername, banFileMonitor.GameServer.FtpPassword);
+                        var fileSize = ftpHelper.GetFileSize(banFileMonitor.GameServer.FtpHostname, banFileMonitor.FilePath, banFileMonitor.GameServer.FtpUsername, banFileMonitor.GameServer.FtpPassword);
+                        var lastModified = ftpHelper.GetLastModified(banFileMonitor.GameServer.FtpHostname, banFileMonitor.FilePath, banFileMonitor.GameServer.FtpUsername, banFileMonitor.GameServer.FtpPassword);
 
                         var lastBans = await adminActionsRepository.GetAdminActions(new AdminActionsFilterModel
                         {
@@ -217,8 +221,8 @@ namespace XI.Portal.Web.Controllers
                 foreach (var fileMonitor in fileMonitors)
                     try
                     {
-                        var fileSize = GetFileSize(fileMonitor.GameServer.Hostname, fileMonitor.FilePath, fileMonitor.GameServer.FtpUsername, fileMonitor.GameServer.FtpPassword);
-                        var lastModified = GetLastModified(fileMonitor.GameServer.Hostname, fileMonitor.FilePath, fileMonitor.GameServer.FtpUsername, fileMonitor.GameServer.FtpPassword);
+                        var fileSize = ftpHelper.GetFileSize(fileMonitor.GameServer.Hostname, fileMonitor.FilePath, fileMonitor.GameServer.FtpUsername, fileMonitor.GameServer.FtpPassword);
+                        var lastModified = ftpHelper.GetLastModified(fileMonitor.GameServer.Hostname, fileMonitor.FilePath, fileMonitor.GameServer.FtpUsername, fileMonitor.GameServer.FtpPassword);
 
                         var somethingMayBeWrong = lastModified < DateTime.Now.AddHours(-1);
 
@@ -246,22 +250,6 @@ namespace XI.Portal.Web.Controllers
             return View(results);
         }
 
-        private long GetFileSize(string hostname, string filePath, string username, string password)
-        {
-            var request = (FtpWebRequest)WebRequest.Create($"ftp://{hostname}/{filePath}");
-            request.Method = WebRequestMethods.Ftp.GetFileSize;
-            request.Credentials = new NetworkCredential(username, password);
 
-            return ((FtpWebResponse)request.GetResponse()).ContentLength;
-        }
-
-        private DateTime GetLastModified(string hostname, string filePath, string username, string password)
-        {
-            var request = (FtpWebRequest)WebRequest.Create($"ftp://{hostname}/{filePath}");
-            request.Method = WebRequestMethods.Ftp.GetDateTimestamp;
-            request.Credentials = new NetworkCredential(username, password);
-
-            return ((FtpWebResponse)request.GetResponse()).LastModified;
-        }
     }
 }

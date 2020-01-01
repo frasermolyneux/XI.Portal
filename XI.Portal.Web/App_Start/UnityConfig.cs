@@ -25,6 +25,8 @@ using XI.Portal.Data.Core.Models;
 using XI.Portal.Data.Repositories;
 using XI.Portal.Library.Auth;
 using XI.Portal.Library.Forums;
+using XI.Portal.Library.Ftp.Helpers;
+using XI.Portal.Library.Ftp.Interfaces;
 using XI.Portal.Library.GeoLocation.Repository;
 using XI.Portal.Library.Logging;
 using XI.Portal.Library.Rcon.Factories;
@@ -77,6 +79,9 @@ namespace XI.Portal.Web
             Log.Logger = logger;
 
             container.RegisterFactory<ILogger>((ctr, type, name) => logger, new ContainerControlledLifetimeManager());
+
+            // Libraries
+            container.RegisterType<IFtpHelper, FtpHelper>();
 
             // Configuration Providers
             container.RegisterType<IConfigurationProvider, ConfigurationProvider>();

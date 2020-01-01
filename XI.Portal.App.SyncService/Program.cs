@@ -20,6 +20,8 @@ using XI.Portal.Configuration.Maps;
 using XI.Portal.Configuration.Providers;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Forums;
+using XI.Portal.Library.Ftp.Helpers;
+using XI.Portal.Library.Ftp.Interfaces;
 using XI.Portal.Library.Logging;
 
 namespace XI.Portal.App.SyncService
@@ -37,6 +39,9 @@ namespace XI.Portal.App.SyncService
             Log.Logger = logger;
 
             container.RegisterFactory<ILogger>((ctr, type, name) => logger, new ContainerControlledLifetimeManager());
+
+            // Libraries
+            container.RegisterType<IFtpHelper, FtpHelper>();
 
             // Configuration Providers
             container.RegisterType<IConfigurationProvider, ConfigurationProvider>();

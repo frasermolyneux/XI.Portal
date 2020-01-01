@@ -1958,6 +1958,10 @@
       <Project>{a8e12bc0-f530-4ccd-862b-73267c71d07d}</Project>
       <Name>XI.Portal.Library.Forums</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Library.Ftp\XI.Portal.Library.Ftp.csproj">
+      <Project>{0489e968-204b-497f-a156-16ea6336115b}</Project>
+      <Name>XI.Portal.Library.Ftp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.GeoLocation\XI.Portal.Library.GeoLocation.csproj">
       <Project>{f13a754a-6bac-4e7e-ae23-0d513f64ba69}</Project>
       <Name>XI.Portal.Library.GeoLocation</Name>
