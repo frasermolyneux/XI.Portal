@@ -18,7 +18,8 @@ namespace XI.Portal.Data.Contracts.FilterModels
 
         public enum OrderBy
         {
-            Created
+            Created,
+            CreatedDesc
         }
     }
 }

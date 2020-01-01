@@ -86,6 +86,9 @@ namespace XI.Portal.Data.Repositories.Extensions
             switch (filterModel.Order)
             {
                 case AdminActionsFilterModel.OrderBy.Created:
+                    adminActions = adminActions.OrderBy(aa => aa.Created).AsQueryable();
+                    break;
+                case AdminActionsFilterModel.OrderBy.CreatedDesc:
                     adminActions = adminActions.OrderByDescending(aa => aa.Created).AsQueryable();
                     break;
             }
