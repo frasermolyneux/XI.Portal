@@ -1,4 +1,5 @@
-﻿@model Dictionary<string, string>
+﻿@using XI.Portal.Web.Extensions
+@model List<XI.Portal.Web.ViewModels.AdmMaintenance.BanFileMonitorStatusViewModel>
 
 @{
     ViewBag.Title = "Ban File Monitor Check Results";
@@ -7,40 +8,43 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
 
-    <div class="row">
-        <div class="col-sm-12">
+    @foreach (var item in Model)
+    {
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        
+                        <h2>[@item.GameServer.Title] - @Html.ServerName(item.GameServer)</h2>
+                        
+                        <p>
+                            <text><strong>File Path: </strong>ftp://@item.GameServer.FtpHostname/@item.BanFileMonitor.FilePath</text><br />
+                            <text><strong>Last Modified: </strong>@item.LastModified</text><br />
+                            <text><strong>Size: </strong>@item.FileSize</text><br />
 
-            <div class="ibox">
-                <div class="ibox-content">
-
-                    <table class="table">
-                        <tr>
-                            <th>
-                                @Html.Label("Title")
-                            </th>
-                            <th>
-                                @Html.Label("Result")
-                            </th>
-                        </tr>
-
-                        @foreach (var item in Model)
+                            @if (item.OutOfSync && !item.HasError)
+                            {
+                               <div class="alert alert-danger">OUT OF SYNC (Last Game Ban: @item.LastGameBan)</div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-success">IN SYNC (Last Game Ban: @item.LastGameBan)</div>
+                            }
+                        </p>
+                        
+                        @if (item.HasError)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Key)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Value)
-                                </td>
-                            </tr>
+                            <div class="alert alert-danger">
+                                <p>
+                                    <text><strong>Error: </strong>@item.ErrorMessage</text>
+                                </p>
+                            </div>
                         }
 
-                    </table>
-
+                    </div>
                 </div>
             </div>
-
         </div>
-    </div>
+    }
 
 </div>
