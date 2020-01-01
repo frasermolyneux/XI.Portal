@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Data.Entity;
 using System.Linq;
-using Serilog;
 using XI.Portal.App.SyncService.BanFiles;
 using XI.Portal.App.SyncService.Extensions;
 using XI.Portal.Data.Core.Context;
@@ -39,9 +39,9 @@ namespace XI.Portal.App.SyncService.Service
 
                 localBanFileManager.GenerateBanFileIfRequired(gameType);
 
-                var remoteBanFileSize = ftpHelper.GetFileSize(banFileMonitor.GameServer.Hostname, 
-                    banFileMonitor.FilePath, 
-                    banFileMonitor.GameServer.FtpUsername, 
+                var remoteBanFileSize = ftpHelper.GetFileSize(banFileMonitor.GameServer.Hostname,
+                    banFileMonitor.FilePath,
+                    banFileMonitor.GameServer.FtpUsername,
                     banFileMonitor.GameServer.FtpPassword);
 
                 var localBanFileSize = localBanFileManager.GetLocalBanFileSize(gameType);
