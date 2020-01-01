@@ -4,6 +4,8 @@ using System.Data.Entity;
 using System.Linq;
 using XI.Portal.App.SyncService.BanFiles;
 using XI.Portal.App.SyncService.Extensions;
+using XI.Portal.Data.Contracts.FilterModels;
+using XI.Portal.Data.Contracts.Repositories;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Ftp.Interfaces;
 
@@ -13,6 +15,7 @@ namespace XI.Portal.App.SyncService.Service
     {
         private readonly IBanFileImporter banFileImporter;
         private readonly IFtpHelper ftpHelper;
+        private readonly IAdminActionsRepository adminActionsRepository;
         private readonly IContextProvider contextProvider;
         private readonly ILocalBanFileManager localBanFileManager;
         private readonly ILogger logger;
@@ -20,11 +23,13 @@ namespace XI.Portal.App.SyncService.Service
         public BanSyncCoordinator(ILogger logger, IContextProvider contextProvider,
             ILocalBanFileManager localBanFileManager,
             IBanFileImporter banFileImporter,
-            IFtpHelper ftpHelper)
+            IFtpHelper ftpHelper, 
+            IAdminActionsRepository adminActionsRepository)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.banFileImporter = banFileImporter ?? throw new ArgumentNullException(nameof(banFileImporter));
             this.ftpHelper = ftpHelper ?? throw new ArgumentNullException(nameof(ftpHelper));
+            this.adminActionsRepository = adminActionsRepository ?? throw new ArgumentNullException(nameof(adminActionsRepository));
             this.localBanFileManager = localBanFileManager ??
                                        throw new ArgumentNullException(nameof(localBanFileManager));
             this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
@@ -38,34 +43,25 @@ namespace XI.Portal.App.SyncService.Service
                 var gameType = banFileMonitor.GameServer.GameType;
 
                 localBanFileManager.GenerateBanFileIfRequired(gameType);
-
-                var remoteBanFileSize = ftpHelper.GetFileSize(banFileMonitor.GameServer.Hostname,
-                    banFileMonitor.FilePath,
-                    banFileMonitor.GameServer.FtpUsername,
-                    banFileMonitor.GameServer.FtpPassword);
-
                 var localBanFileSize = localBanFileManager.GetLocalBanFileSize(gameType);
 
-                if (remoteBanFileSize == 0)
-                {
-                    ftpHelper.UpdateRemoteFile(banFileMonitor.GameServer.Hostname,
-                        banFileMonitor.FilePath,
-                        banFileMonitor.GameServer.FtpUsername,
-                        banFileMonitor.GameServer.FtpPassword,
-                        gameType.DataPath());
-                }
-                else if (remoteBanFileSize != localBanFileSize)
-                {
-                    logger.Information(
-                        $"Remote filesize {remoteBanFileSize} does not match local filesize {localBanFileSize}");
+                var fileSize = ftpHelper.GetFileSize(banFileMonitor.GameServer.FtpHostname, banFileMonitor.FilePath, banFileMonitor.GameServer.FtpUsername, banFileMonitor.GameServer.FtpPassword);
+                var lastModified = ftpHelper.GetLastModified(banFileMonitor.GameServer.FtpHostname, banFileMonitor.FilePath, banFileMonitor.GameServer.FtpUsername, banFileMonitor.GameServer.FtpPassword);
 
-                    var remoteBanFileData = ftpHelper.GetRemoteFileData(banFileMonitor.GameServer.Hostname,
-                        banFileMonitor.FilePath,
-                        banFileMonitor.GameServer.FtpUsername,
-                        banFileMonitor.GameServer.FtpPassword);
+                var lastBans = adminActionsRepository.GetAdminActions(new AdminActionsFilterModel
+                {
+                    Filter = AdminActionsFilterModel.FilterType.ActiveBans,
+                    GameType = banFileMonitor.GameServer.GameType,
+                    Order = AdminActionsFilterModel.OrderBy.CreatedDesc,
+                    SkipEntries = 0,
+                    TakeEntries = 1
+                }).Result;
 
-                    banFileImporter.ImportData(gameType, remoteBanFileData, banFileMonitor.GameServer.ServerId);
-                    localBanFileManager.GenerateBanFile(gameType);
+                var lastBan = lastBans.FirstOrDefault();
+
+                if (lastBan?.Created > lastModified || localBanFileSize != fileSize)
+                {
+                    logger.Information($"Uploading new file to {banFileMonitor.FilePath} for server {banFileMonitor.GameServer.Title}");
 
                     ftpHelper.UpdateRemoteFile(banFileMonitor.GameServer.Hostname,
                         banFileMonitor.FilePath,
@@ -75,7 +71,7 @@ namespace XI.Portal.App.SyncService.Service
                 }
                 else
                 {
-                    logger.Information($"Remote ban file is up to date with size {remoteBanFileSize}");
+                    logger.Information($"Remote ban file is up to date");
                 }
             }
         }

@@ -193,9 +193,17 @@
       <Project>{46be6073-d271-49ed-a1e4-e1566b9eeac8}</Project>
       <Name>XI.Portal.Data.CommonTypes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Data.Contracts\XI.Portal.Data.Contracts.csproj">
+      <Project>{f7f76ffd-5222-43f9-b21a-cfcc69300ffb}</Project>
+      <Name>XI.Portal.Data.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Data.Core\XI.Portal.Data.Core.csproj">
       <Project>{a667b4a5-35c2-4953-ab21-07de8ff07ce5}</Project>
       <Name>XI.Portal.Data.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Data.Repositories\XI.Portal.Data.Repositories.csproj">
+      <Project>{fbe388de-f32c-4793-b81e-42853a8f4d37}</Project>
+      <Name>XI.Portal.Data.Repositories</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.Forums\XI.Portal.Library.Forums.csproj">
       <Project>{a8e12bc0-f530-4ccd-862b-73267c71d07d}</Project>

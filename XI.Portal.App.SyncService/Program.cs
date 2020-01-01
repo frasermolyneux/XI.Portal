@@ -18,7 +18,9 @@ using XI.Portal.Configuration.Interfaces;
 using XI.Portal.Configuration.LogProxyPlugin;
 using XI.Portal.Configuration.Maps;
 using XI.Portal.Configuration.Providers;
+using XI.Portal.Data.Contracts.Repositories;
 using XI.Portal.Data.Core.Context;
+using XI.Portal.Data.Repositories;
 using XI.Portal.Library.Forums;
 using XI.Portal.Library.Ftp.Helpers;
 using XI.Portal.Library.Ftp.Interfaces;
@@ -56,6 +58,9 @@ namespace XI.Portal.App.SyncService
             container.RegisterType<IGeoLocationConfiguration, GeoLocationConfiguration>();
             container.RegisterType<ILogProxyPluginConfiguration, LogProxyPluginConfiguration>();
             container.RegisterType<IMapsConfiguration, MapsConfiguration>();
+
+            // Repositories
+            container.RegisterType<IAdminActionsRepository, AdminActionsRepository>();
 
             // Other
             container.RegisterType<IContextProvider, ContextProvider>();
