@@ -51,7 +51,7 @@ namespace XI.Portal.App.SyncService.Service
                 var lastBans = adminActionsRepository.GetAdminActions(new AdminActionsFilterModel
                 {
                     Filter = AdminActionsFilterModel.FilterType.ActiveBans,
-                    GameType = banFileMonitor.GameServer.GameType,
+                    GameType = gameType,
                     Order = AdminActionsFilterModel.OrderBy.CreatedDesc,
                     SkipEntries = 0,
                     TakeEntries = 1
@@ -68,6 +68,11 @@ namespace XI.Portal.App.SyncService.Service
                         banFileMonitor.GameServer.FtpUsername,
                         banFileMonitor.GameServer.FtpPassword,
                         gameType.DataPath());
+
+                    banFileMonitor.RemoteFileSize = localBanFileSize;
+                    banFileMonitor.LastSync = DateTime.UtcNow;
+
+                    context.SaveChanges();
                 }
                 else
                 {

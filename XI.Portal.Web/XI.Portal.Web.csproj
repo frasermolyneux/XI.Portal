@@ -261,11 +261,12 @@
     <Compile Include="Controllers\ExternalController.cs" />
     <Compile Include="Controllers\ForumsController.cs" />
     <Compile Include="Controllers\AdmMaintenanceController.cs" />
+    <Compile Include="Controllers\MonitorController.cs" />
     <Compile Include="Extensions\UserCheckExtension.cs" />
     <Compile Include="ViewModels\AdmBanFileMonitor\CreateBanFileMonitorViewModel.cs" />
     <Compile Include="ViewModels\AdmBanFileMonitor\EditBanFileMonitorViewModel.cs" />
-    <Compile Include="ViewModels\AdmMaintenance\BanFileMonitorStatusViewModel.cs" />
-    <Compile Include="ViewModels\AdmMaintenance\FileMonitorStatusViewModel.cs" />
+    <Compile Include="ViewModels\Monitor\BanFileMonitorStatusViewModel.cs" />
+    <Compile Include="ViewModels\Monitor\FileMonitorStatusViewModel.cs" />
     <Compile Include="ViewModels\AdmServers\RconStatusResultViewModel.cs" />
     <Compile Include="ViewModels\Maps\MapRotationViewModel.cs" />
     <Compile Include="ViewModels\Servers\ServersIndexViewModel.cs" />
@@ -1895,9 +1896,9 @@
     <Content Include="Views\Players\IPSearch.cshtml" />
     <Content Include="Views\AdmMaintenance\Index.cshtml" />
     <Content Include="Views\AdmMaintenance\FtpCredentialCheck.cshtml" />
-    <Content Include="Views\AdmMaintenance\BanFileMonitorCheck.cshtml" />
+    <Content Include="Views\Monitor\BanFileMonitor.cshtml" />
     <Content Include="Views\AdmMaintenance\RconMonitorCheck.cshtml" />
-    <Content Include="Views\AdmMaintenance\FileMonitorCheck.cshtml" />
+    <Content Include="Views\Monitor\LogFileMonitor.cshtml" />
     <Content Include="Views\AdmServers\RconStatus.cshtml" />
     <Content Include="Views\Maps\Index.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
