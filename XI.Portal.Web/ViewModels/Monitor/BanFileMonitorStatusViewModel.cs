@@ -1,11 +1,11 @@
 ﻿using System;
 using XI.Portal.Data.Core.Models;
 
-namespace XI.Portal.Web.ViewModels.AdmMaintenance
+namespace XI.Portal.Web.ViewModels.Monitor
 {
-    public class FileMonitorStatusViewModel
+    public class BanFileMonitorStatusViewModel
     {
-        public FileMonitor FileMonitor { get; set; }
+        public BanFileMonitor BanFileMonitor { get; set; }
         public GameServer GameServer { get; set; }
         public long FileSize { get; set; }
         public DateTime LastModified { get; set; }
@@ -13,6 +13,7 @@ namespace XI.Portal.Web.ViewModels.AdmMaintenance
         public bool HasError { get; set; }
         public string ErrorMessage { get; set; }
 
-        public bool SomethingMayBeWrong { get; set; } = false;
+        public DateTime LastGameBan { get; set; }
+        public bool OutOfSync { get; set; } = false;
     }
 }

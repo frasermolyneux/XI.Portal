@@ -82,6 +82,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Build", "0 - Build", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XI.Portal.App.MapRedirectSync", "XI.Portal.App.MapRedirectSync\XI.Portal.App.MapRedirectSync.csproj", "{CEEF04CE-BAE5-4562-A0F0-5946A5885D0A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XI.Portal.Library.Ftp", "XI.Portal.Library.Ftp\XI.Portal.Library.Ftp.csproj", "{0489E968-204B-497F-A156-16EA6336115B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -263,6 +265,12 @@ Global
 		{CEEF04CE-BAE5-4562-A0F0-5946A5885D0A}.DevCI|Any CPU.Build.0 = Debug|Any CPU
 		{CEEF04CE-BAE5-4562-A0F0-5946A5885D0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEEF04CE-BAE5-4562-A0F0-5946A5885D0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0489E968-204B-497F-A156-16EA6336115B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0489E968-204B-497F-A156-16EA6336115B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0489E968-204B-497F-A156-16EA6336115B}.DevCI|Any CPU.ActiveCfg = Debug|Any CPU
+		{0489E968-204B-497F-A156-16EA6336115B}.DevCI|Any CPU.Build.0 = Debug|Any CPU
+		{0489E968-204B-497F-A156-16EA6336115B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0489E968-204B-497F-A156-16EA6336115B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -297,6 +305,7 @@ Global
 		{C680CEEC-F2A8-45E8-A7A4-846D97742937} = {F1C77E24-6CD0-4758-8D43-E851D892B333}
 		{46BE6073-D271-49ED-A1E4-E1566B9EEAC8} = {3551C915-B9A1-44C8-B3D2-53361A3B5ACB}
 		{CEEF04CE-BAE5-4562-A0F0-5946A5885D0A} = {39DA79A7-6FE5-4D6F-BFEF-4071CAB55F2E}
+		{0489E968-204B-497F-A156-16EA6336115B} = {71A20CC8-A563-4D74-9283-85F11CD33A51}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6422965F-E244-42EA-9792-F2ECA17F513E}

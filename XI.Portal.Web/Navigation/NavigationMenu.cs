@@ -47,6 +47,7 @@ namespace XI.Portal.Web.Navigation
 
                     //Admins
                     PlayersMenu(menuItems);
+                    MonitorMenu(menuItems);
 
                     //Senior Admins
                     AdmServersMenu(menuItems);
@@ -83,6 +84,7 @@ namespace XI.Portal.Web.Navigation
 
                     //Admins
                     PlayersMenu(menuItems);
+                    MonitorMenu(menuItems);
                     break;
                 default:
                     //All Users
@@ -156,6 +158,14 @@ namespace XI.Portal.Web.Navigation
             menuItems.Add(playersMenu);
         }
 
+        private static void MonitorMenu(ICollection<MenuItemModel> menuItems)
+        {
+            var mapsMenu = new MenuItemModel("Monitoring", "Monitor", "Index", "desktop");
+            mapsMenu.SubMenuItems.Add(new SubMenuItemModel("Ban Files", "Monitor", "BanFileMonitor"));
+            mapsMenu.SubMenuItems.Add(new SubMenuItemModel("Log Files", "Monitor", "LogFileMonitor"));
+            menuItems.Add(mapsMenu);
+        }
+
         private static void AdmServersMenu(ICollection<MenuItemModel> menuItems)
         {
             var serversMenu = new MenuItemModel("AdmServers", "AdmServers", "Index", "cog");
@@ -215,8 +225,6 @@ namespace XI.Portal.Web.Navigation
             var maintenanceMenu = new MenuItemModel("AdmMaintenance", "AdmMaintenance", "Index", "cog");
             maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("Tasks", "AdmMaintenance", "Index"));
             maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("FTP Credential Check", "AdmMaintenance", "FtpCredentialCheck"));
-            maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("Ban File Monitor Check", "AdmMaintenance", "BanFileMonitorCheck"));
-            maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("File Monitor Check", "AdmMaintenance", "FileMonitorCheck"));
             maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("Rcon Monitor Check", "AdmMaintenance", "RconMonitorCheck"));
             menuItems.Add(maintenanceMenu);
         }

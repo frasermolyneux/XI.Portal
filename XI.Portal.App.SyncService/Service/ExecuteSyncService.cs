@@ -79,13 +79,6 @@ namespace XI.Portal.App.SyncService.Service
                         logger.Error(ex, "Failed to process BanSync");
 
                         banFileMonitor.LastError = ex.Message;
-
-                        //banFileMonitor.BanSyncLogs.Add(new BanSyncLog
-                        //{
-                        //    Added = DateTime.UtcNow,
-                        //    BanSyncState = BanSyncState.UnhandledException,
-                        //    Log = ex.ToString()
-                        //});
                     }
 
                     logger.Information($"Completed sync for {banFileMonitor.GameServer.Title} at {DateTime.UtcNow}");
