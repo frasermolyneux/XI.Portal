@@ -7,6 +7,6 @@ namespace XI.Portal.Library.Analytics.Interfaces
 {
     public interface IPlayersAnalytics
     {
-        Task<List<PlayerAnalyticEntry>> GetCumulativeTrackedPlayers(DateTime cutOffDate);
+        Task<List<PlayerAnalyticEntry>> GetCumulativeDailyPlayers(DateTime cutoff);
     }
 }

@@ -18,12 +18,12 @@ namespace XI.Portal.Library.Analytics.Providers
             this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
         }
 
-        public async Task<List<PlayerAnalyticEntry>> GetCumulativeTrackedPlayers(DateTime cutOffDate)
+        public async Task<List<PlayerAnalyticEntry>> GetCumulativeDailyPlayers(DateTime cutoff)
         {
             using (var context = contextProvider.GetContext())
             {
                 var players = await context.Players
-                    .Where(p => p.FirstSeen > cutOffDate)
+                    .Where(p => p.FirstSeen > cutoff)
                     .Select(p => p.FirstSeen)
                     .OrderBy(p => p)
                     .ToListAsync();

@@ -19,13 +19,12 @@ namespace XI.Portal.Library.Analytics.Providers
         }
 
 
-        public async Task<List<AdminActionAnalyticEntry>> GetPastYearActionsGroupedByDate()
+        public async Task<List<AdminActionAnalyticEntry>> GetDailyActions(DateTime cutoff)
         {
             using (var context = contextProvider.GetContext())
             {
-                var dateCutOff = DateTime.UtcNow.AddYears(-1);
                 var adminActions = await context.AdminActions
-                    .Where(aa => aa.Created > dateCutOff)
+                    .Where(aa => aa.Created > cutoff)
                     .Select(aa => aa.Created).ToListAsync();
 
                 var groupedActions = adminActions.GroupBy(aa => new DateTime(aa.Year, aa.Month, aa.Day))

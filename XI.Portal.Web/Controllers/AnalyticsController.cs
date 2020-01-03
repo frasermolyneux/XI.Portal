@@ -24,14 +24,14 @@ namespace XI.Portal.Web.Controllers
 
         public async Task<ActionResult> AdminActions()
         {
-            var adminActions = await adminActionsAnalytics.GetPastYearActionsGroupedByDate();
+            var adminActions = await adminActionsAnalytics.GetDailyActions(DateTime.UtcNow.AddYears(-1));
 
             return View(adminActions);
         }
 
         public async Task<ActionResult> Players()
         {
-            var players = await playersAnalytics.GetCumulativeTrackedPlayers(DateTime.UtcNow.AddYears(-1));
+            var players = await playersAnalytics.GetCumulativeDailyPlayers(DateTime.UtcNow.AddYears(-1));
 
             return View(players);
         }
