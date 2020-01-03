@@ -1,0 +1,69 @@
+﻿@model System.Collections.Generic.List<XI.Portal.Library.Analytics.Models.PlayerAnalyticEntry>
+
+@{
+    ViewBag.Title = "Players Analytics";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <h1>Players Analytics</h1>
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox">
+
+                <div class="ibox-content">
+                    <div id="PlayersAnalytics"></div>
+
+                    <p>
+                        This displays the cumulative tracked players across the portal.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Date');
+        data.addColumn('number', 'Count');
+
+        data.addRows([
+            @foreach (var item in Model)
+            {
+                <text>[new Date(@item.Created.Year, @item.Created.Month, @item.Created.Day), @item.Count],</text>
+            }
+        ]);
+
+        var options = {
+            title: 'Cumulative player count for past year',
+            width: 1200,
+            height: 500,
+            hAxis: {
+                format: 'd/M/yy',
+                gridlines: {count: 30}
+            },
+            vAxis: {
+                gridlines: {color: 'none'},
+                minValue: 0
+            }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('PlayersAnalytics'));
+        chart.draw(data, options);
+    }
+
+</script>

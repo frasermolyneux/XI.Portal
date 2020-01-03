@@ -55,9 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IAdminActionsAnalytics.cs" />
+    <Compile Include="Interfaces\IPlayersAnalytics.cs" />
+    <Compile Include="Models\PlayerAnalyticEntry.cs" />
     <Compile Include="Models\AdminActionAnalyticEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AdminActionsAnalytics.cs" />
+    <Compile Include="Providers\PlayersAnalytics.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

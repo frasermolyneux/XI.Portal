@@ -85,6 +85,7 @@ namespace XI.Portal.Web
             // Libraries
             container.RegisterType<IFtpHelper, FtpHelper>();
             container.RegisterType<IAdminActionsAnalytics, AdminActionsAnalytics>();
+            container.RegisterType<IPlayersAnalytics, PlayersAnalytics>();
 
             // Configuration Providers
             container.RegisterType<IConfigurationProvider, ConfigurationProvider>();

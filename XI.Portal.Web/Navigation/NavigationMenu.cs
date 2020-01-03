@@ -236,6 +236,7 @@ namespace XI.Portal.Web.Navigation
         {
             var logsMenu = new MenuItemModel("Analytics", "Analytics", "AdminActions", "line-chart");
             logsMenu.SubMenuItems.Add(new SubMenuItemModel("Admin Actions", "Analytics", "AdminActions"));
+            logsMenu.SubMenuItems.Add(new SubMenuItemModel("Players", "Analytics", "Players"));
             menuItems.Add(logsMenu);
         }
     }
