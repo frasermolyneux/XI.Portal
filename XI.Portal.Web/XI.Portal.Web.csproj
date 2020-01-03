@@ -254,6 +254,7 @@
     <Compile Include="Controllers\AdmLogsController.cs" />
     <Compile Include="Controllers\AdmMapsController.cs" />
     <Compile Include="Controllers\AdmRconMonitorsController.cs" />
+    <Compile Include="Controllers\AnalyticsController.cs" />
     <Compile Include="Controllers\BannersController.cs" />
     <Compile Include="Controllers\AdmFileMonitorsController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -1911,6 +1912,8 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Analytics\AdminActions.cshtml" />
+    <Content Include="Views\Analytics\Players.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1946,6 +1949,10 @@
     <ProjectReference Include="..\XI.Portal.Data.Repositories\XI.Portal.Data.Repositories.csproj">
       <Project>{fbe388de-f32c-4793-b81e-42853a8f4d37}</Project>
       <Name>XI.Portal.Data.Repositories</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Library.Analytics\XI.Portal.Library.Analytics.csproj">
+      <Project>{8404B08E-F4E7-430C-8D08-405CE093B297}</Project>
+      <Name>XI.Portal.Library.Analytics</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.Auth\XI.Portal.Library.Auth.csproj">
       <Project>{b529783f-e92c-413a-9503-8bce3e96634e}</Project>

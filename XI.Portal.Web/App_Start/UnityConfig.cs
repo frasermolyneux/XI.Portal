@@ -23,6 +23,8 @@ using XI.Portal.Data.Contracts.Repositories;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Data.Repositories;
+using XI.Portal.Library.Analytics.Interfaces;
+using XI.Portal.Library.Analytics.Providers;
 using XI.Portal.Library.Auth;
 using XI.Portal.Library.Forums;
 using XI.Portal.Library.Ftp.Helpers;
@@ -82,6 +84,8 @@ namespace XI.Portal.Web
 
             // Libraries
             container.RegisterType<IFtpHelper, FtpHelper>();
+            container.RegisterType<IAdminActionsAnalytics, AdminActionsAnalytics>();
+            container.RegisterType<IPlayersAnalytics, PlayersAnalytics>();
 
             // Configuration Providers
             container.RegisterType<IConfigurationProvider, ConfigurationProvider>();

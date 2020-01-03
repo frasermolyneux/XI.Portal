@@ -44,6 +44,7 @@ namespace XI.Portal.Web.Navigation
                     CommunityMenu(menuItems);
                     DemoManagerMenu(menuItems);
                     MapsMenu(menuItems);
+                    AnalyticsMenu(menuItems);
 
                     //Admins
                     PlayersMenu(menuItems);
@@ -81,6 +82,7 @@ namespace XI.Portal.Web.Navigation
                     CommunityMenu(menuItems);
                     DemoManagerMenu(menuItems);
                     MapsMenu(menuItems);
+                    AnalyticsMenu(menuItems);
 
                     //Admins
                     PlayersMenu(menuItems);
@@ -93,6 +95,7 @@ namespace XI.Portal.Web.Navigation
                     CommunityMenu(menuItems);
                     DemoManagerMenu(menuItems);
                     MapsMenu(menuItems);
+                    AnalyticsMenu(menuItems);
                     break;
             }
 
@@ -227,6 +230,14 @@ namespace XI.Portal.Web.Navigation
             maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("FTP Credential Check", "AdmMaintenance", "FtpCredentialCheck"));
             maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("Rcon Monitor Check", "AdmMaintenance", "RconMonitorCheck"));
             menuItems.Add(maintenanceMenu);
+        }
+
+        private static void AnalyticsMenu(ICollection<MenuItemModel> menuItems)
+        {
+            var logsMenu = new MenuItemModel("Analytics", "Analytics", "AdminActions", "line-chart");
+            logsMenu.SubMenuItems.Add(new SubMenuItemModel("Admin Actions", "Analytics", "AdminActions"));
+            logsMenu.SubMenuItems.Add(new SubMenuItemModel("Players", "Analytics", "Players"));
+            menuItems.Add(logsMenu);
         }
     }
 }
