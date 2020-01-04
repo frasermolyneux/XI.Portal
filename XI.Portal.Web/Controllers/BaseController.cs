@@ -1,5 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Linq;
+using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Logging;
 
@@ -18,20 +21,34 @@ namespace XI.Portal.Web.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            var controller = filterContext.RequestContext.RouteData.Values.ContainsKey("Controller") ? filterContext.RequestContext.RouteData.Values["Controller"].ToString() : null;
-            var action = filterContext.RequestContext.RouteData.Values.ContainsKey("Action") ? filterContext.RequestContext.RouteData.Values["Action"].ToString() : null;
+            try
+            {
+                var action = filterContext.RequestContext.RouteData.Values.ContainsKey("Action") ? filterContext.RequestContext.RouteData.Values["Action"].ToString() : null;
 
-            if (User.Identity.IsAuthenticated)
-            {
-                var userId = filterContext.RequestContext.HttpContext.User.Identity.GetUserId();
-                DatabaseLogger.CreateUserLogAsync(userId, $"User loaded controller {controller} with action {action}");
-            }
-            else
-            {
-                if (action != "GameServersList")
+                var paramsAsDictionary = filterContext.RequestContext.RouteData.Values
+                    .Select(r => new { r.Key, r.Value })
+                    .ToDictionary(i => i.Key, i => i.Value);
+
+                var parameters = JsonConvert.SerializeObject(paramsAsDictionary);
+
+                var ignoreActions = new[] { "GameServerList", "MapImage" };
+
+                if (!ignoreActions.Contains(action))
                 {
-                    DatabaseLogger.CreateUserLogAsync(null, $"Anon loaded controller {controller} with action {action}");
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        var userId = filterContext.RequestContext.HttpContext.User.Identity.GetUserId();
+                        DatabaseLogger.CreateUserLogAsync(userId, $"User requested {parameters}");
+                    }
+                    else
+                    {
+                        DatabaseLogger.CreateUserLogAsync(null, $"Anon requested {parameters}");
+                    }
                 }
+            }
+            catch
+            {
+                // Swallow errors
             }
 
             base.OnActionExecuting(filterContext);
