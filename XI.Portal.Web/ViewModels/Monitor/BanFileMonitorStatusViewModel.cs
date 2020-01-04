@@ -7,13 +7,13 @@ namespace XI.Portal.Web.ViewModels.Monitor
     {
         public BanFileMonitor BanFileMonitor { get; set; }
         public GameServer GameServer { get; set; }
+
         public long FileSize { get; set; }
         public DateTime LastModified { get; set; }
-
-        public bool HasError { get; set; }
-        public string ErrorMessage { get; set; }
-
         public DateTime LastGameBan { get; set; }
-        public bool OutOfSync { get; set; } = false;
+
+        public string ErrorMessage { get; set; }
+        public string WarningMessage { get; set; }
+        public string SuccessMessage { get; set; } = "Everything looks OK";
     }
 }

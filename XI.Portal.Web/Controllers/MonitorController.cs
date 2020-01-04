@@ -10,6 +10,7 @@ using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Auth.XtremeIdiots;
 using XI.Portal.Library.Ftp.Interfaces;
 using XI.Portal.Library.Logging;
+using XI.Portal.Library.Rcon.Interfaces;
 using XI.Portal.Web.ViewModels.Monitor;
 
 namespace XI.Portal.Web.Controllers
@@ -19,15 +20,18 @@ namespace XI.Portal.Web.Controllers
     {
         private readonly IAdminActionsRepository adminActionsRepository;
         private readonly IFtpHelper ftpHelper;
+        private readonly IRconClientFactory rconClientFactory;
 
         public MonitorController(
             IContextProvider contextProvider,
             IDatabaseLogger databaseLogger,
             IAdminActionsRepository adminActionsRepository,
-            IFtpHelper ftpHelper) : base(contextProvider, databaseLogger)
+            IFtpHelper ftpHelper,
+            IRconClientFactory rconClientFactory) : base(contextProvider, databaseLogger)
         {
             this.adminActionsRepository = adminActionsRepository ?? throw new ArgumentNullException(nameof(adminActionsRepository));
             this.ftpHelper = ftpHelper ?? throw new ArgumentNullException(nameof(ftpHelper));
+            this.rconClientFactory = rconClientFactory ?? throw new ArgumentNullException(nameof(rconClientFactory));
         }
 
         public async Task<ActionResult> BanFileMonitor()
@@ -57,20 +61,24 @@ namespace XI.Portal.Web.Controllers
                         });
 
                         var lastBan = lastBans.FirstOrDefault();
-
-                        var outOfSync = false;
                         var lastGameBan = DateTime.MinValue;
+
+                        var errorMessage = string.Empty;
+                        var warningMessage = string.Empty;
 
                         if (lastBan != null)
                         {
                             lastGameBan = lastBan.Created;
 
                             if (lastGameBan >= lastModified)
-                                outOfSync = true;
+                                errorMessage = "OUT OF SYNC - There are new portal bans that have not been applied.";
 
                             if (fileSize != banFileMonitor.RemoteFileSize)
-                                outOfSync = true;
+                                errorMessage = "OUT OF SYNC - The remote file size does not match the last sync size.";
                         }
+
+                        if (banFileMonitor.LastSync < DateTime.UtcNow.AddMinutes(-30))
+                            warningMessage = "WARNING - It has been more than 30 minutes since the server had a sync check";
 
                         results.Add(new BanFileMonitorStatusViewModel
                         {
@@ -78,8 +86,9 @@ namespace XI.Portal.Web.Controllers
                             GameServer = banFileMonitor.GameServer,
                             FileSize = fileSize,
                             LastModified = lastModified,
-                            OutOfSync = outOfSync,
-                            LastGameBan = lastGameBan
+                            LastGameBan = lastGameBan,
+                            ErrorMessage = errorMessage,
+                            WarningMessage = warningMessage
                         });
                     }
                     catch (Exception ex)
@@ -88,7 +97,6 @@ namespace XI.Portal.Web.Controllers
                         {
                             BanFileMonitor = banFileMonitor,
                             GameServer = banFileMonitor.GameServer,
-                            HasError = true,
                             ErrorMessage = ex.Message
                         });
                     }
@@ -114,7 +122,13 @@ namespace XI.Portal.Web.Controllers
                         var fileSize = ftpHelper.GetFileSize(fileMonitor.GameServer.Hostname, fileMonitor.FilePath, fileMonitor.GameServer.FtpUsername, fileMonitor.GameServer.FtpPassword);
                         var lastModified = ftpHelper.GetLastModified(fileMonitor.GameServer.Hostname, fileMonitor.FilePath, fileMonitor.GameServer.FtpUsername, fileMonitor.GameServer.FtpPassword);
 
-                        var somethingMayBeWrong = lastModified < DateTime.Now.AddHours(-1);
+                        var errorMessage = string.Empty;
+
+                        if (lastModified < DateTime.Now.AddHours(-1))
+                            errorMessage = "INVESTIGATE - The log file has not been modified in over 1 hour.";
+
+                        if (fileMonitor.LastRead < DateTime.UtcNow.AddMinutes(-15))
+                            errorMessage = "ERROR - The file has not been read in the past 15 minutes";
 
                         results.Add(new FileMonitorStatusViewModel
                         {
@@ -122,7 +136,7 @@ namespace XI.Portal.Web.Controllers
                             GameServer = fileMonitor.GameServer,
                             FileSize = fileSize,
                             LastModified = lastModified,
-                            SomethingMayBeWrong = somethingMayBeWrong
+                            ErrorMessage = errorMessage
                         });
                     }
                     catch (Exception ex)
@@ -131,10 +145,69 @@ namespace XI.Portal.Web.Controllers
                         {
                             FileMonitor = fileMonitor,
                             GameServer = fileMonitor.GameServer,
-                            HasError = true,
                             ErrorMessage = ex.Message
                         });
                     }
+            }
+
+            return View(results);
+        }
+
+        public async Task<ActionResult> RconMonitor()
+        {
+            var results = new List<RconMonitorStatusViewModel>();
+
+            using (var context = ContextProvider.GetContext())
+            {
+                var rconMonitors = await context.RconMonitors
+                    .Include(rm => rm.GameServer)
+                    .OrderBy(rm => rm.GameServer.BannerServerListPosition)
+                    .ToListAsync();
+
+                foreach (var rconMonitor in rconMonitors)
+                {
+                    try
+                    {
+                        var rconClient = rconClientFactory.CreateInstance(
+                            rconMonitor.GameServer.GameType,
+                            rconMonitor.GameServer.Title,
+                            rconMonitor.GameServer.Hostname,
+                            rconMonitor.GameServer.QueryPort,
+                            rconMonitor.GameServer.RconPassword,
+                            new List<TimeSpan>
+                            {
+                                TimeSpan.FromSeconds(1)
+                            }
+                        );
+
+                        var commandResult = rconClient.PlayerStatus();
+
+                        var errorMessage = string.Empty;
+
+                        if (rconMonitor.LastUpdated < DateTime.UtcNow.AddMinutes(-15))
+                            errorMessage = "ERROR - The rcon status has not been updated in the past 15 minutes";
+
+                        if (string.IsNullOrWhiteSpace(commandResult))
+                            errorMessage = "ERROR - The rcon command result is empty";
+
+                        results.Add(new RconMonitorStatusViewModel
+                        {
+                            RconMonitor = rconMonitor,
+                            GameServer = rconMonitor.GameServer,
+                            RconStatusResult = commandResult,
+                            ErrorMessage = errorMessage
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        results.Add(new RconMonitorStatusViewModel
+                        {
+                            RconMonitor = rconMonitor,
+                            GameServer = rconMonitor.GameServer,
+                            ErrorMessage = ex.Message
+                        });
+                    }
+                }
             }
 
             return View(results);

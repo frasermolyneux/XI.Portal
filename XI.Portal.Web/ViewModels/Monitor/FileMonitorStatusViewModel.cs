@@ -7,12 +7,12 @@ namespace XI.Portal.Web.ViewModels.Monitor
     {
         public FileMonitor FileMonitor { get; set; }
         public GameServer GameServer { get; set; }
+
         public long FileSize { get; set; }
         public DateTime LastModified { get; set; }
 
-        public bool HasError { get; set; }
         public string ErrorMessage { get; set; }
-
-        public bool SomethingMayBeWrong { get; set; } = false;
+        public string WarningMessage { get; set; }
+        public string SuccessMessage { get; set; } = "Everything looks OK";
     }
 }
