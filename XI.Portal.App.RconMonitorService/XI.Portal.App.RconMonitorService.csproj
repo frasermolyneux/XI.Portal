@@ -210,6 +210,10 @@
       <Project>{4df50dc6-1fde-4d75-b557-42eabcf4728c}</Project>
       <Name>XI.Portal.Library.Rcon</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Plugins.ImAlivePlugin\XI.Portal.Plugins.ImAlivePlugin.csproj">
+      <Project>{1371D81C-6555-40AB-9C1A-8A5AE15C7BBF}</Project>
+      <Name>XI.Portal.Plugins.ImAlivePlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Plugins.MapRotationPlugin\XI.Portal.Plugins.MapRotationPlugin.csproj">
       <Project>{9e986b37-a07b-4f2f-93b7-561d3ed15cf0}</Project>
       <Name>XI.Portal.Plugins.MapRotationPlugin</Name>

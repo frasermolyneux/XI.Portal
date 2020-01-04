@@ -180,6 +180,10 @@
       <Project>{1521CC3B-FA83-48BB-93C0-745191940B6F}</Project>
       <Name>XI.Portal.Plugins.FuckYouPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Plugins.ImAlivePlugin\XI.Portal.Plugins.ImAlivePlugin.csproj">
+      <Project>{1371D81C-6555-40AB-9C1A-8A5AE15C7BBF}</Project>
+      <Name>XI.Portal.Plugins.ImAlivePlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Plugins.LogProxyPlugin\XI.Portal.Plugins.LogProxyPlugin.csproj">
       <Project>{8CBE3E34-150E-446F-AB8A-7AC7C2CE199B}</Project>
       <Name>XI.Portal.Plugins.LogProxyPlugin</Name>

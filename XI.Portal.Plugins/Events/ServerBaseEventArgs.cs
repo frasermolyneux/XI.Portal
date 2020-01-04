@@ -3,9 +3,9 @@ using XI.Portal.Data.CommonTypes;
 
 namespace XI.Portal.Plugins.Events
 {
-    public class ServerBaseEventArgs : EventArgs
+    public class ServerBaseEventArgs : MonitorBaseEventArgs
     {
-        public ServerBaseEventArgs(Guid serverId, string serverName, GameType gameType)
+        public ServerBaseEventArgs(Guid monitorId, Guid serverId, string serverName, GameType gameType) : base (monitorId)
         {
             ServerId = serverId;
             ServerName = serverName;

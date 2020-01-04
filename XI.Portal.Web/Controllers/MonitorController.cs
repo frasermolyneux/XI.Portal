@@ -123,12 +123,16 @@ namespace XI.Portal.Web.Controllers
                         var lastModified = ftpHelper.GetLastModified(fileMonitor.GameServer.Hostname, fileMonitor.FilePath, fileMonitor.GameServer.FtpUsername, fileMonitor.GameServer.FtpPassword);
 
                         var errorMessage = string.Empty;
+                        var warningMessage = string.Empty;
 
                         if (lastModified < DateTime.Now.AddHours(-1))
                             errorMessage = "INVESTIGATE - The log file has not been modified in over 1 hour.";
 
                         if (fileMonitor.LastRead < DateTime.UtcNow.AddMinutes(-15))
-                            errorMessage = "ERROR - The file has not been read in the past 15 minutes";
+                            warningMessage = "WARNING - The file has not been read in the past 15 minutes";
+
+                        if (fileMonitor.LastRead < DateTime.UtcNow.AddMinutes(-30))
+                            errorMessage = "ERROR - The file has not been read in the past 30 minutes";
 
                         results.Add(new FileMonitorStatusViewModel
                         {
@@ -136,7 +140,8 @@ namespace XI.Portal.Web.Controllers
                             GameServer = fileMonitor.GameServer,
                             FileSize = fileSize,
                             LastModified = lastModified,
-                            ErrorMessage = errorMessage
+                            ErrorMessage = errorMessage,
+                            WarningMessage = warningMessage
                         });
                     }
                     catch (Exception ex)
@@ -189,6 +194,9 @@ namespace XI.Portal.Web.Controllers
 
                         if (string.IsNullOrWhiteSpace(commandResult))
                             errorMessage = "ERROR - The rcon command result is empty";
+
+                        if (commandResult.Contains("Invalid password"))
+                            errorMessage = "ERROR - Invalid rcon password";
 
                         results.Add(new RconMonitorStatusViewModel
                         {

@@ -19,6 +19,7 @@ namespace XI.Portal.App.RconMonitorService.RconMonitors
             this.rconClientFactory = rconClientFactory ?? throw new ArgumentNullException(nameof(rconClientFactory));
         }
 
+        public Guid MonitorId { get; private set; }
         public Guid ServerId { get; private set; }
         public string ServerName { get; private set; }
         public GameType GameType { get; private set; }
@@ -34,8 +35,9 @@ namespace XI.Portal.App.RconMonitorService.RconMonitors
 
         private CancellationTokenSource CancellationTokenSource { get; set; }
 
-        public void Configure(Guid serverId, string serverName, GameType gameType, string hostname, int port, string rconPassword, bool monitorMapRotation, bool monitorPlayers, bool monitorPlayerIPs, CancellationTokenSource cancellationTokenSource)
+        public void Configure(Guid monitorId, Guid serverId, string serverName, GameType gameType, string hostname, int port, string rconPassword, bool monitorMapRotation, bool monitorPlayers, bool monitorPlayerIPs, CancellationTokenSource cancellationTokenSource)
         {
+            MonitorId = monitorId;
             ServerId = serverId;
             ServerName = serverName;
             GameType = gameType;
