@@ -263,7 +263,6 @@
     <Compile Include="Controllers\ForumsController.cs" />
     <Compile Include="Controllers\AdmMaintenanceController.cs" />
     <Compile Include="Controllers\MonitorController.cs" />
-    <Compile Include="CustomJsonResult.cs" />
     <Compile Include="Extensions\UserCheckExtension.cs" />
     <Compile Include="ViewModels\AdmBanFileMonitor\CreateBanFileMonitorViewModel.cs" />
     <Compile Include="ViewModels\AdmBanFileMonitor\EditBanFileMonitorViewModel.cs" />
