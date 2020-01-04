@@ -4,7 +4,6 @@ using System.Web.Mvc;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Analytics.Interfaces;
 using XI.Portal.Library.Logging;
-using XI.Portal.Web.ViewModels.Analytics;
 
 namespace XI.Portal.Web.Controllers
 {
@@ -16,26 +15,33 @@ namespace XI.Portal.Web.Controllers
         public AnalyticsController(
             IContextProvider contextProvider,
             IDatabaseLogger databaseLogger,
-            IAdminActionsAnalytics adminActionsAnalytics, 
+            IAdminActionsAnalytics adminActionsAnalytics,
             IPlayersAnalytics playersAnalytics) : base(contextProvider, databaseLogger)
         {
             this.adminActionsAnalytics = adminActionsAnalytics ?? throw new ArgumentNullException(nameof(adminActionsAnalytics));
             this.playersAnalytics = playersAnalytics ?? throw new ArgumentNullException(nameof(playersAnalytics));
         }
 
-        public async Task<ActionResult> AdminActions()
+        public ActionResult AdminActions()
         {
-            var adminActions = await adminActionsAnalytics.GetDailyActions(DateTime.UtcNow.AddYears(-1));
-
-            return View(adminActions);
-        }
-
-        public async Task<ActionResult> Players()
-        {
-            var cutoff = DateTime.UtcNow.AddYears(-1);
+            var cutoff = DateTime.UtcNow.AddMonths(-3);
             ViewBag.DateFilterRange = cutoff;
 
             return View();
+        }
+
+        public ActionResult Players()
+        {
+            var cutoff = DateTime.UtcNow.AddMonths(-3);
+            ViewBag.DateFilterRange = cutoff;
+
+            return View();
+        }
+
+        public async Task<ActionResult> GetDailyActionsJson(DateTime cutoff)
+        {
+            var data = await adminActionsAnalytics.GetDailyActions(cutoff);
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         public async Task<ActionResult> GetCumulativeDailyPlayersJson(DateTime cutoff)
