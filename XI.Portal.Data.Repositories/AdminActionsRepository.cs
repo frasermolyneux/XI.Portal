@@ -31,7 +31,7 @@ namespace XI.Portal.Data.Repositories
         {
             using (var context = contextProvider.GetContext())
             {
-                return await filterModel.ApplyFilter(context).ToListAsync();
+                return await filterModel.ApplyFilter(context).Include(aa => aa.Player).ToListAsync();
             }
         }
     }

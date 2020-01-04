@@ -15,25 +15,45 @@ namespace XI.Portal.Web.Controllers
         public AnalyticsController(
             IContextProvider contextProvider,
             IDatabaseLogger databaseLogger,
-            IAdminActionsAnalytics adminActionsAnalytics, 
+            IAdminActionsAnalytics adminActionsAnalytics,
             IPlayersAnalytics playersAnalytics) : base(contextProvider, databaseLogger)
         {
             this.adminActionsAnalytics = adminActionsAnalytics ?? throw new ArgumentNullException(nameof(adminActionsAnalytics));
             this.playersAnalytics = playersAnalytics ?? throw new ArgumentNullException(nameof(playersAnalytics));
         }
 
-        public async Task<ActionResult> AdminActions()
+        public ActionResult AdminActions()
         {
-            var adminActions = await adminActionsAnalytics.GetDailyActions(DateTime.UtcNow.AddYears(-1));
+            var cutoff = DateTime.UtcNow.AddMonths(-3);
+            ViewBag.DateFilterRange = cutoff;
 
-            return View(adminActions);
+            return View();
         }
 
-        public async Task<ActionResult> Players()
+        public ActionResult Players()
         {
-            var players = await playersAnalytics.GetCumulativeDailyPlayers(DateTime.UtcNow.AddYears(-1));
+            var cutoff = DateTime.UtcNow.AddMonths(-3);
+            ViewBag.DateFilterRange = cutoff;
 
-            return View(players);
+            return View();
+        }
+
+        public async Task<ActionResult> GetDailyActionsJson(DateTime cutoff)
+        {
+            var data = await adminActionsAnalytics.GetDailyActions(cutoff);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> GetCumulativeDailyPlayersJson(DateTime cutoff)
+        {
+            var data = await playersAnalytics.GetCumulativeDailyPlayers(cutoff);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> GetNewDailyPlayersPerGameJson(DateTime cutoff)
+        {
+            var data = await playersAnalytics.GetNewDailyPlayersPerGame(cutoff);
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
     }
 }

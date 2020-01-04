@@ -266,6 +266,7 @@
     <Compile Include="Extensions\UserCheckExtension.cs" />
     <Compile Include="ViewModels\AdmBanFileMonitor\CreateBanFileMonitorViewModel.cs" />
     <Compile Include="ViewModels\AdmBanFileMonitor\EditBanFileMonitorViewModel.cs" />
+    <Compile Include="ViewModels\Analytics\PlayersAnalyticsViewModel.cs" />
     <Compile Include="ViewModels\Monitor\BanFileMonitorStatusViewModel.cs" />
     <Compile Include="ViewModels\Monitor\FileMonitorStatusViewModel.cs" />
     <Compile Include="ViewModels\AdmServers\RconStatusResultViewModel.cs" />

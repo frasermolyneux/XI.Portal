@@ -18,41 +18,44 @@
     <!-- Primary Inspinia style -->
     @Styles.Render("~/font-awesome/css")
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/plugins/dataPickerStyles")
 </head>
 <body>
 
-<!-- Wrapper-->
-<div id="wrapper">
+    <!-- Wrapper-->
+    <div id="wrapper">
 
-    <!-- Navigation -->
-    @Html.Partial("_Navigation")
+        <!-- Navigation -->
+        @Html.Partial("_Navigation")
 
-    <!-- Page wraper -->
-    <div id="page-wrapper" class="gray-bg">
+        <!-- Page wraper -->
+        <div id="page-wrapper" class="gray-bg">
 
-        <!-- Top Navbar -->
-        @Html.Partial("_TopNavbar")
+            <!-- Top Navbar -->
+            @Html.Partial("_TopNavbar")
 
-        <!-- Main view  -->
-        @RenderBody()
+            <!-- Main view  -->
+            @RenderBody()
 
-        <!-- Footer -->
-        @Html.Partial("_Footer")
+            <!-- Footer -->
+            @Html.Partial("_Footer")
+
+        </div>
+        <!-- End page wrapper-->
 
     </div>
-    <!-- End page wrapper-->
+    <!-- End wrapper-->
 
-</div>
-<!-- End wrapper-->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/inspinia")
+    @Scripts.Render("~/plugins/slimScroll")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/dateRange")
 
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
-@Scripts.Render("~/plugins/slimScroll")
-@Scripts.Render("~/bundles/inspinia")
-
-@if (IsSectionDefined("Scripts"))
-{
-    @RenderSection("Scripts", false)
-}
+    @if (IsSectionDefined("Scripts"))
+    {
+        @RenderSection("Scripts", false)
+    }
 </body>
 </html>

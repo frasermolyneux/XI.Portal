@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Interfaces\IAdminActionsAnalytics.cs" />
     <Compile Include="Interfaces\IPlayersAnalytics.cs" />
+    <Compile Include="Models\PlayerAnalyticPerGameEntry.cs" />
     <Compile Include="Models\PlayerAnalyticEntry.cs" />
     <Compile Include="Models\AdminActionAnalyticEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

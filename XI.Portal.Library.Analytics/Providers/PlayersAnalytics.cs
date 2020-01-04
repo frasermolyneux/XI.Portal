@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Analytics.Interfaces;
 using XI.Portal.Library.Analytics.Models;
@@ -36,6 +38,29 @@ namespace XI.Portal.Library.Analytics.Providers
                         Count = cumulative += g.Count()
                     })
                     .ToList();
+
+                return groupedPlayers;
+            }
+        }
+
+        public async Task<List<PlayerAnalyticPerGameEntry>> GetNewDailyPlayersPerGame(DateTime cutoff)
+        {
+            using (var context = contextProvider.GetContext())
+            {
+                var players = await context.Players
+                    .Where(p => p.FirstSeen > cutoff)
+                    .Select(p => new { p.FirstSeen, p.GameType })
+                    .OrderBy(p => p)
+                    .ToListAsync();
+
+                var groupedPlayers = players.GroupBy(p => new DateTime(p.FirstSeen.Year, p.FirstSeen.Month, p.FirstSeen.Day))
+                    .Select(g => new PlayerAnalyticPerGameEntry
+                    {
+                        Created = g.Key,
+                        GameCounts = g.GroupBy(i => i.GameType.ToString())
+                            .Select(i => new { Type = i.Key, Count = i.Count() })
+                            .ToDictionary(a => a.Type, a => a.Count)
+                    }).ToList();
 
                 return groupedPlayers;
             }

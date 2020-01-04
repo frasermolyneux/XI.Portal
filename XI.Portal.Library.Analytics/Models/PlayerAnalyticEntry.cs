@@ -1,4 +1,5 @@
 ﻿using System;
+using XI.Portal.Data.CommonTypes;
 
 namespace XI.Portal.Library.Analytics.Models
 {
