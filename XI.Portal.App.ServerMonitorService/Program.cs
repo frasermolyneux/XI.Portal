@@ -16,6 +16,7 @@ using XI.Portal.Configuration.Interfaces;
 using XI.Portal.Configuration.LogProxyPlugin;
 using XI.Portal.Configuration.Maps;
 using XI.Portal.Configuration.Providers;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Logging;
@@ -136,7 +137,7 @@ namespace XI.Portal.App.ServerMonitorService
 
                     using (var context = contextProvider.GetContext())
                     {
-                        var serverMonitors = context.GameServers.Where(server => server.ShowOnPortalServerList).ToList();
+                        var serverMonitors = context.GameServers.Where(server => server.ShowOnPortalServerList && server.GameType != GameType.Unknown).ToList();
 
                         foreach (var serverMonitor in serverMonitors)
                             if (workerThreads.ContainsKey(serverMonitor.ServerId))
