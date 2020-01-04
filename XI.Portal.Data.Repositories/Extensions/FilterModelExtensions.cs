@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using XI.Portal.Data.Contracts.FilterModels;
 using XI.Portal.Data.Core.Context;
@@ -62,7 +63,7 @@ namespace XI.Portal.Data.Repositories.Extensions
 
         public static IQueryable<AdminAction> ApplyFilter(this AdminActionsFilterModel filterModel, PortalContext context)
         {
-            var adminActions = context.AdminActions.AsQueryable();
+            var adminActions = context.AdminActions.Include(aa => aa.Player).AsQueryable();
 
             if (filterModel.GameType != GameType.Unknown)
             {

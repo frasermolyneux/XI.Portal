@@ -1,6 +1,7 @@
 ﻿@using XI.Portal.Library.Auth.Extensions
 @using XI.Portal.Data.CommonTypes
 @using Microsoft.AspNet.Identity
+@using XI.Portal.Web.Extensions
 @model List<XI.Portal.Data.Core.Models.AdminAction>
 
 @{
@@ -30,7 +31,7 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
                         <h2>
-                            @item.Type Record for @Html.ActionLink(item.Player.Username, "Details", "Players", new { id = item.Player.PlayerId }, new { })
+                            @Html.GameTypeIcon(item.Player.GameType) @item.Type Record for @Html.ActionLink(item.Player.Username, "Details", "Players", new { id = item.Player.PlayerId }, new { })
                         </h2>
                         <p>
                             @if (item.Admin == null)
