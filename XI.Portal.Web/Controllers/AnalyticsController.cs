@@ -33,14 +33,21 @@ namespace XI.Portal.Web.Controllers
         public async Task<ActionResult> Players()
         {
             var cutoff = DateTime.UtcNow.AddYears(-1);
+            ViewBag.DateFilterRange = cutoff;
 
-            var model = new PlayersAnalyticsViewModel()
-            {
-                Players = await playersAnalytics.GetCumulativeDailyPlayers(cutoff),
-                PlayersPerGame = await playersAnalytics.GetNewDailyPlayersPerGame(cutoff)
-            };
+            return View();
+        }
 
-            return View(model);
+        public async Task<ActionResult> GetCumulativeDailyPlayersJson(DateTime cutoff)
+        {
+            var data = await playersAnalytics.GetCumulativeDailyPlayers(cutoff);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> GetNewDailyPlayersPerGameJson(DateTime cutoff)
+        {
+            var data = await playersAnalytics.GetNewDailyPlayersPerGame(cutoff);
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
     }
 }

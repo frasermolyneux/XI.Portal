@@ -57,7 +57,7 @@ namespace XI.Portal.Library.Analytics.Providers
                     .Select(g => new PlayerAnalyticPerGameEntry
                     {
                         Created = g.Key,
-                        GameCounts = g.GroupBy(i => i.GameType)
+                        GameCounts = g.GroupBy(i => i.GameType.ToString())
                             .Select(i => new { Type = i.Key, Count = i.Count() })
                             .ToDictionary(a => a.Type, a => a.Count)
                     }).ToList();
