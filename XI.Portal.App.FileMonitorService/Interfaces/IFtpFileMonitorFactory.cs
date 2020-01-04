@@ -7,6 +7,6 @@ namespace XI.Portal.App.FileMonitorService.Interfaces
 {
     public interface IFtpFileMonitorFactory
     {
-        FtpFileMonitor CreateInstance(string requestPath, string ftpUsername, string ftpPassword, Guid serverId, string serverName, GameType gasmeType, CancellationTokenSource cancellationTokenSource);
+        FtpFileMonitor CreateInstance(Guid monitorId, string requestPath, string ftpUsername, string ftpPassword, Guid serverId, string serverName, GameType gasmeType, CancellationTokenSource cancellationTokenSource);
     }
 }

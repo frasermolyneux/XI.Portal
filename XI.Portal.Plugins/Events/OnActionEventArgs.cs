@@ -5,7 +5,7 @@ namespace XI.Portal.Plugins.Events
 {
     public class OnActionEventArgs : ServerBaseEventArgs
     {
-        public OnActionEventArgs(Guid serverId, string serverName, GameType gameType) : base(serverId, serverName, gameType)
+        public OnActionEventArgs(Guid monitorId, Guid serverId, string serverName, GameType gameType) : base(monitorId, serverId, serverName, gameType)
         {
         }
     }

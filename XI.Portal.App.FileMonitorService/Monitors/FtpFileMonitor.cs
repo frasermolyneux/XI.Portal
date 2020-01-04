@@ -19,6 +19,7 @@ namespace XI.Portal.App.FileMonitorService.Monitors
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        private Guid MonitorId { get; set; }
         private string RequestPath { get; set; }
         private string FtpUsername { get; set; }
         private string FtpPassword { get; set; }
@@ -30,8 +31,9 @@ namespace XI.Portal.App.FileMonitorService.Monitors
 
         private long BytesRead { get; set; }
 
-        public void Configure(string requestPath, string ftpUsername, string ftpPassword, Guid gameServerId, string serverName, GameType gameType, CancellationTokenSource cancellationTokenSource)
+        public void Configure(Guid monitorId, string requestPath, string ftpUsername, string ftpPassword, Guid gameServerId, string serverName, GameType gameType, CancellationTokenSource cancellationTokenSource)
         {
+            MonitorId = monitorId;
             RequestPath = requestPath;
             FtpUsername = ftpUsername;
             FtpPassword = ftpPassword;
@@ -95,7 +97,7 @@ namespace XI.Portal.App.FileMonitorService.Monitors
                                     {
                                         BytesRead += byteList.Count;
 
-                                        var lineReadEventArgs = new LineReadEventArgs(ServerId, ServerName, GameType, Encoding.UTF8.GetString(byteList.ToArray()).TrimEnd('\n'));
+                                        var lineReadEventArgs = new LineReadEventArgs(MonitorId, ServerId, ServerName, GameType, Encoding.UTF8.GetString(byteList.ToArray()).TrimEnd('\n'));
 
                                         OnLineRead(lineReadEventArgs);
                                         byteList = new List<byte>();

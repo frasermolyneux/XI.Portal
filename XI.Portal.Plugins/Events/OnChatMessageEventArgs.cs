@@ -5,7 +5,7 @@ namespace XI.Portal.Plugins.Events
 {
     public class OnChatMessageEventArgs : ServerBaseEventArgs
     {
-        public OnChatMessageEventArgs(Guid serverId, string serverName, GameType gameType, string guid, string name, string message, ChatType chatType) : base(serverId, serverName, gameType)
+        public OnChatMessageEventArgs(Guid monitorId, Guid serverId, string serverName, GameType gameType, string guid, string name, string message, ChatType chatType) : base(monitorId, serverId, serverName, gameType)
         {
             Guid = guid;
             Name = name;

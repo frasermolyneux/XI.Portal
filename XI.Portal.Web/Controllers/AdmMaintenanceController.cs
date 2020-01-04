@@ -7,21 +7,17 @@ using System.Web.Mvc;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Auth.XtremeIdiots;
 using XI.Portal.Library.Logging;
-using XI.Portal.Library.Rcon.Interfaces;
 
 namespace XI.Portal.Web.Controllers
 {
     [Authorize(Roles = XtremeIdiotsRoles.SeniorAdmins)]
     public class AdmMaintenanceController : BaseController
     {
-        private readonly IRconClientFactory rconClientFactory;
-
         public AdmMaintenanceController(
             IContextProvider contextProvider,
-            IDatabaseLogger databaseLogger,
-            IRconClientFactory rconClientFactory) : base(contextProvider, databaseLogger)
+            IDatabaseLogger databaseLogger) : base(contextProvider, databaseLogger)
         {
-            this.rconClientFactory = rconClientFactory ?? throw new ArgumentNullException(nameof(rconClientFactory));
+
         }
 
         public async Task<ActionResult> Index()
@@ -99,49 +95,5 @@ namespace XI.Portal.Web.Controllers
 
             return View(results);
         }
-
-
-
-        public async Task<ActionResult> RconMonitorCheck()
-        {
-            var results = new Dictionary<string, string>();
-
-            using (var context = ContextProvider.GetContext())
-            {
-                var rconMonitors = await context.RconMonitors.Include(bfm => bfm.GameServer).ToListAsync();
-
-                foreach (var rconMonitor in rconMonitors)
-                {
-                    try
-                    {
-                        var rconClient = rconClientFactory.CreateInstance(
-                            rconMonitor.GameServer.GameType,
-                            rconMonitor.GameServer.Title,
-                            rconMonitor.GameServer.Hostname,
-                            rconMonitor.GameServer.QueryPort,
-                            rconMonitor.GameServer.RconPassword,
-                                new List<TimeSpan>
-                                {
-                                    TimeSpan.FromSeconds(1)
-                                }
-                            );
-
-                        var commandResult = rconClient.PlayerStatus();
-
-                        results.Add(rconMonitor.GameServer.Title, commandResult);
-                    }
-                    catch (Exception ex)
-                    {
-                        results.Add(rconMonitor.GameServer.Title, ex.Message);
-                    }
-                }
-            }
-
-            return View(results);
-        }
-
-
-
-
     }
 }

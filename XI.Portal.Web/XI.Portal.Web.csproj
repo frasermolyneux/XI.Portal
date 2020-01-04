@@ -271,6 +271,7 @@
     <Compile Include="ViewModels\Monitor\FileMonitorStatusViewModel.cs" />
     <Compile Include="ViewModels\AdmServers\RconStatusResultViewModel.cs" />
     <Compile Include="ViewModels\Maps\MapRotationViewModel.cs" />
+    <Compile Include="ViewModels\Monitor\RconMonitorStatusViewModel.cs" />
     <Compile Include="ViewModels\Servers\ServersIndexViewModel.cs" />
     <Compile Include="ViewModels\Bans\ClaimBanViewModel.cs" />
     <Compile Include="Controllers\CommunityController.cs" />
@@ -1899,7 +1900,6 @@
     <Content Include="Views\AdmMaintenance\Index.cshtml" />
     <Content Include="Views\AdmMaintenance\FtpCredentialCheck.cshtml" />
     <Content Include="Views\Monitor\BanFileMonitor.cshtml" />
-    <Content Include="Views\AdmMaintenance\RconMonitorCheck.cshtml" />
     <Content Include="Views\Monitor\LogFileMonitor.cshtml" />
     <Content Include="Views\AdmServers\RconStatus.cshtml" />
     <Content Include="Views\Maps\Index.cshtml" />
@@ -1915,6 +1915,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Analytics\AdminActions.cshtml" />
     <Content Include="Views\Analytics\Players.cshtml" />
+    <Content Include="Views\Monitor\RconMonitor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

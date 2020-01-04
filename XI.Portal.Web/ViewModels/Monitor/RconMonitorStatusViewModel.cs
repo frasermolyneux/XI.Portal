@@ -3,14 +3,12 @@ using XI.Portal.Data.Core.Models;
 
 namespace XI.Portal.Web.ViewModels.Monitor
 {
-    public class BanFileMonitorStatusViewModel
+    public class RconMonitorStatusViewModel
     {
-        public BanFileMonitor BanFileMonitor { get; set; }
+        public RconMonitor RconMonitor { get; set; }
         public GameServer GameServer { get; set; }
 
-        public long FileSize { get; set; }
-        public DateTime LastModified { get; set; }
-        public DateTime LastGameBan { get; set; }
+        public string RconStatusResult { get; set; }
 
         public string ErrorMessage { get; set; }
         public string WarningMessage { get; set; }

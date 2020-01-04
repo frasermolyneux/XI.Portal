@@ -5,6 +5,7 @@ using XI.Portal.App.FileMonitorService.Parsers;
 using XI.Portal.Data.CommonTypes;
 using XI.Portal.Plugins.ChatMonitorPlugin;
 using XI.Portal.Plugins.FuckYouPlugin;
+using XI.Portal.Plugins.ImAlivePlugin;
 using XI.Portal.Plugins.LogProxyPlugin;
 using XI.Portal.Plugins.MapRotationPlugin;
 using XI.Portal.Plugins.PlayerInfoPlugin;
@@ -18,7 +19,8 @@ namespace XI.Portal.App.FileMonitorService.Factories
             PlayerInfoPlugin playerInfoPlugin,
             FuckYouPlugin fuckYouPlugin,
             LogProxyPlugin logProxyPlugin,
-            MapRotationPlugin mapRotationPlugin)
+            MapRotationPlugin mapRotationPlugin,
+            ImAlivePlugin imAlivePlugin)
         {
             Parsers.Add(GameType.CallOfDuty2, new Cod2Parser(logger));
             Parsers.Add(GameType.CallOfDuty4, new Cod4Parser(logger));
@@ -31,6 +33,7 @@ namespace XI.Portal.App.FileMonitorService.Factories
                 fuckYouPlugin.RegisterEventHandlers(parser.Value);
                 logProxyPlugin.RegisterEventHandlers(parser.Value);
                 mapRotationPlugin.RegisterEventHandlers(parser.Value);
+                imAlivePlugin.RegisterEventHandlers(parser.Value);
             }
         }
 

@@ -25,9 +25,6 @@
                             <th>
                                 @Html.Label("File Path")
                             </th>
-                            <th>
-                                @Html.Label("Last Read")
-                            </th>
                             <th></th>
                         </tr>
 
@@ -38,7 +35,7 @@
                                     @Html.GameTypeIcon(item.GameServer.GameType)
                                 </td>
                                 <td>
-                                    @Html.ServerName(item.GameServer)
+                                    @Html.ServerName(item.GameServer) - (@item.GameServer.Title)
                                 </td>
                                 <td>
                                     @{
@@ -46,9 +43,6 @@
                                     }
 
                                     @ftpUrl
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.LastRead)
                                 </td>
                                 <td>
                                     @Html.ActionLink("Edit", "Edit", new {id = item.FileMonitorId}) |
