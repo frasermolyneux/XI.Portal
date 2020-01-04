@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Analytics.Interfaces;
 using XI.Portal.Library.Logging;
+using XI.Portal.Web.ViewModels.Analytics;
 
 namespace XI.Portal.Web.Controllers
 {
@@ -31,9 +32,15 @@ namespace XI.Portal.Web.Controllers
 
         public async Task<ActionResult> Players()
         {
-            var players = await playersAnalytics.GetCumulativeDailyPlayers(DateTime.UtcNow.AddYears(-1));
+            var cutoff = DateTime.UtcNow.AddYears(-1);
 
-            return View(players);
+            var model = new PlayersAnalyticsViewModel()
+            {
+                Players = await playersAnalytics.GetCumulativeDailyPlayers(cutoff),
+                PlayersPerGame = await playersAnalytics.GetNewDailyPlayersPerGame(cutoff)
+            };
+
+            return View(model);
         }
     }
 }

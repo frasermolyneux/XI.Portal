@@ -1,4 +1,5 @@
-﻿@model System.Collections.Generic.List<XI.Portal.Library.Analytics.Models.PlayerAnalyticEntry>
+﻿@using XI.Portal.Data.CommonTypes
+@model XI.Portal.Web.ViewModels.Analytics.PlayersAnalyticsViewModel
 
 @{
     ViewBag.Title = "Players Analytics";
@@ -11,19 +12,27 @@
 
     <div class="row">
         <div class="col-sm-12">
-
             <div class="ibox">
-
                 <div class="ibox-content">
                     <div id="PlayersAnalytics"></div>
-
                     <p>
                         This displays the cumulative tracked players across the portal.
                     </p>
                 </div>
-
             </div>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div id="PlayersPerGameAnalytics"></div>
+                    <p>
+                        This displays the cumulative tracked players across the portal per game.
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -33,16 +42,17 @@
 <script type="text/javascript">
 
     google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(drawPlayersChart);
+    google.charts.setOnLoadCallback(drawPlayersPerGameChart);
 
-    function drawChart() {
+    function drawPlayersChart() {
 
         var data = new google.visualization.DataTable();
         data.addColumn('date', 'Date');
         data.addColumn('number', 'Count');
 
         data.addRows([
-            @foreach (var item in Model)
+            @foreach (var item in Model.Players)
             {
                 <text>[new Date(@item.Created.Year, @item.Created.Month, @item.Created.Day), @item.Count],</text>
             }
@@ -63,6 +73,46 @@
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('PlayersAnalytics'));
+        chart.draw(data, options);
+    }
+
+    function drawPlayersPerGameChart() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Date');
+
+        data.addColumn('number', 'CallOfDuty2');
+        data.addColumn('number', 'CallOfDuty4');
+        data.addColumn('number', 'CallOfDuty5');
+        data.addColumn('number', 'Insurgency');
+
+        data.addRows([
+            @foreach (var item in Model.PlayersPerGame)
+            {
+                var cod2 = item.GameCounts.ContainsKey(GameType.CallOfDuty2) ? item.GameCounts[GameType.CallOfDuty2] : 0;
+                var cod4 = item.GameCounts.ContainsKey(GameType.CallOfDuty4) ? item.GameCounts[GameType.CallOfDuty4] : 0;
+                var cod5 = item.GameCounts.ContainsKey(GameType.CallOfDuty5) ? item.GameCounts[GameType.CallOfDuty5] : 0;
+                var insurgency = item.GameCounts.ContainsKey(GameType.Insurgency) ? item.GameCounts[GameType.Insurgency] : 0;
+
+                <text>[new Date(@item.Created.Year, @item.Created.Month, @item.Created.Day), @cod2, @cod4, @cod5, @insurgency],</text>
+            }
+        ]);
+
+        var options = {
+            title: 'New players per game per day',
+            width: 1200,
+            height: 500,
+            hAxis: {
+                format: 'd/M/yy',
+                gridlines: {count: 30}
+            },
+            vAxis: {
+                gridlines: {color: 'none'},
+                minValue: 0
+            }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('PlayersPerGameAnalytics'));
         chart.draw(data, options);
     }
 
