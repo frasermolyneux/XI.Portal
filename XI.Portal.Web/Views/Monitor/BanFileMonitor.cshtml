@@ -1,4 +1,5 @@
-﻿@using XI.Portal.Web.Extensions
+﻿@using XI.Portal.Library.Auth.Extensions
+@using XI.Portal.Web.Extensions
 @model List<XI.Portal.Web.ViewModels.Monitor.BanFileMonitorStatusViewModel>
 
 @{
@@ -24,17 +25,25 @@
                             <text><strong>Last Recorded Size: </strong>@item.BanFileMonitor.RemoteFileSize</text><br />
                             <text><strong>Remote Size: </strong>@item.FileSize</text><br />
 
-                            @if (item.HasError)
+                            @if (!string.IsNullOrWhiteSpace(item.ErrorMessage))
                             {
-                                <div class="alert alert-danger">ERROR: @item.ErrorMessage</div>
+                                <div class="alert alert-danger">@item.ErrorMessage</div>
                             }
-                            else if (item.OutOfSync)
+
+                            @if (!string.IsNullOrWhiteSpace(item.WarningMessage))
                             {
-                                <div class="alert alert-danger">OUT OF SYNC (Last Game Ban: @item.LastGameBan)</div>
+                                <div class="alert alert-warning">@item.WarningMessage</div>
                             }
-                            else
+
+                            @if (string.IsNullOrWhiteSpace(item.ErrorMessage) && string.IsNullOrWhiteSpace(item.WarningMessage))
                             {
-                                <div class="alert alert-success">IN SYNC (Last Game Ban: @item.LastGameBan)</div>
+                                <div class="alert alert-success">@item.SuccessMessage</div>
+                            }
+
+                            @if (User.Identity.IsInSeniorAdminRole())
+                            {
+                                <a href="@Url.Action("Edit", "AdmBanFileMonitors", new {id = item.BanFileMonitor.BanFileMonitorId})" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit Ban File Monitor</a>
+                                <a href="@Url.Action("Edit", "AdmServers", new {id = item.GameServer.ServerId})" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit Game Server</a>
                             }
                         </p>
 

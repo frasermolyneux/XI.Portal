@@ -5,7 +5,7 @@ namespace XI.Portal.Plugins.Events
 {
     public class LineReadEventArgs : ServerBaseEventArgs
     {
-        public LineReadEventArgs(Guid serverId, string serverName, GameType gameType, string lineData) : base(serverId, serverName, gameType)
+        public LineReadEventArgs(Guid monitorId, Guid serverId, string serverName, GameType gameType, string lineData) : base(monitorId, serverId, serverName, gameType)
         {
             LineData = lineData;
         }

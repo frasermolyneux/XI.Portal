@@ -41,7 +41,8 @@ namespace XI.Portal.App.FileMonitorService
                 {
                     logger.Information($"Creating FtpFileMonitor for ftp://{fileMonitor.FilePath}");
 
-                    var ftpFileMonitor = ftpFileMonitorFactory.CreateInstance($"ftp://{fileMonitor.GameServer.FtpHostname}/{fileMonitor.FilePath}",
+                    var ftpFileMonitor = ftpFileMonitorFactory.CreateInstance(fileMonitor.FileMonitorId,
+                        $"ftp://{fileMonitor.GameServer.FtpHostname}/{fileMonitor.FilePath}",
                         fileMonitor.GameServer.FtpUsername,
                         fileMonitor.GameServer.FtpPassword,
                         fileMonitor.GameServer.ServerId,
@@ -75,7 +76,7 @@ namespace XI.Portal.App.FileMonitorService
             var eventData = (LineReadEventArgs)e;
 
             var parser = parserFactory.GetParserForGameType(eventData.GameType);
-            parser.ParseLine(eventData.LineData, eventData.ServerId, eventData.ServerName, eventData.GameType);
+            parser.ParseLine(eventData.MonitorId, eventData.LineData, eventData.ServerId, eventData.ServerName, eventData.GameType);
         }
     }
 }

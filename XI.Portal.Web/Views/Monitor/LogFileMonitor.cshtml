@@ -1,4 +1,5 @@
-﻿@using XI.Portal.Web.Extensions
+﻿@using XI.Portal.Library.Auth.Extensions
+@using XI.Portal.Web.Extensions
 @model List<XI.Portal.Web.ViewModels.Monitor.FileMonitorStatusViewModel>
 
 @{
@@ -22,18 +23,25 @@
                             <text><strong>Remote Modified: </strong>@item.LastModified</text><br />
                             <text><strong>Remote Size: </strong>@item.FileSize</text><br />
 
+                            @if (!string.IsNullOrWhiteSpace(item.ErrorMessage))
+                            {
+                                <div class="alert alert-danger">@item.ErrorMessage</div>
+                            }
 
-                            @if (item.HasError)
+                            @if (!string.IsNullOrWhiteSpace(item.WarningMessage))
                             {
-                                <div class="alert alert-danger">ERROR: @item.ErrorMessage</div>
+                                <div class="alert alert-warning">@item.WarningMessage</div>
                             }
-                            else if (item.SomethingMayBeWrong)
+
+                            @if (string.IsNullOrWhiteSpace(item.ErrorMessage) && string.IsNullOrWhiteSpace(item.WarningMessage))
                             {
-                                <div class="alert alert-danger">SOMETHING MAY BE WRONG - INVESTIGATE!</div>
+                                <div class="alert alert-success">@item.SuccessMessage</div>
                             }
-                            else
+
+                            @if (User.Identity.IsInSeniorAdminRole())
                             {
-                                <div class="alert alert-success">LOOKS GOOD</div>
+                                <a href="@Url.Action("Edit", "AdmFileMonitors", new {id = item.FileMonitor.FileMonitorId})" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit File Monitor</a>
+                                <a href="@Url.Action("Edit", "AdmServers", new {id = item.GameServer.ServerId})" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit Game Server</a>
                             }
                         </p>
 

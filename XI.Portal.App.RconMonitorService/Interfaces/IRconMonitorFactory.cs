@@ -6,6 +6,6 @@ namespace XI.Portal.App.RconMonitorService.Interfaces
 {
     internal interface IRconMonitorFactory
     {
-        IRconMonitor CreateInstance(GameType gameType, Guid serverId, string serverName, string hostname, int port, string rconPassword, bool monitorMapRotation, bool monitorPlayers, bool monitorPlayerIPs, CancellationTokenSource cancellationTokenSource);
+        IRconMonitor CreateInstance(Guid monitorId, GameType gameType, Guid serverId, string serverName, string hostname, int port, string rconPassword, bool monitorMapRotation, bool monitorPlayers, bool monitorPlayerIPs, CancellationTokenSource cancellationTokenSource);
     }
 }

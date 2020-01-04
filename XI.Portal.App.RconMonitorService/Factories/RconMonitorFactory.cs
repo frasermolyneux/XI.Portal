@@ -5,6 +5,7 @@ using XI.Portal.App.RconMonitorService.Interfaces;
 using XI.Portal.App.RconMonitorService.RconMonitors;
 using XI.Portal.Data.CommonTypes;
 using XI.Portal.Library.Rcon.Interfaces;
+using XI.Portal.Plugins.ImAlivePlugin;
 using XI.Portal.Plugins.MapRotationPlugin;
 using XI.Portal.Plugins.PlayerInfoPlugin;
 
@@ -15,17 +16,19 @@ namespace XI.Portal.App.RconMonitorService.Factories
         private readonly ILogger logger;
         private readonly MapRotationPlugin mapRotationPlugin;
         private readonly PlayerInfoPlugin playerInfoPlugin;
+        private readonly ImAlivePlugin imAlivePlugin;
         private readonly IRconClientFactory rconClientFactory;
 
-        public RconMonitorFactory(ILogger logger, IRconClientFactory rconClientFactory, MapRotationPlugin mapRotationPlugin, PlayerInfoPlugin playerInfoPlugin)
+        public RconMonitorFactory(ILogger logger, IRconClientFactory rconClientFactory, MapRotationPlugin mapRotationPlugin, PlayerInfoPlugin playerInfoPlugin, ImAlivePlugin imAlivePlugin)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.rconClientFactory = rconClientFactory ?? throw new ArgumentNullException(nameof(rconClientFactory));
             this.mapRotationPlugin = mapRotationPlugin ?? throw new ArgumentNullException(nameof(mapRotationPlugin));
             this.playerInfoPlugin = playerInfoPlugin ?? throw new ArgumentNullException(nameof(playerInfoPlugin));
+            this.imAlivePlugin = imAlivePlugin ?? throw new ArgumentNullException(nameof(imAlivePlugin));
         }
 
-        public IRconMonitor CreateInstance(GameType gameType, Guid serverId, string serverName, string hostname, int port, string rconPassword, bool monitorMapRotation, bool monitorPlayers, bool monitorPlayerIPs, CancellationTokenSource cancellationTokenSource)
+        public IRconMonitor CreateInstance(Guid monitorId, GameType gameType, Guid serverId, string serverName, string hostname, int port, string rconPassword, bool monitorMapRotation, bool monitorPlayers, bool monitorPlayerIPs, CancellationTokenSource cancellationTokenSource)
         {
             IRconMonitor rconMonitor;
             switch (gameType)
@@ -46,9 +49,10 @@ namespace XI.Portal.App.RconMonitorService.Factories
                     throw new Exception("Game type is not supported by the Rcon Monitor");
             }
 
-            rconMonitor.Configure(serverId, serverName, gameType, hostname, port, rconPassword, monitorMapRotation, monitorPlayers, monitorPlayerIPs, cancellationTokenSource);
+            rconMonitor.Configure(monitorId, serverId, serverName, gameType, hostname, port, rconPassword, monitorMapRotation, monitorPlayers, monitorPlayerIPs, cancellationTokenSource);
             mapRotationPlugin.RegisterEventHandlers(rconMonitor);
             playerInfoPlugin.RegisterEventHandlers(rconMonitor);
+            imAlivePlugin.RegisterEventHandlers(rconMonitor);
 
             return rconMonitor;
         }

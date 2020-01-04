@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\LineReadEventArgs.cs" />
+    <Compile Include="Events\MonitorBaseEventArgs.cs" />
     <Compile Include="Events\OnActionEventArgs.cs" />
     <Compile Include="Events\OnChatMessageEventArgs.cs" />
     <Compile Include="Events\OnDamageEventArgs.cs" />

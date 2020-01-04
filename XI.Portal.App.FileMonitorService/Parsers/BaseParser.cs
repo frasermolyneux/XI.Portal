@@ -15,7 +15,7 @@ namespace XI.Portal.App.FileMonitorService.Parsers
             Logger = logger;
         }
 
-        public virtual void ParseLine(string line, Guid serverId, string serverName, GameType gameType)
+        public virtual void ParseLine(Guid monitorId, string line, Guid serverId, string serverName, GameType gameType)
         {
         }
 

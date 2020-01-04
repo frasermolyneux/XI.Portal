@@ -38,7 +38,9 @@ namespace XI.Portal.App.RconMonitorService
 
                         try
                         {
-                            rconMonitorFactory.CreateInstance(rconMonitor.GameServer.GameType,
+                            rconMonitorFactory.CreateInstance(
+                                rconMonitor.RconMonitorId,
+                                rconMonitor.GameServer.GameType,
                                 rconMonitor.GameServer.ServerId,
                                 rconMonitor.GameServer.Title,
                                 rconMonitor.GameServer.Hostname,

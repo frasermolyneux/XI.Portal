@@ -166,6 +166,7 @@ namespace XI.Portal.Web.Navigation
             var mapsMenu = new MenuItemModel("Monitoring", "Monitor", "Index", "desktop");
             mapsMenu.SubMenuItems.Add(new SubMenuItemModel("Ban Files", "Monitor", "BanFileMonitor"));
             mapsMenu.SubMenuItems.Add(new SubMenuItemModel("Log Files", "Monitor", "LogFileMonitor"));
+            mapsMenu.SubMenuItems.Add(new SubMenuItemModel("Rcon", "Monitor", "RconMonitor"));
             menuItems.Add(mapsMenu);
         }
 
@@ -228,7 +229,6 @@ namespace XI.Portal.Web.Navigation
             var maintenanceMenu = new MenuItemModel("AdmMaintenance", "AdmMaintenance", "Index", "cog");
             maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("Tasks", "AdmMaintenance", "Index"));
             maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("FTP Credential Check", "AdmMaintenance", "FtpCredentialCheck"));
-            maintenanceMenu.SubMenuItems.Add(new SubMenuItemModel("Rcon Monitor Check", "AdmMaintenance", "RconMonitorCheck"));
             menuItems.Add(maintenanceMenu);
         }
 

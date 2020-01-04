@@ -22,6 +22,7 @@ using XI.Portal.Library.Rcon.Factories;
 using XI.Portal.Library.Rcon.Interfaces;
 using XI.Portal.Plugins.ChatMonitorPlugin;
 using XI.Portal.Plugins.FuckYouPlugin;
+using XI.Portal.Plugins.ImAlivePlugin;
 using XI.Portal.Plugins.Interfaces;
 using XI.Portal.Plugins.LogProxyPlugin;
 using XI.Portal.Plugins.MapRotationPlugin;
@@ -75,7 +76,7 @@ namespace XI.Portal.App.FileMonitorService
             container.RegisterType<IPlugin, FuckYouPlugin>();
             container.RegisterType<IPlugin, LogProxyPlugin>();
             container.RegisterType<IPlugin, MapRotationPlugin>();
-
+            container.RegisterType<IPlugin, ImAlivePlugin>();
 
             HostFactory.Run(x =>
             {
