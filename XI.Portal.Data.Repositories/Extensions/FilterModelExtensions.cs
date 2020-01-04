@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Data.Contracts.FilterModels;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
-using XI.Portal.Data.CommonTypes;
 
 namespace XI.Portal.Data.Repositories.Extensions
 {
@@ -25,7 +25,7 @@ namespace XI.Portal.Data.Repositories.Extensions
                 {
                     case PlayersFilterModel.FilterType.UsernameAndGuid:
                         players = players.Where(p => p.Username.Contains(filterModel.FilterString) ||
-                            p.Guid.Contains(filterModel.FilterString) || 
+                            p.Guid.Contains(filterModel.FilterString) ||
                             p.Aliases.Any(a => a.Name.Contains(filterModel.FilterString)))
                             .AsQueryable();
                         break;
@@ -63,7 +63,7 @@ namespace XI.Portal.Data.Repositories.Extensions
 
         public static IQueryable<AdminAction> ApplyFilter(this AdminActionsFilterModel filterModel, PortalContext context)
         {
-            var adminActions = context.AdminActions.Include(aa => aa.Player).AsQueryable();
+            var adminActions = context.AdminActions.AsQueryable();
 
             if (filterModel.GameType != GameType.Unknown)
             {
@@ -73,13 +73,13 @@ namespace XI.Portal.Data.Repositories.Extensions
             switch (filterModel.Filter)
             {
                 case AdminActionsFilterModel.FilterType.ActiveBans:
-                    adminActions = context.AdminActions.Where(aa => aa.Type == AdminActionType.Ban && aa.Expires == null
-                        || aa.Type == AdminActionType.TempBan && aa.Expires > DateTime.UtcNow)
+                    adminActions = adminActions.Where(aa => aa.Type == AdminActionType.Ban && aa.Expires == null
+                                                            || aa.Type == AdminActionType.TempBan && aa.Expires > DateTime.UtcNow)
                         .AsQueryable();
                     break;
                 case AdminActionsFilterModel.FilterType.UnclaimedBans:
-                    adminActions = context.AdminActions.Where(aa => aa.Type == AdminActionType.Ban && aa.Expires == null
-                        && aa.Admin == null)
+                    adminActions = adminActions.Where(aa => aa.Type == AdminActionType.Ban && aa.Expires == null
+                                                                                           && aa.Admin == null)
                         .AsQueryable();
                     break;
             }
