@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Data.Contracts.FilterModels;
 using XI.Portal.Data.Contracts.Repositories;
 using XI.Portal.Data.Core.Context;
@@ -11,6 +12,7 @@ using XI.Portal.Library.Auth.XtremeIdiots;
 using XI.Portal.Library.Ftp.Interfaces;
 using XI.Portal.Library.Logging;
 using XI.Portal.Library.Rcon.Interfaces;
+using XI.Portal.Library.ServerInfo;
 using XI.Portal.Web.ViewModels.Monitor;
 
 namespace XI.Portal.Web.Controllers
@@ -212,6 +214,58 @@ namespace XI.Portal.Web.Controllers
                         {
                             RconMonitor = rconMonitor,
                             GameServer = rconMonitor.GameServer,
+                            ErrorMessage = ex.Message
+                        });
+                    }
+                }
+            }
+
+            return View(results);
+        }
+
+        public async Task<ActionResult> DirectQueryMonitor()
+        {
+            var results = new List<DirectQueryMonitorStatusViewModel>();
+
+            using (var context = ContextProvider.GetContext())
+            {
+                var serverMonitors = await context.GameServers
+                    .Where(server => server.ShowOnPortalServerList && server.GameType != GameType.Unknown)
+                    .ToListAsync();
+
+                foreach (var serverMonitor in serverMonitors)
+                {
+                    try
+                    {
+                        var gameServerInfo = new GameServerInfo(
+                            serverMonitor.Hostname, 
+                            serverMonitor.QueryPort,
+                            serverMonitor.GameType);
+
+                        gameServerInfo.QueryServer();
+
+                        var errorMessage = string.Empty;
+
+                        if (serverMonitor.LiveLastUpdated < DateTime.UtcNow.AddMinutes(-15))
+                            errorMessage = "ERROR - The server has not been directly queried for more than 15 minutes";
+
+                        if (string.IsNullOrWhiteSpace(gameServerInfo.Map))
+                            errorMessage = "ERROR - The current map could not be retrieved from the direct query";
+
+                        results.Add(new DirectQueryMonitorStatusViewModel
+                        {
+                            GameServer = serverMonitor,
+                            ErrorMessage = errorMessage,
+                            Map = gameServerInfo.Map,
+                            Mod = gameServerInfo.Mod,
+                            PlayerCount = gameServerInfo.NumPlayers
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        results.Add(new DirectQueryMonitorStatusViewModel
+                        {
+                            GameServer = serverMonitor,
                             ErrorMessage = ex.Message
                         });
                     }

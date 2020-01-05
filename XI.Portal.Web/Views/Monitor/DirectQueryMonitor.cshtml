@@ -1,0 +1,55 @@
+﻿@using XI.Portal.Library.Auth.Extensions
+@using XI.Portal.Web.Extensions
+@model System.Collections.Generic.List<XI.Portal.Web.ViewModels.Monitor.DirectQueryMonitorStatusViewModel>
+
+@{
+    ViewBag.Title = "Direct Query Monitor Check Results";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    @foreach (var item in Model)
+    {
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+
+                        <h2>@Html.GameTypeIcon(item.GameServer.GameType) @Html.ServerName(item.GameServer) - (@item.GameServer.Title)</h2>
+
+                        <p>
+                            <text><strong>Server Hostname: </strong>@item.GameServer.Hostname</text><br />
+                            <text><strong>Last Queried: </strong>@item.GameServer.LiveLastUpdated</text><br />
+                            <text><strong>Mod: </strong>@item.GameServer.LiveMod</text><br />
+                            <text><strong>Map: </strong>@item.GameServer.LiveMap</text><br />
+                            <text><strong>Player Count: </strong>@item.GameServer.LiveCurrentPlayers</text><br />
+
+                            @if (!string.IsNullOrWhiteSpace(item.ErrorMessage))
+                            {
+                                <div class="alert alert-danger">@item.ErrorMessage</div>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(item.WarningMessage))
+                            {
+                                <div class="alert alert-warning">@item.WarningMessage</div>
+                            }
+
+                            @if (string.IsNullOrWhiteSpace(item.ErrorMessage) && string.IsNullOrWhiteSpace(item.WarningMessage))
+                            {
+                                <div class="alert alert-success">@item.SuccessMessage</div>
+                            }
+
+                            @if (User.Identity.IsInSeniorAdminRole())
+                            {
+                                <a href="@Url.Action("Edit", "AdmServers", new {id = item.GameServer.ServerId})" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit Game Server</a>
+                            }
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

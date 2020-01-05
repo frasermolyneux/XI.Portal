@@ -167,6 +167,7 @@ namespace XI.Portal.Web.Navigation
             mapsMenu.SubMenuItems.Add(new SubMenuItemModel("Ban Files", "Monitor", "BanFileMonitor"));
             mapsMenu.SubMenuItems.Add(new SubMenuItemModel("Log Files", "Monitor", "LogFileMonitor"));
             mapsMenu.SubMenuItems.Add(new SubMenuItemModel("Rcon", "Monitor", "RconMonitor"));
+            mapsMenu.SubMenuItems.Add(new SubMenuItemModel("Direct Query", "Monitor", "DirectQueryMonitor"));
             menuItems.Add(mapsMenu);
         }
 

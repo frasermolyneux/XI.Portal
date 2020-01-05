@@ -149,7 +149,7 @@ namespace XI.Portal.App.ServerMonitorService
                                     MonitorServer(cts.Token, serverMonitor.ServerId));
                                 thread.Start();
 
-                                logger.Information("Server monitor recreated worker thread {thread} for server monitor {monitor}", serverMonitor.ServerId, serverMonitor.Title);
+                                logger.Information("[{serverName}] Recreated worker thread for server", serverMonitor.Title);
 
                                 workerThreads[serverMonitor.ServerId] = thread;
                             }
@@ -159,7 +159,7 @@ namespace XI.Portal.App.ServerMonitorService
                                     MonitorServer(cts.Token, serverMonitor.ServerId));
                                 thread.Start();
 
-                                logger.Information("Server monitor created worker thread {thread} for server monitor {monitor}", serverMonitor.ServerId, serverMonitor.Title);
+                                logger.Information("[{serverName}] Created worker thread for server", serverMonitor.Title);
 
                                 workerThreads.Add(serverMonitor.ServerId, thread);
                             }
@@ -210,10 +210,13 @@ namespace XI.Portal.App.ServerMonitorService
                                     player.GameServer = serverMonitor;
                                     context.LivePlayers.Add(player);
                                 }
+
+                                logger.Information("[{serverName}] Updated server live info with {map}, {mod} and {currentPlayers} players", 
+                                    serverMonitor.Title, gameServerInfo.Map, gameServerInfo.Mod, gameServerInfo.NumPlayers);
                             }
                             catch (Exception ex)
                             {
-                                logger.Error(ex, "Failed to get game server info for: {serverMonitorId}", serverMonitorId);
+                                logger.Error(ex, "[{serverName}] Failed to get game server info", serverMonitor.Title);
 
                                 serverMonitor.LiveMap = "Unknown";
                                 serverMonitor.LiveMod = "Unknown";
