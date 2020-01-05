@@ -271,6 +271,7 @@
     <Compile Include="ViewModels\Monitor\FileMonitorStatusViewModel.cs" />
     <Compile Include="ViewModels\AdmServers\RconStatusResultViewModel.cs" />
     <Compile Include="ViewModels\Maps\MapRotationViewModel.cs" />
+    <Compile Include="ViewModels\Monitor\DirectQueryMonitorStatusViewModel.cs" />
     <Compile Include="ViewModels\Monitor\RconMonitorStatusViewModel.cs" />
     <Compile Include="ViewModels\Servers\ServersIndexViewModel.cs" />
     <Compile Include="ViewModels\Bans\ClaimBanViewModel.cs" />
@@ -1916,6 +1917,7 @@
     <Content Include="Views\Analytics\AdminActions.cshtml" />
     <Content Include="Views\Analytics\Players.cshtml" />
     <Content Include="Views\Monitor\RconMonitor.cshtml" />
+    <Content Include="Views\Monitor\DirectQueryMonitor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1983,6 +1985,10 @@
     <ProjectReference Include="..\XI.Portal.Library.Rcon\XI.Portal.Library.Rcon.csproj">
       <Project>{4DF50DC6-1FDE-4D75-B557-42EABCF4728C}</Project>
       <Name>XI.Portal.Library.Rcon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XI.Portal.Library.ServerInfo\XI.Portal.Library.ServerInfo.csproj">
+      <Project>{1FBA5092-30DD-4EAE-B9A1-C25168C90B5D}</Project>
+      <Name>XI.Portal.Library.ServerInfo</Name>
     </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Services.GameTracker\XI.Portal.Services.GameTracker.csproj">
       <Project>{c680ceec-f2a8-45e8-a7a4-846d97742937}</Project>
