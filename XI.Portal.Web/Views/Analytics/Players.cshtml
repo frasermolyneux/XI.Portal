@@ -58,9 +58,14 @@
 
 </div>
 
+@section Styles
+{
+    @Styles.Render("~/content/datepicker")
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/moment")
+    @Scripts.Render("~/bundles/datepicker")
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">

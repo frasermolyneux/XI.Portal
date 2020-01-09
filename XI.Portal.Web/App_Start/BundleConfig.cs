@@ -59,6 +59,15 @@ namespace XI.Portal.Web
             bundles.Add(new ScriptBundle("~/bundles/moment")
                 .Include("~/Scripts/moment.min.js")
             );
+
+            //datepicker
+            bundles.Add(new ScriptBundle("~/bundles/datepicker")
+                .Include("~/Scripts/bootstrap-datepicker.min.js")
+            );
+
+            bundles.Add(new StyleBundle("~/content/datepicker")
+                .Include("~/Content/bootstrap-datepicker.min.css")
+            );
         }
     }
 }
