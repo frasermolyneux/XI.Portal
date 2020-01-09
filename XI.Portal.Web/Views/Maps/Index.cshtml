@@ -88,48 +88,31 @@
                     {
                         name: 'GameType',
                         index: 'GameType',
-                        hidden: false,
-                        editable: false,
-                        sortable: false,
-                        search: false,
                         formatter: formatGameType,
                         width: 10
                     },
                     {
                         name: 'MapName',
                         index: 'MapName',
-                        editable: false,
                         width: 20,
-                        sortable: false,
-                        search: false
+                        sortable: true
                     },
                     {
                         name: 'MapFiles',
                         index: 'MapFiles',
-                        hidden: false,
-                        editable: false,
-                        sortable: false,
-                        search: false,
                         formatter: formatMapFiles,
                         width: 30
                     },
                     {
                         name: 'LikeDislike',
                         index: 'LikeDislike',
-                        hidden: false,
-                        editable: false,
-                        sortable: false,
-                        search: false,
+                        sortable: true,
                         formatter: formatLikeDislike,
                         width: 30
                     },
                     {
                         name: 'MapImage',
                         index: 'MapImage',
-                        hidden: false,
-                        editable: false,
-                        sortable: false,
-                        search: false,
                         formatter: formatMapImage,
                         width: 30
                     }
@@ -142,14 +125,7 @@
                 guiStyle: "bootstrap4",
                 icons: "fontAwesome",
                 hidegrid: false
-            }).navGrid('#mapListPager',
-                {
-                    edit: false,
-                    add: false,
-                    del: false,
-                    search: false,
-                    refresh: false
-                });
+            }).navGrid('#mapListPager', { });
 
             function submitSearch() {
                 searchString = $.trim($("#search-string").val());

@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using XI.Portal.BLL.Web.Interfaces;
 using XI.Portal.Data.Contracts.FilterModels;
 using XI.Portal.Data.Core.Context;
+using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Logging;
 
 namespace XI.Portal.Web.Controllers
@@ -28,22 +29,35 @@ namespace XI.Portal.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetGlobalMapListAjax(string sidx, string sord, int page, int rows,
-        // ReSharper disable once InconsistentNaming
-        bool _search, string searchField, string searchString, string searchOper)
+        public async Task<ActionResult> GetGlobalMapListAjax(string sidx, string sord, int page, int rows, string searchString)
         {
-            var mapListCount = await mapList.GetMapListCount(new MapsFilterModel
+            var mapsFilterModel = new MapsFilterModel
             {
                 FilterString = searchString
-            });
-            var mapsToSkip = (page - 1) * rows;
+            };
 
-            var mapListEntries = await mapList.GetMapList(new MapsFilterModel
+            var mapListCount = await mapList.GetMapListCount(mapsFilterModel);
+
+            mapsFilterModel.SkipEntries = (page - 1) * rows;
+            mapsFilterModel.TakeEntries = rows;
+
+            var searchColumn = string.IsNullOrWhiteSpace(sidx) ? "MapName" : sidx;
+            var searchOrder = string.IsNullOrWhiteSpace(sord) ? "asc" : sord;
+
+            switch (searchColumn)
             {
-                FilterString = searchString,
-                SkipEntries = mapsToSkip,
-                TakeEntries = rows
-            });
+                case "MapName":
+                    mapsFilterModel.Order = searchOrder == "asc" ? MapsFilterModel.OrderBy.MapNameAsc : MapsFilterModel.OrderBy.MapNameDesc;
+                    break;
+                case "LikeDislike":
+                    mapsFilterModel.Order = searchOrder == "asc" ? MapsFilterModel.OrderBy.LikeDislikeAsc : MapsFilterModel.OrderBy.LikeDislikeDesc;
+                    break;
+                default:
+                    mapsFilterModel.Order = searchOrder == "asc" ? MapsFilterModel.OrderBy.MapNameAsc : MapsFilterModel.OrderBy.MapNameDesc;
+                    break;
+            }
+
+            var mapListEntries = await mapList.GetMapList(mapsFilterModel);
 
             return Json(new
             {

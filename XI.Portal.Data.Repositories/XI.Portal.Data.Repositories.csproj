@@ -58,7 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminActionsRepository.cs" />
-    <Compile Include="Extensions\FilterModelExtensions.cs" />
+    <Compile Include="Extensions\MapFilterModelExtensions.cs" />
+    <Compile Include="Extensions\AdminActionFilterModelExtensions.cs" />
+    <Compile Include="Extensions\PlayerFilterModelExtensions.cs" />
     <Compile Include="LivePlayersRepository.cs" />
     <Compile Include="MapsRepository.cs" />
     <Compile Include="PlayersRepository.cs" />
@@ -82,6 +84,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
