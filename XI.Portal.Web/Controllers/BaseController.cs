@@ -31,7 +31,7 @@ namespace XI.Portal.Web.Controllers
 
                 var parameters = JsonConvert.SerializeObject(paramsAsDictionary);
 
-                var ignoreActions = new[] { "GameServerList", "MapImage" };
+                var ignoreActions = new[] { "GameServersList", "MapImage", "GetUserLogsAjax", "LatestAdminActions" };
 
                 if (!ignoreActions.Contains(action))
                 {
