@@ -16,6 +16,10 @@ namespace XI.Portal.Web
             bundles.Add(new StyleBundle("~/content/jquery")
                 .Include("~/Content/themes/base/all.css"));
 
+            //popper
+            bundles.Add(new ScriptBundle("~/bundles/popper")
+                .Include("~/Scripts/esm/popper.min.js")
+            );
 
 
 
