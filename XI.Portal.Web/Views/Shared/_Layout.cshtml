@@ -54,16 +54,21 @@
     @Scripts.Render("~/bundles/popper")
     @Scripts.Render("~/bundles/bootstrap")
 
-        @*
+    @if (IsSectionDefined("Scripts"))
+    {
+        @RenderSection("Scripts", false)
+    }
+
+
+
+
+    @*
         @Scripts.Render("~/bundles/bootstrap")
         @Scripts.Render("~/bundles/inspinia")
         @Scripts.Render("~/plugins/slimScroll")
         @Scripts.Render("~/plugins/dataPicker")
         @Scripts.Render("~/plugins/dateRange")*@
 
-    @if (IsSectionDefined("Scripts"))
-    {
-        @RenderSection("Scripts", false)
-    }
+
 </body>
 </html>
