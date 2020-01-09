@@ -7,17 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>XtremeIdiots Portal | @ViewBag.Title</title>
 
+    @Styles.Render("~/content/jquery")
+
     @if (IsSectionDefined("Styles"))
     {
         @RenderSection("Styles", false)
     }
 
-    <!-- Add jQuery Style direct - used for jQGrid plugin -->
-    <!--<link href="@Url.Content("~/Scripts/plugins/jquery-ui/jquery-ui.min.css")" rel="stylesheet" type="text/css"/>-->
     <!-- Primary Inspinia style -->
     @*@Styles.Render("~/font-awesome/css")
         @Styles.Render("~/Content/css")
         @Styles.Render("~/plugins/dataPickerStyles")*@
+
+
+
 </head>
 <body>
 
