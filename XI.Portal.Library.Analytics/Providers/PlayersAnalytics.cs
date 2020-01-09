@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using XI.Portal.Data.CommonTypes;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Library.Analytics.Interfaces;
 using XI.Portal.Library.Analytics.Models;
@@ -24,13 +22,14 @@ namespace XI.Portal.Library.Analytics.Providers
         {
             using (var context = contextProvider.GetContext())
             {
+                var cumulative = await context.Players.CountAsync(p => p.FirstSeen < cutoff);
+
                 var players = await context.Players
                     .Where(p => p.FirstSeen > cutoff)
                     .Select(p => p.FirstSeen)
                     .OrderBy(p => p)
                     .ToListAsync();
 
-                var cumulative = 0;
                 var groupedPlayers = players.GroupBy(p => new DateTime(p.Year, p.Month, p.Day))
                     .Select(g => new PlayerAnalyticEntry
                     {
