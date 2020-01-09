@@ -1196,6 +1196,11 @@
     <Content Include="Images\p_big2.jpg" />
     <Content Include="Images\p_big3.jpg" />
     <Content Include="Images\zender_logo.png" />
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1280,10 +1285,11 @@
     <Content Include="Views\Analytics\Players.cshtml" />
     <Content Include="Views\Monitor\RconMonitor.cshtml" />
     <Content Include="Views\Monitor\DirectQueryMonitor.cshtml" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\" />
     <Folder Include="Views\Forums\" />
   </ItemGroup>
   <ItemGroup>
