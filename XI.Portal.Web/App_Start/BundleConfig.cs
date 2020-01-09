@@ -35,6 +35,11 @@ namespace XI.Portal.Web
                 .Include("~/Content/font-awesome.min.css")
             );
 
+            //animate
+            bundles.Add(new ScriptBundle("~/content/animate")
+                .Include("~/Content/animate.min.css")
+            );
+
 
 
 
