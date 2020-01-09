@@ -60,6 +60,8 @@
 
 
 @section Scripts {
+    @Scripts.Render("~/bundles/moment")
+
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
 
@@ -72,14 +74,14 @@
             var cutoff = $("#filterDate").val();
 
             $.getJSON("/Analytics/GetCumulativeDailyPlayersJson?cutoff=" + cutoff,
-                function(jsonData) {
+                function (jsonData) {
 
                     var data = new google.visualization.DataTable();
                     data.addColumn('date', 'Created');
                     data.addColumn('number', 'Count');
 
                     $.each(jsonData,
-                        function(key, val) {
+                        function (key, val) {
                             data.addRow([
                                 moment(val.Created).toDate(),
                                 val.Count
@@ -112,7 +114,7 @@
             var cutoff = $("#filterDate").val();
 
             $.getJSON("/Analytics/GetNewDailyPlayersPerGameJson?cutoff=" + cutoff,
-                function(jsonData) {
+                function (jsonData) {
 
                     var data = new google.visualization.DataTable();
                     data.addColumn('date', 'Date');
@@ -122,7 +124,7 @@
                     data.addColumn('number', 'Insurgency');
 
                     $.each(jsonData,
-                        function(key, val) {
+                        function (key, val) {
 
                             var cod2 = val.GameCounts.CallOfDuty2;
                             var cod4 = val.GameCounts.CallOfDuty4;
@@ -159,7 +161,7 @@
                 });
         }
 
-        window.onload = function() {
+        window.onload = function () {
             $('#data_1 .input-group.date').datepicker({
                 todayBtn: "linked",
                 keyboardNavigation: false,
@@ -168,7 +170,7 @@
                 autoclose: true
             });
 
-            $('#filterDate').change(function() {
+            $('#filterDate').change(function () {
                 drawPlayersChart();
                 drawPlayersPerGameChart();
             });

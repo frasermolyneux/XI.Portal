@@ -54,6 +54,11 @@ namespace XI.Portal.Web
                 .Include("~/Content/ui.jqgrid.min.css")
                 .Include("~/Content/custom-jqgrid.css")
             );
+
+            //moment
+            bundles.Add(new ScriptBundle("~/bundles/moment")
+                .Include("~/Scripts/moment.min.js")
+            );
         }
     }
 }
