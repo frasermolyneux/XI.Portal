@@ -21,6 +21,17 @@ namespace XI.Portal.Web
                 .Include("~/Scripts/esm/popper.min.js")
             );
 
+            //bootstrap
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap")
+                .Include("~/Scripts/bootstrap.min.js")
+            );
+
+            bundles.Add(new ScriptBundle("~/content/bootstrap")
+                .Include("~/Content/bootstrap.min.css")
+            );
+
+
+
 
 
             //// CSS style (bootstrap/inspinia)
