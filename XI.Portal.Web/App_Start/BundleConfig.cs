@@ -18,7 +18,7 @@ namespace XI.Portal.Web
 
             //popper
             bundles.Add(new ScriptBundle("~/bundles/popper")
-                .Include("~/Scripts/esm/popper.min.js")
+                .Include("~/Scripts/umd/popper.min.js")
             );
 
             //bootstrap
@@ -26,21 +26,24 @@ namespace XI.Portal.Web
                 .Include("~/Scripts/bootstrap.min.js")
             );
 
-            bundles.Add(new ScriptBundle("~/content/bootstrap")
+            bundles.Add(new StyleBundle("~/content/bootstrap")
                 .Include("~/Content/bootstrap.min.css")
             );
 
             //font-awesome
-            bundles.Add(new ScriptBundle("~/content/font-awesome")
+            bundles.Add(new StyleBundle("~/content/font-awesome")
                 .Include("~/Content/font-awesome.min.css")
             );
 
             //animate
-            bundles.Add(new ScriptBundle("~/content/animate")
+            bundles.Add(new StyleBundle("~/content/animate")
                 .Include("~/Content/animate.min.css")
             );
 
-
+            //inspinia theme
+            bundles.Add(new StyleBundle("~/content/inspinia")
+                .Include("~/Content/inspinia-theme-style.css")
+            );
 
 
 
