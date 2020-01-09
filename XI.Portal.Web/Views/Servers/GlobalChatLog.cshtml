@@ -37,14 +37,14 @@
 </div>
 
 @section Styles {
-    @Styles.Render("~/Content/plugins/jqGrid/jqGridStyles")
+    @Styles.Render("~/content/free-jqgrid")
 }
 
 @section Scripts {
-    @Scripts.Render("~/plugins/jqGrid")
+    @Scripts.Render("~/bundles/free-jqgrid")
 
-<script type="text/javascript">
-        $(document).ready(function() {
+    <script type="text/javascript">
+        $(document).ready(function () {
 
             function formatPlayerUrl(cellValue, options, rowObject) {
                 return "<a href='/Players/Details/" + rowObject.PlayerId + "'>" + cellValue + "</a>";
@@ -63,46 +63,28 @@
                     {
                         name: 'PlayerId',
                         index: 'PlayerId',
-                        hidden: true,
-                        editable: false,
-                        sortable: false,
-                        search: false
+                        hidden: true
                     },
                     {
                         name: 'Timestamp',
                         index: 'Timestamp',
-                        editable: false,
-                        width: 20,
-                        sortable: false,
-                        search: false
+                        width: 20
                     },
                     {
                         name: 'Username',
                         index: 'Username',
-                        editable: false,
                         width: 20,
-                        sortable: false,
-                        search: true,
-                        searchoptions: { sopt: ["eq", "cn"] },
                         formatter: formatPlayerUrl
                     },
                     { name: 'Type', index: 'Type', editable: false, width: 10, sortable: false, search: false },
                     {
                         name: 'Message',
-                        index: 'Message',
-                        editable: false,
-                        sortable: false,
-                        search: true,
-                        searchoptions: { sopt: ["cn"] }
+                        index: 'Message'
                     },
                     {
                         name: 'ChatLogId',
                         index: 'ChatLogId',
-                        hidden: false,
-                        editable: false,
                         width: 10,
-                        sortable: false,
-                        search: false,
                         formatter: formatChatLogUrl
                     }
                 ],
@@ -126,12 +108,12 @@
             function submitSearch() {
                 searchString = $.trim($("#search-string").val());
 
-                if(searchString == ""){
+                if (searchString == "") {
                     alert("Please enter something before searching!");
                     $("#search-string").val("").focus();
                 }
-                else{
-                    $("#chatLog").jqGrid('setGridParam',{url:'/Servers/GetGlobalChatLogAjax?_search=true&searchString='+searchString});
+                else {
+                    $("#chatLog").jqGrid('setGridParam', { url: '/Servers/GetGlobalChatLogAjax?_search=true&searchString=' + searchString });
                     $("#chatLog").jqGrid().trigger('reloadGrid');
                 }
             }
@@ -140,11 +122,11 @@
 
             $("#clear-button").button().click(function () {
                 $("#search-string").val("").focus();
-                $("#chatLog").jqGrid('setGridParam',{url:'/Servers/GetGlobalChatLogAjax'});
+                $("#chatLog").jqGrid('setGridParam', { url: '/Servers/GetGlobalChatLogAjax' });
                 $("#chatLog").jqGrid().trigger('reloadGrid');
             });
 
-            $("#search-string").on("keypress", function(event) {
+            $("#search-string").on("keypress", function (event) {
                 if (event.which == 13 && !event.shiftKey) {
                     event.preventDefault();
                     submitSearch();
@@ -157,5 +139,5 @@
 
         });
 
-</script>
+    </script>
 }

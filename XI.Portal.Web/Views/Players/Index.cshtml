@@ -42,11 +42,11 @@
 </div>
 
 @section Styles {
-    @Styles.Render("~/Content/plugins/jqGrid/jqGridStyles")
+    @Styles.Render("~/content/free-jqgrid")
 }
 
 @section Scripts {
-    @Scripts.Render("~/plugins/jqGrid")
+    @Scripts.Render("~/bundles/free-jqgrid")
 
     <script type="text/javascript">
 
@@ -121,7 +121,7 @@
                 }
                 else{
                     $("#playerList").jqGrid('setGridParam',{url:'/Players/GetPlayersAjax/@Model?_search=true&searchString='+searchString});
-                    $("#playerList").jqGrid().trigger('reloadGrid');  
+                    $("#playerList").jqGrid().trigger('reloadGrid');
                 }
             }
 
@@ -130,7 +130,7 @@
             $("#clear-button").button().click(function () {
                 $("#search-string").val("").focus();
                 $("#playerList").jqGrid('setGridParam',{url:'/Players/GetPlayersAjax/@Model'});
-                $("#playerList").jqGrid().trigger('reloadGrid');  
+                $("#playerList").jqGrid().trigger('reloadGrid');
             });
 
             $("#search-string").on("keypress", function(event) {

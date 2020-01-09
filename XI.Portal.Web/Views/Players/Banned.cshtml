@@ -42,11 +42,11 @@
 </div>
 
 @section Styles {
-    @Styles.Render("~/Content/plugins/jqGrid/jqGridStyles")
+    @Styles.Render("~/content/free-jqgrid")
 }
 
 @section Scripts {
-    @Scripts.Render("~/plugins/jqGrid")
+    @Scripts.Render("~/bundles/free-jqgrid")
 
     <script type="text/javascript">
 
@@ -65,41 +65,24 @@
                     {
                         name: 'PlayerId',
                         index: 'PlayerId',
-                        hidden: true,
-                        editable: false,
-                        sortable: false,
-                        search: false
+                        hidden: true
                     },
                     {
                         name: 'Username',
                         index: 'Username',
-                        editable: false,
-                        sortable: false,
-                        search: true,
-                        searchoptions: { sopt: ["eq", "cn"] },
                         formatter: formatPlayerUrl
                     },
                     {
                         name: 'Guid',
-                        index: 'Guid',
-                        editable: false,
-                        sortable: false,
-                        search: true,
-                        searchoptions: { sopt: ["eq", "cn"] }
+                        index: 'Guid'
                     },
                     {
                         name: 'Type',
-                        index: 'Type',
-                        editable: false,
-                        sortable: false,
-                        search: false
+                        index: 'Type'
                     },
                     {
                         name: 'Expires',
-                        index: 'Expires',
-                        editable: false,
-                        sortable: false,
-                        search: false
+                        index: 'Expires'
                     }
                 ],
                 pager: '#playerListPager',
@@ -128,7 +111,7 @@
                 }
                 else{
                     $("#playerList").jqGrid('setGridParam',{url:'/Players/GetBannedPlayersAjax/@Model?_search=true&searchString='+searchString});
-                    $("#playerList").jqGrid().trigger('reloadGrid');  
+                    $("#playerList").jqGrid().trigger('reloadGrid');
                 }
             }
 
@@ -137,7 +120,7 @@
             $("#clear-button").button().click(function () {
                 $("#search-string").val("").focus();
                 $("#playerList").jqGrid('setGridParam',{url:'/Players/GetBannedPlayersAjax/@Model'});
-                $("#playerList").jqGrid().trigger('reloadGrid');  
+                $("#playerList").jqGrid().trigger('reloadGrid');
             });
 
             $("#search-string").on("keypress", function(event) {

@@ -163,7 +163,7 @@ namespace XI.Portal.Web.Navigation
 
         private static void MonitorMenu(ICollection<MenuItemModel> menuItems)
         {
-            var mapsMenu = new MenuItemModel("Monitoring", "Monitor", "Index", "desktop");
+            var mapsMenu = new MenuItemModel("Monitoring", "Monitor", "BanFileMonitor", "desktop");
             mapsMenu.SubMenuItems.Add(new SubMenuItemModel("Ban Files", "Monitor", "BanFileMonitor"));
             mapsMenu.SubMenuItems.Add(new SubMenuItemModel("Log Files", "Monitor", "LogFileMonitor"));
             mapsMenu.SubMenuItems.Add(new SubMenuItemModel("Rcon", "Monitor", "RconMonitor"));
@@ -219,7 +219,7 @@ namespace XI.Portal.Web.Navigation
 
         private static void AdmLogsMenu(ICollection<MenuItemModel> menuItems)
         {
-            var logsMenu = new MenuItemModel("AdmLogs", "AdmLogs", "Index", "cog");
+            var logsMenu = new MenuItemModel("AdmLogs", "AdmLogs", "UserLogs", "cog");
             logsMenu.SubMenuItems.Add(new SubMenuItemModel("User Logs", "AdmLogs", "UserLogs"));
             logsMenu.SubMenuItems.Add(new SubMenuItemModel("System Logs", "AdmLogs", "SystemLogs"));
             menuItems.Add(logsMenu);

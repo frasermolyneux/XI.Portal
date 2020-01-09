@@ -40,8 +40,8 @@
 
                             @if (User.Identity.IsInSeniorAdminRole())
                             {
-                                <a href="@Url.Action("Edit", "AdmFileMonitors", new {id = item.FileMonitor.FileMonitorId})" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit File Monitor</a>
-                                <a href="@Url.Action("Edit", "AdmServers", new {id = item.GameServer.ServerId})" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit Game Server</a>
+                                <a href="@Url.Action("Edit", "AdmFileMonitors", new {id = item.FileMonitor.FileMonitorId})" class="btn btn-sm btn-primary"><span class="fa fa-edit"></span> Edit File Monitor</a>
+                                <a href="@Url.Action("Edit", "AdmServers", new {id = item.GameServer.ServerId})" class="btn btn-sm btn-primary"><span class="fa fa-edit"></span> Edit Game Server</a>
                             }
                         </p>
 

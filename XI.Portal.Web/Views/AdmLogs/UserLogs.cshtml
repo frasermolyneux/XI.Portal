@@ -19,14 +19,14 @@
 </div>
 
 @section Styles {
-    @Styles.Render("~/Content/plugins/jqGrid/jqGridStyles")
+    @Styles.Render("~/content/free-jqgrid")
 }
 
 @section Scripts {
-    @Scripts.Render("~/plugins/jqGrid")
+    @Scripts.Render("~/bundles/free-jqgrid")
 
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             jQuery("#logsList").jqGrid({
                 url: '/AdmLogs/GetUserLogsAjax',

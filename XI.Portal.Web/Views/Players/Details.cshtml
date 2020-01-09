@@ -261,7 +261,7 @@
                             }
                             else
                             {
-                                <a href="@Url.Action("Create", "Forums", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span> Create Discussion Topic</a>
+                                <a href="@Url.Action("Create", "Forums", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="fa fa-edit"></span> Create Discussion Topic</a>
                             }
 
                         </p>
@@ -302,29 +302,29 @@
                                 switch (item.Type)
                                 {
                                     case AdminActionType.Observation:
-                                        <a href="@Url.Action("Edit", "Observations", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit Observation</a>
+                                        <a href="@Url.Action("Edit", "Observations", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="fa fa-edit"></span> Edit Observation</a>
                                         break;
                                     case AdminActionType.Warning:
-                                        <a href="@Url.Action("Edit", "Warnings", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit Warning</a>
+                                        <a href="@Url.Action("Edit", "Warnings", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="fa fa-edit"></span> Edit Warning</a>
                                         break;
                                     case AdminActionType.Kick:
-                                        <a href="@Url.Action("Edit", "Kicks", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit Kick</a>
+                                        <a href="@Url.Action("Edit", "Kicks", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="fa fa-edit"></span> Edit Kick</a>
                                         break;
                                     case AdminActionType.TempBan:
-                                        <a href="@Url.Action("Edit", "TempBans", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit Temp Ban</a>
+                                        <a href="@Url.Action("Edit", "TempBans", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="fa fa-edit"></span> Edit Temp Ban</a>
 
                                         if (item.Expires > DateTime.UtcNow)
                                         {
-                                            <a href="@Url.Action("Lift", "TempBans", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-remove"></span> Lift Ban</a>
+                                            <a href="@Url.Action("Lift", "TempBans", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="fa fa-trash"></span> Lift Ban</a>
                                         }
 
                                         break;
                                     case AdminActionType.Ban:
-                                        <a href="@Url.Action("Edit", "Bans", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit Ban</a>
+                                        <a href="@Url.Action("Edit", "Bans", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="fa fa-edit"></span> Edit Ban</a>
 
                                         if (item.Expires == null)
                                         {
-                                            <a href="@Url.Action("Lift", "Bans", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-remove"></span> Lift Ban</a>
+                                            <a href="@Url.Action("Lift", "Bans", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="fa fa-trash"></span> Lift Ban</a>
                                         }
 
                                         break;
@@ -333,7 +333,7 @@
 
                             @if (item.Type == AdminActionType.Ban && item.Admin == null)
                             {
-                                <a href="@Url.Action("Claim", "Bans", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span> Claim Ban</a>
+                                <a href="@Url.Action("Claim", "Bans", new {id = item.AdminActionId})" class="btn btn-sm btn-primary"><span class="fa fa-edit"></span> Claim Ban</a>
                             }
                         </p>
                     </div>

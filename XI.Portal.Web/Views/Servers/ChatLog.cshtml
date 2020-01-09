@@ -40,11 +40,11 @@
 </div>
 
 @section Styles {
-    @Styles.Render("~/Content/plugins/jqGrid/jqGridStyles")
+    @Styles.Render("~/content/free-jqgrid")
 }
 
 @section Scripts {
-    @Scripts.Render("~/plugins/jqGrid")
+    @Scripts.Render("~/bundles/free-jqgrid")
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -66,26 +66,17 @@
                     {
                         name: 'PlayerId',
                         index: 'PlayerId',
-                        hidden: true,
-                        editable: false,
-                        sortable: false,
-                        search: false
+                        hidden: true
                     },
                     {
                         name: 'Timestamp',
                         index: 'Timestamp',
-                        editable: false,
-                        width: 20,
-                        sortable: false,
-                        search: false
+                        width: 20
                     },
                     {
                         name: 'Username',
                         index: 'Username',
-                        editable: false,
                         width: 20,
-                        sortable: false,
-                        search: true,
                         searchoptions: { sopt: ["eq", "cn"] },
                         formatter: formatPlayerUrl
                     },
@@ -93,19 +84,12 @@
                     {
                         name: 'Message',
                         index: 'Message',
-                        editable: false,
-                        sortable: false,
-                        search: true,
                         searchoptions: { sopt: ["cn"] }
                     },
                     {
                         name: 'ChatLogId',
                         index: 'ChatLogId',
-                        hidden: false,
-                        editable: false,
                         width: 10,
-                        sortable: false,
-                        search: false,
                         formatter: formatChatLogUrl
                     }
                 ],
@@ -135,7 +119,7 @@
                 }
                 else{
                     $("#chatLog").jqGrid('setGridParam',{url:'/Servers/GetChatLogAjax/@Model.ServerId?_search=true&searchString='+searchString});
-                    $("#chatLog").jqGrid().trigger('reloadGrid');  
+                    $("#chatLog").jqGrid().trigger('reloadGrid');
                 }
             }
 
@@ -144,7 +128,7 @@
             $("#clear-button").button().click(function () {
                 $("#search-string").val("").focus();
                 $("#chatLog").jqGrid('setGridParam',{url:'/Servers/GetChatLogAjax/@Model.ServerId'});
-                $("#chatLog").jqGrid().trigger('reloadGrid');  
+                $("#chatLog").jqGrid().trigger('reloadGrid');
             });
 
             $("#search-string").on("keypress", function(event) {

@@ -44,6 +44,16 @@ namespace XI.Portal.Web
             bundles.Add(new StyleBundle("~/content/inspinia")
                 .Include("~/Content/inspinia-theme-style.css")
             );
+
+            //free-jqgrid
+            bundles.Add(new ScriptBundle("~/bundles/free-jqgrid")
+                .Include("~/Scripts/free-jqGrid/jquery.jqgrid.min.js")
+            );
+
+            bundles.Add(new StyleBundle("~/content/free-jqgrid")
+                .Include("~/Content/ui.jqgrid.min.css")
+                .Include("~/Content/custom-jqgrid.css")
+            );
         }
     }
 }

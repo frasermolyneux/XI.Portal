@@ -34,11 +34,11 @@
 </div>
 
 @section Styles {
-    @Styles.Render("~/Content/plugins/jqGrid/jqGridStyles")
+    @Styles.Render("~/content/free-jqgrid")
 }
 
 @section Scripts {
-    @Scripts.Render("~/plugins/jqGrid")
+    @Scripts.Render("~/bundles/free-jqgrid")
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
@@ -72,11 +72,11 @@
             }
 
             function formatLikeDislike(cellValue, options, rowObject) {
-                return  "<div class=\"progress\" id=\"progress-" + rowObject.MapName + "\">" +
+                return "<div class=\"progress\" id=\"progress-" + rowObject.MapName + "\">" +
                     "<div class=\"progress-bar bg-info\" role=\"progressbar\" style=\"width: " + rowObject.LikePercentage + "%\" aria-valuenow=\"" + rowObject.TotalLikes + "\" aria-valuemin=\"0\" aria-valuemax=\"" + rowObject.TotalVotes + "\"></div>" +
                     "<div class=\"progress-bar bg-danger\" role=\"progressbar\" style=\"width: " + rowObject.DislikePercentage + "%\" aria-valuenow=\"" + rowObject.TotalDislike + "\" aria-valuemin=\"0\" aria-valuemax=\"" + rowObject.TotalVotes + "\"></div>" +
-                        "</div>" + 
-                "<div class=\"m-t-sm\">" + rowObject.TotalLikes + " likes and " + rowObject.TotalDislike + " dislikes out of " + rowObject.TotalVotes + "</div>";
+                    "</div>" +
+                    "<div class=\"m-t-sm\">" + rowObject.TotalLikes + " likes and " + rowObject.TotalDislike + " dislikes out of " + rowObject.TotalVotes + "</div>";
             }
 
             jQuery("#mapList").jqGrid({
@@ -125,7 +125,14 @@
                 guiStyle: "bootstrap4",
                 icons: "fontAwesome",
                 hidegrid: false
-            }).navGrid('#mapListPager', { });
+            }).navGrid('#mapListPager',
+                {
+                    edit: false,
+                    add: false,
+                    del: false,
+                    search: false,
+                    refresh: false
+                });
 
             function submitSearch() {
                 searchString = $.trim($("#search-string").val());
