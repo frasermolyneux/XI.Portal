@@ -8,7 +8,8 @@ namespace XI.Portal.Web
         {
             //jquery
             bundles.Add(new ScriptBundle("~/bundles/jquery")
-                .Include("~/Scripts/jquery-{version}.min.js"));
+                .Include("~/Scripts/jquery-{version}.min.js")
+                .Include("~/Scripts/jquery-validate.min.js"));
 
 
 
