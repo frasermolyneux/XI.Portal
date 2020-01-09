@@ -88,7 +88,7 @@ namespace XI.Portal.Web.Controllers
 
             using (var context = ContextProvider.GetContext())
             {
-                var adminAction = await context.AdminActions.Include(a => a.Player).Where(a => a.AdminActionId == idAsGuid).SingleAsync();
+                var adminAction = await context.AdminActions.Include(a => a.Player).Include(a => a.Admin).Where(a => a.AdminActionId == idAsGuid).SingleAsync();
 
                 if (!User.Identity.IsInSeniorAdminRole() && User.Identity.GetUserId() != adminAction.Admin.Id)
                 {
@@ -113,7 +113,7 @@ namespace XI.Portal.Web.Controllers
         {
             using (var context = ContextProvider.GetContext())
             {
-                var adminAction = await context.AdminActions.Include(a => a.Player).Where(a => a.AdminActionId == model.AdminActionId).SingleAsync();
+                var adminAction = await context.AdminActions.Include(a => a.Player).Include(a => a.Admin).Where(a => a.AdminActionId == model.AdminActionId).SingleAsync();
 
                 if (!User.Identity.IsInSeniorAdminRole() && User.Identity.GetUserId() != adminAction.Admin.Id)
                 {
@@ -146,7 +146,7 @@ namespace XI.Portal.Web.Controllers
 
             using (var context = ContextProvider.GetContext())
             {
-                var adminAction = await context.AdminActions.Include(a => a.Player).Where(a => a.AdminActionId == idAsGuid).SingleAsync();
+                var adminAction = await context.AdminActions.Include(a => a.Player).Include(a => a.Admin).Where(a => a.AdminActionId == idAsGuid).SingleAsync();
 
                 if (!User.Identity.IsInSeniorAdminRole() && User.Identity.GetUserId() != adminAction.Admin.Id)
                 {
@@ -171,7 +171,7 @@ namespace XI.Portal.Web.Controllers
         {
             using (var context = ContextProvider.GetContext())
             {
-                var adminAction = await context.AdminActions.Include(a => a.Player).Where(a => a.AdminActionId == model.AdminActionId).SingleAsync();
+                var adminAction = await context.AdminActions.Include(a => a.Player).Include(a => a.Admin).Where(a => a.AdminActionId == model.AdminActionId).SingleAsync();
 
                 if (!User.Identity.IsInSeniorAdminRole() && User.Identity.GetUserId() != adminAction.Admin.Id)
                 {
