@@ -59,118 +59,121 @@
 </div>
 
 
+@section Scripts {
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawPlayersChart);
+        google.charts.setOnLoadCallback(drawPlayersPerGameChart);
 
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawPlayersChart);
-    google.charts.setOnLoadCallback(drawPlayersPerGameChart);
+        function drawPlayersChart() {
 
-    function drawPlayersChart() {
+            var cutoff = $("#filterDate").val();
 
-        var cutoff = $("#filterDate").val();
+            $.getJSON("/Analytics/GetCumulativeDailyPlayersJson?cutoff=" + cutoff,
+                function(jsonData) {
 
-        $.getJSON("/Analytics/GetCumulativeDailyPlayersJson?cutoff=" + cutoff, function (jsonData) {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('date', 'Created');
+                    data.addColumn('number', 'Count');
 
-            var data = new google.visualization.DataTable();
-            data.addColumn('date', 'Created');
-            data.addColumn('number', 'Count');
+                    $.each(jsonData,
+                        function(key, val) {
+                            data.addRow([
+                                moment(val.Created).toDate(),
+                                val.Count
+                            ]);
+                        });
 
-            $.each(jsonData, function (key, val) {
-                data.addRow([
-                    moment(val.Created).toDate(),
-                    val.Count
-                ]);
+                    var chartWidth = $('#PlayersPerGameAnalytics').width();
+
+                    var options = {
+                        title: 'Cumulative player count across all games since ' + cutoff,
+                        width: chartWidth,
+                        height: 500,
+                        hAxis: {
+                            format: 'M/d/yy',
+                            gridlines: { count: 30 }
+                        },
+                        vAxis: {
+                            gridlines: { color: 'none' },
+                            minValue: 0
+                        }
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById('PlayersAnalytics'));
+                    chart.draw(data, options);
+                });
+        }
+
+        function drawPlayersPerGameChart() {
+
+            var cutoff = $("#filterDate").val();
+
+            $.getJSON("/Analytics/GetNewDailyPlayersPerGameJson?cutoff=" + cutoff,
+                function(jsonData) {
+
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('date', 'Date');
+                    data.addColumn('number', 'CallOfDuty2');
+                    data.addColumn('number', 'CallOfDuty4');
+                    data.addColumn('number', 'CallOfDuty5');
+                    data.addColumn('number', 'Insurgency');
+
+                    $.each(jsonData,
+                        function(key, val) {
+
+                            var cod2 = val.GameCounts.CallOfDuty2;
+                            var cod4 = val.GameCounts.CallOfDuty4;
+                            var cod5 = val.GameCounts.CallOfDuty5;
+                            var insurgency = val.GameCounts.Insurgency;
+
+                            data.addRow([
+                                moment(val.Created).toDate(),
+                                cod2,
+                                cod4,
+                                cod5,
+                                insurgency
+                            ]);
+                        });
+
+                    var chartWidth = $('#PlayersPerGameAnalytics').width();
+
+                    var options = {
+                        title: 'New players per day since ' + cutoff,
+                        width: chartWidth,
+                        height: 500,
+                        hAxis: {
+                            format: 'M/d/yy',
+                            gridlines: { count: 30 }
+                        },
+                        vAxis: {
+                            gridlines: { color: 'none' },
+                            minValue: 0
+                        }
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById('PlayersPerGameAnalytics'));
+                    chart.draw(data, options);
+                });
+        }
+
+        window.onload = function() {
+            $('#data_1 .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
             });
 
-            var chartWidth = $('#PlayersPerGameAnalytics').width();
-
-            var options = {
-                title: 'Cumulative player count across all games since ' + cutoff,
-                width: chartWidth,
-                height: 500,
-                hAxis: {
-                    format: 'M/d/yy',
-                    gridlines: {count: 30}
-                },
-                vAxis: {
-                    gridlines: {color: 'none'},
-                    minValue: 0
-                }
-            };
-
-            var chart = new google.visualization.LineChart(document.getElementById('PlayersAnalytics'));
-            chart.draw(data, options);
-        });
-    }
-
-    function drawPlayersPerGameChart() {
-
-        var cutoff = $("#filterDate").val();
-
-        $.getJSON("/Analytics/GetNewDailyPlayersPerGameJson?cutoff=" + cutoff, function (jsonData) {
-
-            var data = new google.visualization.DataTable();
-            data.addColumn('date', 'Date');
-            data.addColumn('number', 'CallOfDuty2');
-            data.addColumn('number', 'CallOfDuty4');
-            data.addColumn('number', 'CallOfDuty5');
-            data.addColumn('number', 'Insurgency');
-
-            $.each(jsonData, function (key, val) {
-
-                var cod2 = val.GameCounts.CallOfDuty2;
-                var cod4 = val.GameCounts.CallOfDuty4;
-                var cod5 = val.GameCounts.CallOfDuty5;
-                var insurgency = val.GameCounts.Insurgency;
-
-                data.addRow([
-                    moment(val.Created).toDate(),
-                    cod2,
-                    cod4,
-                    cod5,
-                    insurgency
-                ]);
+            $('#filterDate').change(function() {
+                drawPlayersChart();
+                drawPlayersPerGameChart();
             });
-
-            var chartWidth = $('#PlayersPerGameAnalytics').width();
-
-            var options = {
-                title: 'New players per day since ' + cutoff,
-                width: chartWidth,
-                height: 500,
-                hAxis: {
-                    format: 'M/d/yy',
-                    gridlines: {count: 30}
-                },
-                vAxis: {
-                    gridlines: {color: 'none'},
-                    minValue: 0
-                }
-            };
-
-            var chart = new google.visualization.LineChart(document.getElementById('PlayersPerGameAnalytics'));
-            chart.draw(data, options);
-        });
-    }
-
-    window.onload = function(){
-        $('#data_1 .input-group.date').datepicker({
-            todayBtn: "linked",
-            keyboardNavigation: false,
-            forceParse: false,
-            calendarWeeks: true,
-            autoclose: true
-        });
-
-        $('#filterDate').change(function() {
-            drawPlayersChart();
-            drawPlayersPerGameChart();
-        });
-    };
+        };
 
 
-
-</script>
-
+    </script>
+}
