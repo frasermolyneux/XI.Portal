@@ -30,6 +30,11 @@ namespace XI.Portal.Web
                 .Include("~/Content/bootstrap.min.css")
             );
 
+            //font-awesome
+            bundles.Add(new ScriptBundle("~/content/font-awesome")
+                .Include("~/Content/font-awesome.min.css")
+            );
+
 
 
 
