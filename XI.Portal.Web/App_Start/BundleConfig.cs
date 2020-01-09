@@ -6,6 +6,13 @@ namespace XI.Portal.Web
     {
         public static void RegisterBundles(BundleCollection bundles)
         {
+            //jquery
+            bundles.Add(new ScriptBundle("~/bundles/jquery")
+                .Include("~/Scripts/jquery-{version}.min.js"));
+
+
+
+
             //// CSS style (bootstrap/inspinia)
             //bundles.Add(new StyleBundle("~/Content/css").Include(
             //    "~/Content/bootstrap.min.css",
