@@ -27,7 +27,7 @@
             <div class="ibox">
                 <div class="form-group" id="data_1">
                     <div class="input-group date">
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input readonly="readonly" id="filterDate" type="text" class="form-control" value="@filterRange.ToShortDateString()">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input readonly="readonly" id="filterDate" type="text" class="form-control" value="@filterRange.ToString("MM/dd/yyyy")">
                     </div>
                     <label class="font-normal">Select the cutoff date for analytics</label>
                 </div>
@@ -77,8 +77,9 @@
         function drawPlayersChart() {
 
             var cutoff = $("#filterDate").val();
+            var dt = new Date(cutoff);
 
-            $.getJSON("/Analytics/GetCumulativeDailyPlayersJson?cutoff=" + cutoff,
+            $.getJSON("/Analytics/GetCumulativeDailyPlayersJson?cutoff=" + dt.toISOString(),
                 function (jsonData) {
 
                     var data = new google.visualization.DataTable();

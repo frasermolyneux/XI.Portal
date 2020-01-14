@@ -75,11 +75,13 @@
                     {
                         name: 'Username',
                         index: 'Username',
-                        formatter: formatPlayerUrl
+                        formatter: formatPlayerUrl,
+                        sortable: false
                     },
                     {
                         name: 'Guid',
-                        index: 'Guid'
+                        index: 'Guid',
+                        sortable: false
                     },
                     {
                         name: 'Address',
@@ -88,11 +90,13 @@
                     },
                     {
                         name: 'FirstSeen',
-                        index: 'FirstSeen'
+                        index: 'FirstSeen',
+                        sortable: false
                     },
                     {
                         name: 'LastSeen',
-                        index: 'LastSeen'
+                        index: 'LastSeen',
+                        sortable: false
                     }
                 ],
                 pager: '#playerListPager',
@@ -100,7 +104,7 @@
                 height: 700,
                 autowidth: true,
                 caption: '@Model.DisplayName() - Player List',
-                //guiStyle: "bootstrap4",
+                guiStyle: "bootstrap4",
                 icons: "fontAwesome",
                 hidegrid: false
             }).navGrid('#playerListPager',

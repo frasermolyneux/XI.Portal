@@ -1,1 +1,44 @@
-﻿
+﻿.ui-jqgrid-titlebar {
+    background-color: #ffffff !important;
+}
+
+.ui-jqgrid .ui-jqgrid-title {
+    margin: 0.5em 1em 0.2em !important;
+}
+
+.ui-jqgrid-sortable {
+    background-color: #1bb394;
+    height: 100% !important;
+    text-align: center;
+    margin: auto;
+    padding: 10px;
+}
+
+.ui-jqgrid .ui-jqgrid-htable .ui-jqgrid-labels th div {
+    margin: 0 !important;
+}
+
+.ui-jqgrid.ui-jqgrid-bootstrap > .ui-jqgrid-view {
+    font-size: 16px !important;
+}
+
+.s-ico {
+    height: 20px;
+}
+
+.ui-icon-triangle-1-n {
+    background-position: 0 -16px !important;
+}
+
+.ui-jqgrid .s-ico > .ui-icon-asc.ui-icon {
+    top: -4px !important;
+}
+
+.ui-jqgrid .s-ico > .ui-icon-desc.ui-icon {
+    top: -14px !important;
+}
+
+.ui-jqgrid .ui-jqgrid-htable th {
+    height: 40px;
+    padding: 0 2px 0 2px;
+}

@@ -89,7 +89,8 @@
                         name: 'GameType',
                         index: 'GameType',
                         formatter: formatGameType,
-                        width: 10
+                        width: 10,
+                        sortable: false
                     },
                     {
                         name: 'MapName',
@@ -101,7 +102,8 @@
                         name: 'MapFiles',
                         index: 'MapFiles',
                         formatter: formatMapFiles,
-                        width: 30
+                        width: 30,
+                        sortable: false
                     },
                     {
                         name: 'LikeDislike',
@@ -114,7 +116,8 @@
                         name: 'MapImage',
                         index: 'MapImage',
                         formatter: formatMapImage,
-                        width: 30
+                        width: 30,
+                        sortable: false
                     }
                 ],
                 pager: '#mapListPager',
@@ -122,7 +125,7 @@
                 height: 700,
                 autowidth: true,
                 caption: 'Global Map List',
-                //guiStyle: "bootstrap4",
+                guiStyle: "bootstrap4",
                 icons: "fontAwesome",
                 hidegrid: false
             }).navGrid('#mapListPager',

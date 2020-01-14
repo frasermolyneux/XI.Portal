@@ -67,16 +67,19 @@
                         name: 'GameType',
                         index: 'GameType',
                         formatter: formatGameType,
-                        width: 30
+                        width: 30,
+                        sortable: false
                     },
                     {
                         name: 'PlayerId',
-                        index: 'PlayerId'
+                        index: 'PlayerId',
+                        sortable: false
                     },
                     {
                         name: 'Username',
                         index: 'Username',
-                        formatter: formatPlayerUrl
+                        formatter: formatPlayerUrl,
+                        sortable: false
                     },
                     {
                         name: 'Guid',
@@ -85,7 +88,8 @@
                     },
                     {
                         name: 'IpAddress',
-                        index: 'IpAddress'
+                        index: 'IpAddress',
+                        sortable: false
                     },
                     {
                         name: 'FirstSeen',
@@ -103,7 +107,7 @@
                 height: 700,
                 autowidth: true,
                 caption: 'IP Search',
-                //guiStyle: "bootstrap4",
+                guiStyle: "bootstrap4",
                 icons: "fontAwesome",
                 hidegrid: false
             }).navGrid('#playerListPager',

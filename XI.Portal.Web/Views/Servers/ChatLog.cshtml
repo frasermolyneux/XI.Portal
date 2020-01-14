@@ -71,26 +71,33 @@
                     {
                         name: 'Timestamp',
                         index: 'Timestamp',
-                        width: 20
+                        width: 25,
+                        sortable: false
                     },
                     {
                         name: 'Username',
                         index: 'Username',
-                        width: 20,
-                        searchoptions: { sopt: ["eq", "cn"] },
-                        formatter: formatPlayerUrl
+                        width: 25,
+                        formatter: formatPlayerUrl,
+                        sortable: false
                     },
-                    { name: 'Type', index: 'Type', editable: false, width: 10, sortable: false, search: false },
+                    {
+                        name: 'Type',
+                        index: 'Type',
+                        width: 10,
+                        sortable: false
+                    },
                     {
                         name: 'Message',
                         index: 'Message',
-                        searchoptions: { sopt: ["cn"] }
+                        sortable: false
                     },
                     {
                         name: 'ChatLogId',
                         index: 'ChatLogId',
-                        width: 10,
-                        formatter: formatChatLogUrl
+                        width: 20,
+                        formatter: formatChatLogUrl,
+                        sortable: false
                     }
                 ],
                 pager: '#chatLogPager',
@@ -98,7 +105,7 @@
                 height: 700,
                 autowidth: true,
                 caption: '@Html.ServerName(Model) - Chat Logs',
-                //guiStyle: "bootstrap4",
+                guiStyle: "bootstrap4",
                 icons: "fontAwesome",
                 hidegrid: false
             }).navGrid('#chatLogPager',

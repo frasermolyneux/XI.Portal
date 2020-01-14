@@ -37,16 +37,19 @@
                     {
                         name: 'Username',
                         index: 'Username',
-                        width: 30
+                        width: 30,
+                        sortable: false
                     },
                     {
                         name: 'Message',
-                        index: 'Message'
+                        index: 'Message',
+                        sortable: false
                     },
                     {
                         name: 'Timestamp',
                         index: 'Timestamp',
-                        width: 30
+                        width: 30,
+                        sortable: false
                     }
                 ],
                 pager: '#logsListPager',
@@ -54,7 +57,7 @@
                 height: 700,
                 autowidth: true,
                 caption: 'System Logs',
-                //guiStyle: "bootstrap4",
+                guiStyle: "bootstrap4",
                 icons: "fontAwesome",
                 hidegrid: false
             }).navGrid('#logsListPager',
