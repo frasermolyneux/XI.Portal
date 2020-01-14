@@ -14,7 +14,26 @@ namespace XI.Portal.Web
             );
 
             bundles.Add(new StyleBundle("~/content/jquery")
-                .Include("~/Content/themes/base/all.css"));
+                .Include("~/Content/themes/base/core.css")
+                .Include("~/Content/themes/base/accordion.css")
+                .Include("~/Content/themes/base/autocomplete.css")
+                .Include("~/Content/themes/base/button.css")
+                .Include("~/Content/themes/base/datepicker.css")
+                .Include("~/Content/themes/base/dialog.css")
+                .Include("~/Content/themes/base/draggable.css")
+                .Include("~/Content/themes/base/menu.css")
+                .Include("~/Content/themes/base/progressbar.css")
+                .Include("~/Content/themes/base/resizable.css")
+                .Include("~/Content/themes/base/selectable.css")
+                .Include("~/Content/themes/base/selectmenu.css")
+                .Include("~/Content/themes/base/sortable.css")
+                .Include("~/Content/themes/base/slider.css")
+                .Include("~/Content/themes/base/spinner.css")
+                .Include("~/Content/themes/base/tabs.css")
+                .Include("~/Content/themes/base/tooltip.css")
+                .Include("~/Content/themes/base/theme.css")
+            
+            );
 
             //popper
             bundles.Add(new ScriptBundle("~/bundles/popper")
