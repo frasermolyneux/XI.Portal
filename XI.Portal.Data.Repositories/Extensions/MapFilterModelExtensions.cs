@@ -38,6 +38,12 @@ namespace XI.Portal.Data.Repositories.Extensions
                 case MapsFilterModel.OrderBy.LikeDislikeDesc:
                     maps = maps.Where(m => m.MapVotes.Any()).OrderByDescending(m => m.MapVotes.Count(mv => mv.Like)).AsQueryable();
                     break;
+                case MapsFilterModel.OrderBy.GameTypeAsc:
+                    maps = maps.OrderBy(m => m.GameType).AsQueryable();
+                    break;
+                case MapsFilterModel.OrderBy.GameTypeDesc:
+                    maps = maps.OrderByDescending(m => m.GameType).AsQueryable();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

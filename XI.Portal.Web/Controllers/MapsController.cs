@@ -1,11 +1,8 @@
-﻿using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using XI.Portal.BLL.Web.Interfaces;
 using XI.Portal.Data.Contracts.FilterModels;
 using XI.Portal.Data.Core.Context;
-using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Logging;
 
 namespace XI.Portal.Web.Controllers
@@ -17,7 +14,7 @@ namespace XI.Portal.Web.Controllers
 
         public MapsController(
             IContextProvider contextProvider,
-            IDatabaseLogger databaseLogger, 
+            IDatabaseLogger databaseLogger,
             IMapsList mapList) : base(contextProvider, databaseLogger)
         {
             this.mapList = mapList ?? throw new System.ArgumentNullException(nameof(mapList));
@@ -51,6 +48,9 @@ namespace XI.Portal.Web.Controllers
                     break;
                 case "LikeDislike":
                     mapsFilterModel.Order = searchOrder == "asc" ? MapsFilterModel.OrderBy.LikeDislikeAsc : MapsFilterModel.OrderBy.LikeDislikeDesc;
+                    break;
+                case "GameType":
+                    mapsFilterModel.Order = searchOrder == "asc" ? MapsFilterModel.OrderBy.GameTypeAsc : MapsFilterModel.OrderBy.GameTypeDesc;
                     break;
                 default:
                     mapsFilterModel.Order = searchOrder == "asc" ? MapsFilterModel.OrderBy.MapNameAsc : MapsFilterModel.OrderBy.MapNameDesc;

@@ -15,7 +15,9 @@ namespace XI.Portal.Data.Contracts.FilterModels
             MapNameAsc,
             MapNameDesc,
             LikeDislikeAsc,
-            LikeDislikeDesc
+            LikeDislikeDesc,
+            GameTypeAsc,
+            GameTypeDesc
         }
     }
 }
