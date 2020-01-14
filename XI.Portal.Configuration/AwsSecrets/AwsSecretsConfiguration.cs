@@ -5,27 +5,27 @@ namespace XI.Portal.Configuration.AwsSecrets
 {
     public class AwsSecretsConfiguration : IAwsSecretsConfiguration
     {
-        private readonly ILocalConfigurationProvider appSettingConfigurationProvider;
+        private readonly ILocalConfigurationProvider localConfigurationProvider;
 
-        public AwsSecretsConfiguration(ILocalConfigurationProvider appSettingConfigurationProvider)
+        public AwsSecretsConfiguration(ILocalConfigurationProvider localConfigurationProvider)
         {
-            this.appSettingConfigurationProvider = appSettingConfigurationProvider 
-                ?? throw new System.ArgumentNullException(nameof(appSettingConfigurationProvider));
+            this.localConfigurationProvider = localConfigurationProvider 
+                ?? throw new System.ArgumentNullException(nameof(localConfigurationProvider));
         }
 
-        public string AccessKey => appSettingConfigurationProvider.GetConfigurationItem(AwsSecretsConfigurationKeys.AccessKey);
+        public string AccessKey => localConfigurationProvider.GetConfigurationItem(AwsSecretsConfigurationKeys.AccessKey);
 
-        public string SecretKey => appSettingConfigurationProvider.GetConfigurationItem(AwsSecretsConfigurationKeys.SecretKey);
+        public string SecretKey => localConfigurationProvider.GetConfigurationItem(AwsSecretsConfigurationKeys.SecretKey);
 
         public RegionEndpoint Region
         {
             get
             {
-                var regionAsStr = appSettingConfigurationProvider.GetConfigurationItem(AwsSecretsConfigurationKeys.Region);
+                var regionAsStr = localConfigurationProvider.GetConfigurationItem(AwsSecretsConfigurationKeys.Region);
                 return RegionEndpoint.GetBySystemName(regionAsStr);
             }
         }
 
-        public string SecretName => appSettingConfigurationProvider.GetConfigurationItem(AwsSecretsConfigurationKeys.SecretName);
+        public string SecretName => localConfigurationProvider.GetConfigurationItem(AwsSecretsConfigurationKeys.SecretName);
     }
 }
