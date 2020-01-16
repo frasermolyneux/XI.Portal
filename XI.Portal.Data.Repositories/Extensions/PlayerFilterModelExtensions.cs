@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using XI.Portal.Data.CommonTypes;
 using XI.Portal.Data.Contracts.FilterModels;
@@ -42,12 +43,26 @@ namespace XI.Portal.Data.Repositories.Extensions
 
             switch (filterModel.Order)
             {
-                case PlayersFilterModel.OrderBy.LastSeen:
-                    players = players.OrderByDescending(p => p.LastSeen).AsQueryable();
-                    break;
-                case PlayersFilterModel.OrderBy.Username:
+                case PlayersFilterModel.OrderBy.UsernameAsc:
                     players = players.OrderBy(p => p.Username).AsQueryable();
                     break;
+                case PlayersFilterModel.OrderBy.UsernameDesc:
+                    players = players.OrderByDescending(p => p.Username).AsQueryable();
+                    break;
+                case PlayersFilterModel.OrderBy.FirstSeenAsc:
+                    players = players.OrderBy(p => p.FirstSeen).AsQueryable();
+                    break;
+                case PlayersFilterModel.OrderBy.FirstSeenDesc:
+                    players = players.OrderByDescending(p => p.FirstSeen).AsQueryable();
+                    break;
+                case PlayersFilterModel.OrderBy.LastSeenAsc:
+                    players = players.OrderBy(p => p.LastSeen).AsQueryable();
+                    break;
+                case PlayersFilterModel.OrderBy.LastSeenDesc:
+                    players = players.OrderByDescending(p => p.LastSeen).AsQueryable();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             players = players.Skip(filterModel.SkipPlayers).AsQueryable();

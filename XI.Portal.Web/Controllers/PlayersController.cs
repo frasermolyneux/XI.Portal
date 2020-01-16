@@ -53,26 +53,37 @@ namespace XI.Portal.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetPlayersAjax(GameType id, string sidx, string sord, int page, int rows,
-            // ReSharper disable once InconsistentNaming
-            bool _search, string searchField, string searchString, string searchOper)
+        public async Task<ActionResult> GetPlayersAjax(GameType id, string sidx, string sord, int page, int rows, string searchString)
         {
-            var playerListCount = await playersList.GetPlayerListCount(new PlayersFilterModel
+            var playersFilterModel = new PlayersFilterModel
             {
                 GameType = id,
                 Filter = PlayersFilterModel.FilterType.UsernameAndGuid,
                 FilterString = searchString
-            });
-            var playersToSkip = (page - 1) * rows;
+            };
 
-            var playersListEntries = await playersList.GetPlayerList(new PlayersFilterModel
+            var playerListCount = await playersList.GetPlayerListCount(playersFilterModel);
+
+            playersFilterModel.SkipPlayers = (page - 1) * rows;
+            playersFilterModel.TakePlayers = rows;
+
+            var searchColumn = string.IsNullOrWhiteSpace(sidx) ? "Username" : sidx;
+            var searchOrder = string.IsNullOrWhiteSpace(sord) ? "asc" : sord;
+
+            switch (searchColumn)
             {
-                GameType = id,
-                Filter = PlayersFilterModel.FilterType.UsernameAndGuid,
-                FilterString = searchString,
-                SkipPlayers = playersToSkip,
-                TakePlayers = rows
-            });
+                case "Username":
+                    playersFilterModel.Order = searchOrder == "asc" ? PlayersFilterModel.OrderBy.UsernameAsc : PlayersFilterModel.OrderBy.UsernameDesc;
+                    break;
+                case "FirstSeen":
+                    playersFilterModel.Order = searchOrder == "asc" ? PlayersFilterModel.OrderBy.FirstSeenAsc : PlayersFilterModel.OrderBy.FirstSeenDesc;
+                    break;
+                case "LastSeen":
+                    playersFilterModel.Order = searchOrder == "asc" ? PlayersFilterModel.OrderBy.LastSeenAsc : PlayersFilterModel.OrderBy.LastSeenDesc;
+                    break;
+            }
+
+            var playersListEntries = await playersList.GetPlayerList(playersFilterModel);
 
             return Json(new
             {
