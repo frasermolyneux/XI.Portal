@@ -397,30 +397,25 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Images\icons\CallOfDuty2.png">
+    <Content Include="Content\images\icons\CallOfDuty2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\icons\CallOfDuty4.png">
+    <Content Include="Content\images\icons\CallOfDuty4.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\icons\CallOfDuty5.png">
+    <Content Include="Content\images\icons\CallOfDuty5.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\icons\gametracker.png" />
-    <Content Include="Images\icons\hlsw.png" />
-    <Content Include="Images\icons\Insurgency.png" />
-    <Content Include="Images\icons\Left4Dead2.png" />
-    <Content Include="Images\icons\Minecraft.png" />
-    <Content Include="Images\icons\Rust.png" />
-    <Content Include="Images\icons\steam.png" />
-    <Content Include="Images\icons\Unknown.png">
+    <Content Include="Content\images\icons\gametracker.png" />
+    <Content Include="Content\images\icons\hlsw.png" />
+    <Content Include="Content\images\icons\Insurgency.png" />
+    <Content Include="Content\images\icons\Left4Dead2.png" />
+    <Content Include="Content\images\icons\Minecraft.png" />
+    <Content Include="Content\images\icons\Rust.png" />
+    <Content Include="Content\images\icons\steam.png" />
+    <Content Include="Content\images\icons\Unknown.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Landing\insurgency.jpg" />
-    <Content Include="Images\Landing\member-flags.png" />
-    <Content Include="Images\Landing\not-just-cod.jpg" />
-    <Content Include="Images\Landing\support.png" />
-    <Content Include="Images\Landing\world-flags.jpg" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-reboot.min.css.map" />

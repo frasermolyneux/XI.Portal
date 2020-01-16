@@ -10,12 +10,12 @@ namespace XI.Portal.Web.Extensions
     {
         public static MvcHtmlString GameTypeIcon(this HtmlHelper html, GameType gameType)
         {
-            return new MvcHtmlString($"<img src=\"/Images/icons/{gameType}.png\" alt=\"{gameType}\" width=\"16\" height=\"16\" />");
+            return new MvcHtmlString($"<img src=\"/content/images/icons/{gameType}.png\" alt=\"{gameType}\" width=\"16\" height=\"16\" />");
         }
 
         public static MvcHtmlString GameTypeIconExternal(this HtmlHelper html, GameType gameType)
         {
-            return new MvcHtmlString($"<img src=\"https://portal.xtremeidiots.com/Images/icons/{gameType}.png\" alt=\"{gameType}\" width=\"16\" height=\"16\" />");
+            return new MvcHtmlString($"<img src=\"https://portal.xtremeidiots.com/content/images/icons/{gameType}.png\" alt=\"{gameType}\" width=\"16\" height=\"16\" />");
         }
 
         public static string GameRedirectBaseUrl(this GameType gameType)

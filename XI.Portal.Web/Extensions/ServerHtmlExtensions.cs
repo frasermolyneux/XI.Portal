@@ -31,7 +31,7 @@ namespace XI.Portal.Web.Extensions
         {
             var link = $"https://www.gametracker.com/server_info/{hostname}:{port}";
             return new MvcHtmlString(
-                $"<a style=\"margin:5px\" href=\"{link}\" target=\"_blank\"><img src=\"/Images/icons/gametracker.png\" alt=\"gametracker\"/></a>");
+                $"<a style=\"margin:5px\" href=\"{link}\" target=\"_blank\"><img src=\"/content/images/icons/gametracker.png\" alt=\"gametracker\"/></a>");
         }
 
         public static MvcHtmlString HlswIcon(this HtmlHelper html, GameType gameType, string hostname, int port)
@@ -53,14 +53,14 @@ namespace XI.Portal.Web.Extensions
             }
 
             return new MvcHtmlString(
-                $"<a style=\"margin:5px\" href=\"{link}\"><img src=\"/Images/icons/hlsw.png\" alt=\"hlsw\"/></a>");
+                $"<a style=\"margin:5px\" href=\"{link}\"><img src=\"/content/images/icons/hlsw.png\" alt=\"hlsw\"/></a>");
         }
 
         public static MvcHtmlString SteamIcon(this HtmlHelper html, GameType gameType, string hostname, int port)
         {
             var link = $"steam://connect/{hostname}:{port}";
             return new MvcHtmlString(
-                $"<a style=\"margin:5px\" href=\"{link}\"><img src=\"/Images/icons/steam.png\" alt=\"steam\"/></a>");
+                $"<a style=\"margin:5px\" href=\"{link}\"><img src=\"/content/images/icons/steam.png\" alt=\"steam\"/></a>");
         }
     }
 }
