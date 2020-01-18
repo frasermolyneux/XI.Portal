@@ -7,6 +7,9 @@ namespace XI.Portal.Web
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            routes.LowercaseUrls = true;
+            routes.AppendTrailingSlash = true;
+
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
