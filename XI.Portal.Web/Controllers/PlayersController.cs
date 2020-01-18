@@ -59,7 +59,8 @@ namespace XI.Portal.Web.Controllers
             {
                 GameType = id,
                 Filter = PlayersFilterModel.FilterType.UsernameAndGuid,
-                FilterString = searchString
+                FilterString = searchString,
+                Order = PlayersFilterModel.OrderBy.LastSeenDesc
             };
 
             var playerListCount = await playersList.GetPlayerListCount(playersFilterModel);
@@ -106,7 +107,8 @@ namespace XI.Portal.Web.Controllers
             var playersFilterModel = new PlayersFilterModel
             {
                 Filter = PlayersFilterModel.FilterType.IpAddress,
-                FilterString = searchString
+                FilterString = searchString,
+                Order = PlayersFilterModel.OrderBy.LastSeenDesc
             };
 
             var playerListCount = await playersList.GetPlayerListCount(playersFilterModel);
