@@ -7,8 +7,8 @@ namespace XI.Portal.Web.Navigation.Models
         public MenuItemModel(string text, string controller, string actionName, string icon)
         {
             Text = text;
-            ActionName = actionName;
-            Controller = controller;
+            ActionName = actionName.ToLower();
+            Controller = controller.ToLower();
             Icon = icon;
 
             SubMenuItems = new List<SubMenuItemModel>();
@@ -17,8 +17,8 @@ namespace XI.Portal.Web.Navigation.Models
         public MenuItemModel(string text, string controller, string actionName, string icon, object routeValues)
         {
             Text = text;
-            ActionName = actionName;
-            Controller = controller;
+            ActionName = actionName.ToLower();
+            Controller = controller.ToLower();
             Icon = icon;
             RouteValues = routeValues;
 

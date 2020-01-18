@@ -10,8 +10,8 @@ namespace XI.Portal.Web.Extensions
             if (string.IsNullOrEmpty(cssClass))
                 cssClass = "active";
 
-            var currentAction = (string) html.ViewContext.RouteData.Values["action"];
-            var currentController = (string) html.ViewContext.RouteData.Values["controller"];
+            var currentAction = ((string) html.ViewContext.RouteData.Values["action"]).ToLower();
+            var currentController = ((string) html.ViewContext.RouteData.Values["controller"]).ToLower();
             var currentId = (string) html.ViewContext.RouteData.Values["id"];
             var currentGameId = (string) html.ViewContext.RouteData.Values["gameId"];
             var currentServerId = (string) html.ViewContext.RouteData.Values["serverId"];

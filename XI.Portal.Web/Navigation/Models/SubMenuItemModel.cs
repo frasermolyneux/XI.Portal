@@ -5,15 +5,15 @@
         public SubMenuItemModel(string text, string controller, string actionName)
         {
             Text = text;
-            ActionName = actionName;
-            Controller = controller;
+            ActionName = actionName.ToLower();
+            Controller = controller.ToLower();
         }
 
         public SubMenuItemModel(string text, string controller, string actionName, object routeValues)
         {
             Text = text;
-            ActionName = actionName;
-            Controller = controller;
+            ActionName = actionName.ToLower();
+            Controller = controller.ToLower();
             RouteValues = routeValues;
         }
 
