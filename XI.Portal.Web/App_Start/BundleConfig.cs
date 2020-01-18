@@ -87,6 +87,15 @@ namespace XI.Portal.Web
             bundles.Add(new StyleBundle("~/content/datepicker")
                 .Include("~/Content/bootstrap-datepicker.min.css")
             );
+
+            //summernote
+            bundles.Add(new ScriptBundle("~/bundles/summernote")
+                .Include("~/Scripts/summernote.min.js")
+            );
+
+            bundles.Add(new StyleBundle("~/content/summernote")
+                .Include("~/Content/summernote.min.css")
+            );
         }
     }
 }

@@ -23,25 +23,25 @@
                         @Html.HiddenFor(model => model.PlayerId)
 
                         <div class="form-horizontal">
-                            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    @Html.TextAreaFor(model => model.Text, new {@class = "form-control"})
-                                    @Html.ValidationMessageFor(model => model.Text, "", new {@class = "text-danger"})
+                                    @Html.TextAreaFor(model => model.Text, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    @Html.EditorFor(model => model.Expires, new {@class = "form-control"})
-                                    @Html.ValidationMessageFor(model => model.Expires, "", new {@class = "text-danger"})
+                                    @Html.EditorFor(model => model.Expires, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Expires, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-md-10">
-                                    <input type="submit" value="Create" class="btn btn-primary"/>
+                                    <input type="submit" value="Create" class="btn btn-primary" />
                                 </div>
                             </div>
                         </div>
@@ -56,14 +56,14 @@
 </div>
 
 @section Styles {
-    @Styles.Render("~/plugins/summernoteStyles")
+    @Styles.Render("~/content/summernote")
 }
 
 @section Scripts {
-    @Scripts.Render("~/plugins/summernote")
+    @Scripts.Render("~/bundles/summernote")
 
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             $('#Text').summernote({
                 focus: true,
