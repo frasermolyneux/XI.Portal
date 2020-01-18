@@ -59,8 +59,7 @@ namespace XI.Portal.Web.Controllers
             {
                 GameType = id,
                 Filter = PlayersFilterModel.FilterType.UsernameAndGuid,
-                FilterString = searchString,
-                Order = PlayersFilterModel.OrderBy.LastSeenDesc
+                FilterString = searchString
             };
 
             var playerListCount = await playersList.GetPlayerListCount(playersFilterModel);
@@ -68,8 +67,8 @@ namespace XI.Portal.Web.Controllers
             playersFilterModel.SkipPlayers = (page - 1) * rows;
             playersFilterModel.TakePlayers = rows;
 
-            var searchColumn = string.IsNullOrWhiteSpace(sidx) ? "Username" : sidx;
-            var searchOrder = string.IsNullOrWhiteSpace(sord) ? "asc" : sord;
+            var searchColumn = string.IsNullOrWhiteSpace(sidx) ? "LastSeen" : sidx;
+            var searchOrder = string.IsNullOrWhiteSpace(sord) ? "desc" : sord;
 
             switch (searchColumn)
             {
@@ -107,8 +106,7 @@ namespace XI.Portal.Web.Controllers
             var playersFilterModel = new PlayersFilterModel
             {
                 Filter = PlayersFilterModel.FilterType.IpAddress,
-                FilterString = searchString,
-                Order = PlayersFilterModel.OrderBy.LastSeenDesc
+                FilterString = searchString
             };
 
             var playerListCount = await playersList.GetPlayerListCount(playersFilterModel);
