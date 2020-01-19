@@ -36,7 +36,51 @@ namespace XI.Portal.Web.Navigation
 
             switch (primaryGroup)
             {
-                case XtremeIdiotsGroups.Webmaster:
+                case XtremeIdiotsGroups.RegisteredUser:
+                case XtremeIdiotsGroups.InactiveRegisteredUser:
+                case XtremeIdiotsGroups.ClanMember:
+                case XtremeIdiotsGroups.InactiveClanMember:
+                    //All Users
+                    HomeMenu(menuItems);
+                    ServersMenu(menuItems, false);
+                    CommunityMenu(menuItems);
+                    DemoManagerMenu(menuItems);
+                    MapsMenu(menuItems);
+                    AnalyticsMenu(menuItems);
+                    break;
+                case XtremeIdiotsGroups.ArmaModerator:
+                case XtremeIdiotsGroups.Cod2Moderator:
+                case XtremeIdiotsGroups.Cod4Moderator:
+                case XtremeIdiotsGroups.Cod5Moderator:
+                case XtremeIdiotsGroups.InsurgencyModerator:
+                case XtremeIdiotsGroups.MinecraftModerator:
+                case XtremeIdiotsGroups.RustModerator:
+                case XtremeIdiotsGroups.ArmaAdmin:
+                case XtremeIdiotsGroups.Cod2Admin:
+                case XtremeIdiotsGroups.Cod4Admin:
+                case XtremeIdiotsGroups.Cod5Admin:
+                case XtremeIdiotsGroups.InsurgencyAdmin:
+                case XtremeIdiotsGroups.MinecraftAdmin:
+                case XtremeIdiotsGroups.RustAdmin:
+                case XtremeIdiotsGroups.ArmaHeadAdmin:
+                case XtremeIdiotsGroups.Cod2HeadAdmin:
+                case XtremeIdiotsGroups.Cod4HeadAdmin:
+                case XtremeIdiotsGroups.Cod5HeadAdmin:
+                case XtremeIdiotsGroups.InsurgencyHeadAdmin:
+                case XtremeIdiotsGroups.MinecraftHeadAdmin:
+                case XtremeIdiotsGroups.RustHeadAdmin:
+                    //All Users
+                    HomeMenu(menuItems);
+                    ServersMenu(menuItems, true);
+                    CommunityMenu(menuItems);
+                    DemoManagerMenu(menuItems);
+                    MapsMenu(menuItems);
+                    AnalyticsMenu(menuItems);
+
+                    //Admins
+                    PlayersMenu(menuItems);
+                    MonitorMenu(menuItems);
+                    break;
                 case XtremeIdiotsGroups.SeniorAdmin:
                     //All Users
                     HomeMenu(menuItems);
@@ -59,43 +103,6 @@ namespace XI.Portal.Web.Navigation
                     AdmUsersMenu(menuItems);
                     AdmLogsMenu(menuItems);
                     AdmMaintenanceMenu(menuItems);
-                    break;
-                case XtremeIdiotsGroups.Cod2Admin:
-                case XtremeIdiotsGroups.Cod4Admin:
-                case XtremeIdiotsGroups.Cod5Admin:
-                case XtremeIdiotsGroups.CrysisAdmin:
-                case XtremeIdiotsGroups.Cod2HeadAdmin:
-                case XtremeIdiotsGroups.Cod4HeadAdmin:
-                case XtremeIdiotsGroups.Cod5HeadAdmin:
-                case XtremeIdiotsGroups.CrysisHeadAdmin:
-                case XtremeIdiotsGroups.BattlefieldHeadAdmin:
-                case XtremeIdiotsGroups.BattlefieldAdmin:
-                case XtremeIdiotsGroups.MinecraftAdmin:
-                case XtremeIdiotsGroups.MinecraftHeadAdmin:
-                case XtremeIdiotsGroups.InsurgencyAdmin:
-                case XtremeIdiotsGroups.InsurgencyHeadAdmin:
-                case XtremeIdiotsGroups.Rs2Admin:
-                case XtremeIdiotsGroups.Rs2HeadAdmin:
-                    //All Users
-                    HomeMenu(menuItems);
-                    ServersMenu(menuItems, true);
-                    CommunityMenu(menuItems);
-                    DemoManagerMenu(menuItems);
-                    MapsMenu(menuItems);
-                    AnalyticsMenu(menuItems);
-
-                    //Admins
-                    PlayersMenu(menuItems);
-                    MonitorMenu(menuItems);
-                    break;
-                default:
-                    //All Users
-                    HomeMenu(menuItems);
-                    ServersMenu(menuItems, false);
-                    CommunityMenu(menuItems);
-                    DemoManagerMenu(menuItems);
-                    MapsMenu(menuItems);
-                    AnalyticsMenu(menuItems);
                     break;
             }
 

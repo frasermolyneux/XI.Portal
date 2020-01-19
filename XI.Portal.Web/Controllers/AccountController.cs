@@ -37,10 +37,15 @@ namespace XI.Portal.Web.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> LogOff()
         {
-            await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(), "User has logged off");
+            if (User.Identity.IsAuthenticated)
+            {
+                await DatabaseLogger.CreateUserLogAsync(User.Identity.GetUserId(), "User has logged off");
+            }
+            
             authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Landing");
         }
