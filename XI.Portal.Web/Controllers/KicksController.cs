@@ -15,7 +15,7 @@ using XI.Portal.Web.ViewModels.Kicks;
 
 namespace XI.Portal.Web.Controllers
 {
-    [Authorize(Roles = XtremeIdiotsRoles.Admins)]
+    [Authorize(Roles = XtremeIdiotsRoles.AdminAndModerators)]
     public class KicksController : BaseController
     {
         private readonly IManageTopics manageTopics;

@@ -58,15 +58,22 @@
                                 <div>
                                     <h4>Perform Admin Action:</h4>
                                     <ul>
-                                        <li>@Html.ActionLink("Add Observation", "Create", "Observations", new { id = Model.Player.PlayerId }, new { })</li>
-                                        <li>@Html.ActionLink("Add Warning", "Create", "Warnings", new { id = Model.Player.PlayerId }, new { })</li>
-                                        <li>@Html.ActionLink("Add Kick", "Create", "Kicks", new { id = Model.Player.PlayerId }, new { })</li>
-                                        <li>@Html.ActionLink("Add TempBan", "Create", "TempBans", new { id = Model.Player.PlayerId }, new { })</li>
-                                        <li>@Html.ActionLink("Add Ban", "Create", "Bans", new { id = Model.Player.PlayerId }, new { })</li>
+                                        @if (User.Identity.IsInAdminOrModeratorRole())
+                                        {
+                                            <li>@Html.ActionLink("Add Observation", "Create", "Observations", new {id = Model.Player.PlayerId}, new {})</li>
+                                            <li>@Html.ActionLink("Add Warning", "Create", "Warnings", new {id = Model.Player.PlayerId}, new {})</li>
+                                            <li>@Html.ActionLink("Add Kick", "Create", "Kicks", new {id = Model.Player.PlayerId}, new {})</li>
+                                        }
+                                        
+                                        @if (User.Identity.IsInAdminRole())
+                                        {
+                                            <li>@Html.ActionLink("Add TempBan", "Create", "TempBans", new {id = Model.Player.PlayerId}, new {})</li>
+                                            <li>@Html.ActionLink("Add Ban", "Create", "Bans", new {id = Model.Player.PlayerId}, new {})</li>
+                                        }
 
                                         @if (User.Identity.IsInSeniorAdminRole())
                                         {
-                                            <li>@Html.ActionLink("Delete Player", "Delete", "Players", new { id = Model.Player.PlayerId }, new { })</li>
+                                            <li>@Html.ActionLink("Delete Player", "Delete", "Players", new {id = Model.Player.PlayerId}, new {})</li>
                                         }
 
                                     </ul>

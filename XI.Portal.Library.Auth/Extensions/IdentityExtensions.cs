@@ -69,6 +69,12 @@ namespace XI.Portal.Library.Auth.Extensions
             return XtremeIdiotsRolesHelper.IsGroupIdAdminOrModerator(Convert.ToInt32(identity.XtremeIdiotsPrimaryGroupId()));
         }
 
+        public static bool IsInAdminRole(this IIdentity identity)
+        {
+            if (!identity.IsAuthenticated) return false;
+            return XtremeIdiotsRolesHelper.IsGroupIdAdmin(Convert.ToInt32(identity.XtremeIdiotsPrimaryGroupId()));
+        }
+
         public static bool IsInSeniorAdminRole(this IIdentity identity)
         {
             if (!identity.IsAuthenticated) return false;

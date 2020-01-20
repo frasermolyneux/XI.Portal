@@ -15,7 +15,7 @@ using XI.Portal.Web.ViewModels.Warnings;
 
 namespace XI.Portal.Web.Controllers
 {
-    [Authorize(Roles = XtremeIdiotsRoles.Admins)]
+    [Authorize(Roles = XtremeIdiotsRoles.AdminAndModerators)]
     public class WarningsController : BaseController
     {
         private readonly IManageTopics manageTopics;

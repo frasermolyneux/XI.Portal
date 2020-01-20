@@ -15,7 +15,7 @@ using XI.Portal.Web.ViewModels.Observations;
 
 namespace XI.Portal.Web.Controllers
 {
-    [Authorize(Roles = XtremeIdiotsRoles.Admins)]
+    [Authorize(Roles = XtremeIdiotsRoles.AdminAndModerators)]
     public class ObservationsController : BaseController
     {
         private readonly IManageTopics manageTopics;
