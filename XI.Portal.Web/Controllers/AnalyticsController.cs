@@ -55,5 +55,11 @@ namespace XI.Portal.Web.Controllers
             var data = await playersAnalytics.GetNewDailyPlayersPerGame(cutoff);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+
+        public async Task<ActionResult> GetPlayersDropOffPerGameJson(DateTime cutoff)
+        {
+            var data = await playersAnalytics.GetPlayersDropOffPerGameJson(cutoff);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -64,5 +64,28 @@ namespace XI.Portal.Library.Analytics.Providers
                 return groupedPlayers;
             }
         }
+
+        public async Task<List<PlayerAnalyticPerGameEntry>> GetPlayersDropOffPerGameJson(DateTime cutoff)
+        {
+            using (var context = contextProvider.GetContext())
+            {
+                var players = await context.Players
+                    .Where(p => p.LastSeen > cutoff)
+                    .Select(p => new { p.LastSeen, p.GameType })
+                    .OrderBy(p => p)
+                    .ToListAsync();
+
+                var groupedPlayers = players.GroupBy(p => new DateTime(p.LastSeen.Year, p.LastSeen.Month, p.LastSeen.Day))
+                    .Select(g => new PlayerAnalyticPerGameEntry
+                    {
+                        Created = g.Key,
+                        GameCounts = g.GroupBy(i => i.GameType.ToString())
+                            .Select(i => new { Type = i.Key, Count = i.Count() })
+                            .ToDictionary(a => a.Type, a => a.Count)
+                    }).ToList();
+
+                return groupedPlayers;
+            }
+        }
     }
 }

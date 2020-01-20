@@ -9,5 +9,6 @@ namespace XI.Portal.Library.Analytics.Interfaces
     {
         Task<List<PlayerAnalyticEntry>> GetCumulativeDailyPlayers(DateTime cutoff);
         Task<List<PlayerAnalyticPerGameEntry>> GetNewDailyPlayersPerGame(DateTime cutoff);
+        Task<List<PlayerAnalyticPerGameEntry>> GetPlayersDropOffPerGameJson(DateTime cutoff);
     }
 }

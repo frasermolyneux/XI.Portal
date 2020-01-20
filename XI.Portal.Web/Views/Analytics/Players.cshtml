@@ -17,46 +17,56 @@
     }
 }
 
-<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="wrapper wrapper-content animated fadeInRight">
 
-    <h1>Player Analytics</h1>
+        <h1>Player Analytics</h1>
 
-    <div class="row">
-        <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-12">
 
-            <div class="ibox">
-                <div class="form-group" id="data_1">
-                    <div class="input-group date">
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input readonly="readonly" id="filterDate" type="text" class="form-control" value="@filterRange.ToString("MM/dd/yyyy")">
+                <div class="ibox">
+                    <div class="form-group" id="data_1">
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input readonly="readonly" id="filterDate" type="text" class="form-control" value="@filterRange.ToString("MM/dd/yyyy")">
+                        </div>
+                        <label class="font-normal">Select the cutoff date for analytics</label>
                     </div>
-                    <label class="font-normal">Select the cutoff date for analytics</label>
                 </div>
-            </div>
 
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="ibox">
-                <div class="ibox-content">
-                    <div id="PlayersAnalytics"></div>
-                </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="ibox">
-                <div class="ibox-content">
-                    <div id="PlayersPerGameAnalytics"></div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div id="PlayersAnalytics"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-</div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div id="PlayersPerGameAnalytics"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div id="PlayersDropOffPerGameAnalytics"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
 @section Styles
 {
@@ -73,6 +83,7 @@
         google.charts.load('current', { 'packages': ['corechart'] });
         google.charts.setOnLoadCallback(drawPlayersChart);
         google.charts.setOnLoadCallback(drawPlayersPerGameChart);
+        google.charts.setOnLoadCallback(drawPlayerDropOffPerGameChart);
 
         function drawPlayersChart() {
 
@@ -163,6 +174,58 @@
                     };
 
                     var chart = new google.visualization.LineChart(document.getElementById('PlayersPerGameAnalytics'));
+                    chart.draw(data, options);
+                });
+        }
+
+        function drawPlayerDropOffPerGameChart() {
+
+            var cutoff = $("#filterDate").val();
+
+            $.getJSON("/Analytics/GetPlayersDropOffPerGameJson?cutoff=" + cutoff,
+                function (jsonData) {
+
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('date', 'Date');
+                    data.addColumn('number', 'CallOfDuty2');
+                    data.addColumn('number', 'CallOfDuty4');
+                    data.addColumn('number', 'CallOfDuty5');
+                    data.addColumn('number', 'Insurgency');
+
+                    $.each(jsonData,
+                        function (key, val) {
+
+                            var cod2 = val.GameCounts.CallOfDuty2;
+                            var cod4 = val.GameCounts.CallOfDuty4;
+                            var cod5 = val.GameCounts.CallOfDuty5;
+                            var insurgency = val.GameCounts.Insurgency;
+
+                            data.addRow([
+                                moment(val.Created).toDate(),
+                                cod2,
+                                cod4,
+                                cod5,
+                                insurgency
+                            ]);
+                        });
+
+                    var chartWidth = $('#PlayersDropOffPerGameAnalytics').width();
+
+                    var options = {
+                        title: 'Drop off players per day since ' + cutoff,
+                        width: chartWidth,
+                        height: 500,
+                        hAxis: {
+                            format: 'M/d/yy',
+                            gridlines: { count: 30 }
+                        },
+                        vAxis: {
+                            gridlines: { color: 'none' },
+                            minValue: 0
+                        }
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById('PlayersDropOffPerGameAnalytics'));
                     chart.draw(data, options);
                 });
         }
