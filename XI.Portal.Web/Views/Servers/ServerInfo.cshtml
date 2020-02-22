@@ -31,7 +31,7 @@
 
                     @if (Model.Map != null)
                     {
-                        <hr/>
+                        <hr />
 
                         <h5>@Model.Map.MapName Files:</h5>
                         <ul>
@@ -41,6 +41,24 @@
 
                                 <li>
                                     <a href="@link">@mapFile.FileName</a>
+                                </li>
+                            }
+                        </ul>
+
+                        <hr />
+
+                        <h5>Download Full Rotation:</h5>
+                        <ul>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li>
+                                    @Html.ActionLink("Full Rotation", "DownloadFullRotation", "Maps", new { id = @Model.GameServer.ServerId }, new { })
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    You must sign in to be able to download the full rotation.
                                 </li>
                             }
                         </ul>
