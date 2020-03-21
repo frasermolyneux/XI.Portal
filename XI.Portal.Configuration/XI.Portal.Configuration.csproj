@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="AwsSecrets\AwsSecretsConfiguration.cs" />
     <Compile Include="AwsSecrets\AwsSecretsConfigurationKeys.cs" />
+    <Compile Include="Cache\AwsSecretsCache.cs" />
     <Compile Include="Database\DatabaseConfiguration.cs" />
     <Compile Include="Database\DatabaseConfigurationKeys.cs" />
     <Compile Include="Demos\DemosConfiguration.cs" />
@@ -105,5 +106,6 @@
   <ItemGroup>
     <Analyzer Include="..\packages\AWSSDK.SecretsManager.3.3.101.56\analyzers\dotnet\cs\AWSSDK.SecretsManager.CodeAnalysis.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
