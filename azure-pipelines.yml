@@ -8,16 +8,6 @@ steps:
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
 
-- task: bleddynrichards.Assembly-Info-Task.Assembly-Info-Task.Assembly-Info-NetFramework@2
-  displayName: 'Set Assembly Manifest Data'
-  inputs:
-    Product: XI.Portal
-    Description: 'XtremeIdiots Portal Solution'
-    Company: 'Molyneux Consulting Ltd'
-    Copyright: 'Fraser Molyneux'
-    VersionNumber: '$(Build.BuildNumber)'
-    FileVersionNumber: '$(Build.BuildNumber)'
-
 - task: VSBuild@1
   displayName: 'Build solution **\*.sln Web'
   inputs:
