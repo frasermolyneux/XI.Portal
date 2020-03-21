@@ -1,0 +1,37 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-2019'
+
+steps:
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+
+- task: bleddynrichards.Assembly-Info-Task.Assembly-Info-Task.Assembly-Info-NetFramework@2
+  displayName: 'Set Assembly Manifest Data'
+  inputs:
+    Product: XI.Portal
+    Description: 'XtremeIdiots Portal Solution'
+    Company: 'Molyneux Consulting Ltd'
+    Copyright: 'Fraser Molyneux'
+    VersionNumber: '$(Build.BuildNumber)'
+    FileVersionNumber: '$(Build.BuildNumber)'
+
+- task: VSBuild@1
+  displayName: 'Build solution **\*.sln Web'
+  inputs:
+    solution: XI.Portal.sln
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactstagingdirectory)\\" /p:DeployIisAppPath="Default Web Site/"'
+    platform: 'Any CPU'
+    configuration: Release
+
+- task: PowerShell@2
+  displayName: 'Build/Rename-TokenFiles.ps1'
+  inputs:
+    targetType: filePath
+    filePath: './Build/Rename-TokenFiles.ps1'
+    arguments: '-targetDirectory $(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
