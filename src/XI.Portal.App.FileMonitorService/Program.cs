@@ -10,13 +10,11 @@ using XI.Portal.Configuration.AwsSecrets;
 using XI.Portal.Configuration.Database;
 using XI.Portal.Configuration.Demos;
 using XI.Portal.Configuration.Forums;
-using XI.Portal.Configuration.GeoLocation;
 using XI.Portal.Configuration.Interfaces;
 using XI.Portal.Configuration.LogProxyPlugin;
 using XI.Portal.Configuration.Maps;
 using XI.Portal.Configuration.Providers;
 using XI.Portal.Data.Core.Context;
-using XI.Portal.Library.GeoLocation.Repository;
 using XI.Portal.Library.Logging;
 using XI.Portal.Library.Rcon.Factories;
 using XI.Portal.Library.Rcon.Interfaces;
@@ -56,7 +54,6 @@ namespace XI.Portal.App.FileMonitorService
             container.RegisterType<IDatabaseConfiguration, DatabaseConfiguration>();
             container.RegisterType<IDemosConfiguration, DemosConfiguration>();
             container.RegisterType<IForumsConfiguration, ForumsConfiguration>();
-            container.RegisterType<IGeoLocationConfiguration, GeoLocationConfiguration>();
             container.RegisterType<ILogProxyPluginConfiguration, LogProxyPluginConfiguration>();
             container.RegisterType<IMapsConfiguration, MapsConfiguration>();
 
@@ -67,8 +64,6 @@ namespace XI.Portal.App.FileMonitorService
             container.RegisterType<IFtpFileMonitorFactory, FtpFileMonitorFactory>();
             container.RegisterType<IParserFactory, ParserFactory>();
             container.RegisterType<IRconClientFactory, RconClientFactory>();
-            container.RegisterType<IGeoLocationApiRepository, GeoLocationApiRepository>();
-            container.RegisterType<IIpAddressCaching, IpAddressCaching>();
             container.RegisterType<IPlayerCaching, PlayerCaching>();
 
             container.RegisterType<IPlugin, ChatMonitorPlugin>();

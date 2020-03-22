@@ -1,4 +1,5 @@
 ﻿using System;
+using FM.GeoLocation.Client;
 using Serilog;
 using Topshelf;
 using Topshelf.Unity;
@@ -16,7 +17,6 @@ using XI.Portal.Configuration.LogProxyPlugin;
 using XI.Portal.Configuration.Maps;
 using XI.Portal.Configuration.Providers;
 using XI.Portal.Data.Core.Context;
-using XI.Portal.Library.GeoLocation.Repository;
 using XI.Portal.Library.Logging;
 using XI.Portal.Library.Rcon.Factories;
 using XI.Portal.Library.Rcon.Interfaces;
@@ -49,7 +49,6 @@ namespace XI.Portal.App.RconMonitorService
             container.RegisterType<IDatabaseConfiguration, DatabaseConfiguration>();
             container.RegisterType<IDemosConfiguration, DemosConfiguration>();
             container.RegisterType<IForumsConfiguration, ForumsConfiguration>();
-            container.RegisterType<IGeoLocationConfiguration, GeoLocationConfiguration>();
             container.RegisterType<ILogProxyPluginConfiguration, LogProxyPluginConfiguration>();
             container.RegisterType<IMapsConfiguration, MapsConfiguration>();
 
@@ -58,9 +57,11 @@ namespace XI.Portal.App.RconMonitorService
             container.RegisterType<IDatabaseLogger, DatabaseLogger>();
             container.RegisterType<IRconClientFactory, RconClientFactory>();
             container.RegisterType<IRconMonitorFactory, RconMonitorFactory>();
-            container.RegisterType<IGeoLocationApiRepository, GeoLocationApiRepository>();
-            container.RegisterType<IIpAddressCaching, IpAddressCaching>();
             container.RegisterType<IPlayerCaching, PlayerCaching>();
+
+            // FM.GeoLocation
+            container.RegisterType<IGeoLocationClientConfiguration, GeoLocationClientConfig>();
+            container.RegisterType<IGeoLocationClient, GeoLocationClient>();
 
             HostFactory.Run(x =>
             {

@@ -4,15 +4,15 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using FM.GeoLocation.Client;
+using FM.GeoLocation.Contract.Models;
 using Microsoft.AspNet.Identity;
 using XI.Portal.BLL.Web.Interfaces;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Data.Contracts.FilterModels;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
 using XI.Portal.Library.Auth.XtremeIdiots;
-using XI.Portal.Data.CommonTypes;
-using XI.Portal.Library.GeoLocation.Extensions;
-using XI.Portal.Library.GeoLocation.Repository;
 using XI.Portal.Library.Logging;
 using XI.Portal.Web.ViewModels.Players;
 
@@ -21,20 +21,20 @@ namespace XI.Portal.Web.Controllers
     [Authorize(Roles = XtremeIdiotsRoles.AdminAndModerators)]
     public class PlayersController : BaseController
     {
-        private readonly IGeoLocationApiRepository geoLocationApiRepository;
-        private readonly IPortalIndex portalIndex;
-        private readonly IPlayersList playersList;
         private readonly IAdminActionsList adminActionList;
+        private readonly IGeoLocationClient geoLocationClient;
+        private readonly IPlayersList playersList;
+        private readonly IPortalIndex portalIndex;
 
         public PlayersController(
             IContextProvider contextProvider,
             IDatabaseLogger databaseLogger,
-            IGeoLocationApiRepository geoLocationApiRepository, 
+            IGeoLocationClient geoLocationClient,
             IPortalIndex portalIndex,
             IPlayersList playersList,
             IAdminActionsList adminActionList) : base(contextProvider, databaseLogger)
         {
-            this.geoLocationApiRepository = geoLocationApiRepository ?? throw new ArgumentNullException(nameof(geoLocationApiRepository));
+            this.geoLocationClient = geoLocationClient ?? throw new ArgumentNullException(nameof(geoLocationClient));
             this.portalIndex = portalIndex ?? throw new ArgumentNullException(nameof(portalIndex));
             this.playersList = playersList ?? throw new ArgumentNullException(nameof(playersList));
             this.adminActionList = adminActionList ?? throw new ArgumentNullException(nameof(adminActionList));
@@ -53,7 +53,8 @@ namespace XI.Portal.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetPlayersAjax(GameType id, string sidx, string sord, int page, int rows, string searchString)
+        public async Task<ActionResult> GetPlayersAjax(GameType id, string sidx, string sord, int page, int rows,
+            string searchString)
         {
             var playersFilterModel = new PlayersFilterModel
             {
@@ -73,13 +74,19 @@ namespace XI.Portal.Web.Controllers
             switch (searchColumn)
             {
                 case "Username":
-                    playersFilterModel.Order = searchOrder == "asc" ? PlayersFilterModel.OrderBy.UsernameAsc : PlayersFilterModel.OrderBy.UsernameDesc;
+                    playersFilterModel.Order = searchOrder == "asc"
+                        ? PlayersFilterModel.OrderBy.UsernameAsc
+                        : PlayersFilterModel.OrderBy.UsernameDesc;
                     break;
                 case "FirstSeen":
-                    playersFilterModel.Order = searchOrder == "asc" ? PlayersFilterModel.OrderBy.FirstSeenAsc : PlayersFilterModel.OrderBy.FirstSeenDesc;
+                    playersFilterModel.Order = searchOrder == "asc"
+                        ? PlayersFilterModel.OrderBy.FirstSeenAsc
+                        : PlayersFilterModel.OrderBy.FirstSeenDesc;
                     break;
                 case "LastSeen":
-                    playersFilterModel.Order = searchOrder == "asc" ? PlayersFilterModel.OrderBy.LastSeenAsc : PlayersFilterModel.OrderBy.LastSeenDesc;
+                    playersFilterModel.Order = searchOrder == "asc"
+                        ? PlayersFilterModel.OrderBy.LastSeenAsc
+                        : PlayersFilterModel.OrderBy.LastSeenDesc;
                     break;
             }
 
@@ -101,7 +108,8 @@ namespace XI.Portal.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetPlayersIPSearchAjax(string sidx, string sord, int page, int rows, string searchString)
+        public async Task<ActionResult> GetPlayersIPSearchAjax(string sidx, string sord, int page, int rows,
+            string searchString)
         {
             var playersFilterModel = new PlayersFilterModel
             {
@@ -120,7 +128,9 @@ namespace XI.Portal.Web.Controllers
             switch (searchColumn)
             {
                 case "Username":
-                    playersFilterModel.Order = searchOrder == "asc" ? PlayersFilterModel.OrderBy.UsernameAsc : PlayersFilterModel.OrderBy.UsernameDesc;
+                    playersFilterModel.Order = searchOrder == "asc"
+                        ? PlayersFilterModel.OrderBy.UsernameAsc
+                        : PlayersFilterModel.OrderBy.UsernameDesc;
                     break;
             }
 
@@ -190,24 +200,34 @@ namespace XI.Portal.Web.Controllers
                         Player = player,
                         Aliases = await context.PlayerAliases.Where(pa => pa.Player.PlayerId == player.PlayerId)
                             .OrderByDescending(pa => pa.LastUsed).ToListAsync(),
-
-                        IpAddresses = await context.PlayerIpAddresses.Where(pip => pip.Player.PlayerId == player.PlayerId)
+                        IpAddresses = await context.PlayerIpAddresses
+                            .Where(pip => pip.Player.PlayerId == player.PlayerId)
                             .OrderByDescending(pip => pip.LastUsed).ToListAsync(),
-
-                        AdminActions = await context.AdminActions.Include(aa => aa.Admin).Where(aa => aa.Player.PlayerId == player.PlayerId)
-                            .OrderByDescending(aa => aa.Created).ToListAsync()
+                        AdminActions = await context.AdminActions.Include(aa => aa.Admin)
+                            .Where(aa => aa.Player.PlayerId == player.PlayerId)
+                            .OrderByDescending(aa => aa.Created).ToListAsync(),
+                        RelatedIpAddresses = new List<PlayerIpAddress>()
                     };
 
-                    model.RelatedIpAddresses = new List<PlayerIpAddress>();
                     foreach (var playerIpAddress in model.IpAddresses)
                     {
-                        var relatedPlayersFromIp = await context.PlayerIpAddresses.Include(ip => ip.Player).Where(ip => ip.Address == playerIpAddress.Address && ip.Player.PlayerId != idAsGuid).ToListAsync();
+                        var relatedPlayersFromIp = await context.PlayerIpAddresses.Include(ip => ip.Player)
+                            .Where(ip => ip.Address == playerIpAddress.Address && ip.Player.PlayerId != idAsGuid)
+                            .ToListAsync();
                         model.RelatedIpAddresses.AddRange(relatedPlayersFromIp);
                     }
 
-                    var playerLocation = await geoLocationApiRepository.GetLocation(player.IpAddress);
+                    GeoLocationDto playerLocation = null;
+                    try
+                    {
+                        playerLocation = await geoLocationClient.LookupAddress(player.IpAddress);
+                    }
+                    catch (Exception)
+                    {
+                        // swallow
+                    }
 
-                    if (!playerLocation.IsDefault())
+                    if (playerLocation != null)
                         model.Location = playerLocation;
 
                     return View(model);
@@ -255,9 +275,12 @@ namespace XI.Portal.Web.Controllers
                     return RedirectToAction("Home");
 
                 context.ChatLogs.RemoveRange(context.ChatLogs.Where(cl => cl.Player.PlayerId == player.PlayerId));
-                context.PlayerAliases.RemoveRange(context.PlayerAliases.Where(pa => pa.Player.PlayerId == player.PlayerId));
-                context.PlayerIpAddresses.RemoveRange(context.PlayerIpAddresses.Where(pip => pip.Player.PlayerId == player.PlayerId));
-                context.AdminActions.RemoveRange(context.AdminActions.Where(aa => aa.Player.PlayerId == player.PlayerId));
+                context.PlayerAliases.RemoveRange(context.PlayerAliases.Where(pa =>
+                    pa.Player.PlayerId == player.PlayerId));
+                context.PlayerIpAddresses.RemoveRange(
+                    context.PlayerIpAddresses.Where(pip => pip.Player.PlayerId == player.PlayerId));
+                context.AdminActions.RemoveRange(
+                    context.AdminActions.Where(aa => aa.Player.PlayerId == player.PlayerId));
                 context.Players.Remove(player);
 
                 await context.SaveChangesAsync();

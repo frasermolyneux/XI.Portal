@@ -55,7 +55,6 @@ namespace XI.Portal.App.SyncService
             container.RegisterType<IDatabaseConfiguration, DatabaseConfiguration>();
             container.RegisterType<IDemosConfiguration, DemosConfiguration>();
             container.RegisterType<IForumsConfiguration, ForumsConfiguration>();
-            container.RegisterType<IGeoLocationConfiguration, GeoLocationConfiguration>();
             container.RegisterType<ILogProxyPluginConfiguration, LogProxyPluginConfiguration>();
             container.RegisterType<IMapsConfiguration, MapsConfiguration>();
 

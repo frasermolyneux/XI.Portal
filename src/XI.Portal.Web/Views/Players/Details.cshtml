@@ -42,6 +42,15 @@
                                     <span class="pull-right"> @Model.Player.IpAddress</span>
                                     IP Address
                                 </li>
+
+                                @if (Model.Location != null)
+                                {
+                                    <li class="list-group-item">
+                                        <span class="pull-right"> @Model.Location.Country / @Model.Location.City</span>
+                                        Country/City
+                                    </li>
+                                }
+
                                 <li class="list-group-item">
                                     <span class="pull-right"> @Html.GuidLink(Model.Player.Guid, Model.Player.GameType)</span>
                                     GUID
@@ -354,26 +363,23 @@
 @section Scripts {
     <script>
         function initMap() {
-            @if (Model.Location == null)
+            @if (Model.Location != null)
             {
-                <text>var myLatLng = { lat: 0, lng: 0 };</text>
-            }
-            else
-            {
-                <text>var myLatLng = { lat: @Model.Location.Latitude, lng: @Model.Location.Longitude };</text>
-            }
+                <text>var myLatLng = { lat: @Model.Location.Latitude, lng: @Model.Location.Longitude };
 
-            var map = new google.maps.Map(document.getElementById('map'),
+                var map = new google.maps.Map(document.getElementById('map'),
                 {
                     zoom: 4,
                     center: myLatLng
                 });
 
-            var marker = new google.maps.Marker({
-                position: myLatLng,
-                map: map,
-                title: 'Player Location'
-            });
+                var marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                    title: 'Player Location'
+                });
+                </text>
+            }
         }
     </script>
 

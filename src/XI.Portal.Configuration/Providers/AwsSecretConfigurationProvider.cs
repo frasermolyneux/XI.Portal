@@ -25,7 +25,7 @@ namespace XI.Portal.Configuration.Providers
                 new BasicAWSCredentials(awsSecretsConfiguration.AccessKey, awsSecretsConfiguration.SecretKey),
                 awsSecretsConfiguration.Region);
 
-            if (AwsSecretsCache.Cached >= DateTime.UtcNow.AddMinutes(-15))
+            if (AwsSecretsCache.CachedSecrets.ContainsKey(configurationKey) && AwsSecretsCache.Cached >= DateTime.UtcNow.AddMinutes(-15))
                 return AwsSecretsCache.CachedSecrets[configurationKey];
 
             var secretValue = client.GetSecretValueAsync(new GetSecretValueRequest
@@ -35,7 +35,7 @@ namespace XI.Portal.Configuration.Providers
             AwsSecretsCache.CachedSecrets = secrets;
             AwsSecretsCache.Cached = DateTime.UtcNow;
 
-            return AwsSecretsCache.CachedSecrets[configurationKey];
+            return AwsSecretsCache.CachedSecrets.ContainsKey(configurationKey) ? AwsSecretsCache.CachedSecrets[configurationKey] : null;
         }
     }
 }

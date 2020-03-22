@@ -37,8 +37,20 @@
     <Reference Include="AWSSDK.SecretsManager, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
       <HintPath>..\packages\AWSSDK.SecretsManager.3.3.101.56\lib\net45\AWSSDK.SecretsManager.dll</HintPath>
     </Reference>
+    <Reference Include="FM.GeoLocation.Client, Version=1.0.3623.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FM.GeoLocation.Client.1.0.3623\lib\netstandard2.0\FM.GeoLocation.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="FM.GeoLocation.Contract, Version=1.0.3623.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FM.GeoLocation.Contract.1.0.3623\lib\netstandard2.0\FM.GeoLocation.Contract.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Polly, Version=7.0.0.0, Culture=neutral, PublicKeyToken=c8a3ffc3f8f825cc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Polly.7.2.0\lib\net472\Polly.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.9.0\lib\net46\Serilog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -79,8 +91,7 @@
     <Compile Include="Demos\DemosConfigurationKeys.cs" />
     <Compile Include="Forums\ForumsConfiguration.cs" />
     <Compile Include="Forums\ForumsConfigurationKeys.cs" />
-    <Compile Include="GeoLocation\GeoLocationConfiguration.cs" />
-    <Compile Include="GeoLocation\GeoLocationConfigurationKeys.cs" />
+    <Compile Include="GeoLocation\GeoLocationClientConfig.cs" />
     <Compile Include="Interfaces\IAwsSecretConfigurationProvider.cs" />
     <Compile Include="Interfaces\IAwsSecretsConfiguration.cs" />
     <Compile Include="Interfaces\IConfigurationProvider.cs" />
