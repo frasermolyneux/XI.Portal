@@ -1,5 +1,5 @@
-﻿using Serilog;
-using System;
+﻿using System;
+using Serilog;
 using Topshelf;
 using Topshelf.Unity;
 using Unity;
@@ -88,6 +88,10 @@ namespace XI.Portal.App.FileMonitorService
 
                 x.RunAsLocalSystem();
                 x.UseAssemblyInfoForServiceInfo();
+
+                x.EnableServiceRecovery(service =>
+                    service.RestartService(TimeSpan.FromSeconds(30))
+                );
 
                 x.OnException(ex =>
                 {
