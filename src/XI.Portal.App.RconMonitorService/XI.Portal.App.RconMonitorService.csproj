@@ -185,6 +185,7 @@
     <Compile Include="RconMonitors\Cod4RconMonitor.cs" />
     <Compile Include="RconMonitors\Cod5RconMonitor.cs" />
     <Compile Include="RconMonitors\InsurgencyRconMonitor.cs" />
+    <Compile Include="UnityConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
