@@ -5,6 +5,7 @@ using Serilog;
 using System;
 using System.Data.Entity;
 using System.Web;
+using FM.GeoLocation.Client;
 using Unity;
 using Unity.Injection;
 using Unity.Lifetime;
@@ -29,7 +30,6 @@ using XI.Portal.Library.Auth;
 using XI.Portal.Library.Forums;
 using XI.Portal.Library.Ftp.Helpers;
 using XI.Portal.Library.Ftp.Interfaces;
-using XI.Portal.Library.GeoLocation.Repository;
 using XI.Portal.Library.Logging;
 using XI.Portal.Library.Rcon.Factories;
 using XI.Portal.Library.Rcon.Interfaces;
@@ -97,7 +97,6 @@ namespace XI.Portal.Web
             container.RegisterType<IDatabaseConfiguration, DatabaseConfiguration>();
             container.RegisterType<IDemosConfiguration, DemosConfiguration>();
             container.RegisterType<IForumsConfiguration, ForumsConfiguration>();
-            container.RegisterType<IGeoLocationConfiguration, GeoLocationConfiguration>();
             container.RegisterType<ILogProxyPluginConfiguration, LogProxyPluginConfiguration>();
             container.RegisterType<IMapsConfiguration, MapsConfiguration>();
 
@@ -118,10 +117,13 @@ namespace XI.Portal.Web
             container.RegisterType<INavigationMenu, NavigationMenu>();
             container.RegisterType<IMapImageRepository, MapImageRepository>();
             container.RegisterType<IDatabaseLogger, DatabaseLogger>();
-            container.RegisterType<IGeoLocationApiRepository, GeoLocationApiRepository>();
             container.RegisterType<IMapRedirectRepository, MapRedirectRepository>();
             container.RegisterType<IManageTopics, ManageTopics>();
             container.RegisterType<IRconClientFactory, RconClientFactory>();
+
+            // FM.GeoLocation
+            container.RegisterType<IGeoLocationClientConfiguration, GeoLocationClientConfig>();
+            container.RegisterType<IGeoLocationClient, GeoLocationClient>();
 
             var contextProvider = container.Resolve<IDatabaseConfiguration>();
             container.RegisterType<DbContext, PortalContext>(new InjectionConstructor(contextProvider.PortalDbConnectionString));
