@@ -11,16 +11,16 @@ steps:
 - task: VSBuild@1
   displayName: 'Build solution **\*.sln Web'
   inputs:
-    solution: XI.Portal.sln
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactstagingdirectory)\\" /p:DeployIisAppPath="Default Web Site/"'
+    solution: './src/XI.Portal.sln'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.ArtifactStagingDirectory)\\" /p:DeployIisAppPath="Default Web Site/"'
     platform: 'Any CPU'
     configuration: Release
 
 - task: PowerShell@2
-  displayName: 'Build/Rename-TokenFiles.ps1'
+  displayName: 'build-scripts/Rename-TokenFiles.ps1'
   inputs:
     targetType: filePath
-    filePath: './Build/Rename-TokenFiles.ps1'
+    filePath: './build-scripts/Rename-TokenFiles.ps1'
     arguments: '-targetDirectory $(Build.ArtifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
