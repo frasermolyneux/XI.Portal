@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using FM.GeoLocation.Client;
 using Serilog;
+using XI.Portal.Data.CommonTypes;
 using XI.Portal.Data.Core.Context;
 using XI.Portal.Data.Core.Models;
-using XI.Portal.Data.CommonTypes;
-using XI.Portal.Library.GeoLocation.Extensions;
-using XI.Portal.Library.GeoLocation.Repository;
 using XI.Portal.Library.Logging;
 using XI.Portal.Plugins.Events;
 using XI.Portal.Plugins.Interfaces;
@@ -18,23 +17,20 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
     {
         private readonly IContextProvider contextProvider;
         private readonly IDatabaseLogger databaseLogger;
-        private readonly IGeoLocationApiRepository geoLocationApiRepository;
-        private readonly IIpAddressCaching ipAddressCaching;
-        private readonly IPlayerCaching playerCaching;
+        private readonly IGeoLocationClient geoLocationClient;
         private readonly ILogger logger;
+        private readonly IPlayerCaching playerCaching;
 
-        public PlayerInfoPlugin(ILogger logger, 
-            IContextProvider contextProvider, 
-            IDatabaseLogger databaseLogger, 
-            IGeoLocationApiRepository geoLocationApiRepository, 
-            IIpAddressCaching ipAddressCaching,
+        public PlayerInfoPlugin(ILogger logger,
+            IContextProvider contextProvider,
+            IDatabaseLogger databaseLogger,
+            IGeoLocationClient geoLocationClient,
             IPlayerCaching playerCaching)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
             this.databaseLogger = databaseLogger ?? throw new ArgumentNullException(nameof(databaseLogger));
-            this.geoLocationApiRepository = geoLocationApiRepository ?? throw new ArgumentNullException(nameof(geoLocationApiRepository));
-            this.ipAddressCaching = ipAddressCaching ?? throw new ArgumentNullException(nameof(ipAddressCaching));
+            this.geoLocationClient = geoLocationClient ?? throw new ArgumentNullException(nameof(geoLocationClient));
             this.playerCaching = playerCaching ?? throw new ArgumentNullException(nameof(playerCaching));
         }
 
@@ -49,7 +45,8 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
         {
             var eventArgs = (OnPlayerConnectedEventArgs) e;
 
-            logger.Information("[{serverName}] Player {name} connected with GUID {guid} at {timestamp}", eventArgs.ServerName, eventArgs.Name, eventArgs.Guid, DateTime.UtcNow);
+            logger.Information("[{serverName}] Player {name} connected with GUID {guid} at {timestamp}",
+                eventArgs.ServerName, eventArgs.Name, eventArgs.Guid, DateTime.UtcNow);
 
             EnsurePlayerExists(eventArgs.GameType, eventArgs.Guid, eventArgs.Name, eventArgs.ServerName);
         }
@@ -58,7 +55,8 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
         {
             var eventArgs = (OnPlayerDisconnectedEventArgs) e;
 
-            logger.Information("[{serverName}] Player {name} disconnected with GUID {guid} at {timestamp}", eventArgs.ServerName, eventArgs.Name, eventArgs.Guid, DateTime.UtcNow);
+            logger.Information("[{serverName}] Player {name} disconnected with GUID {guid} at {timestamp}",
+                eventArgs.ServerName, eventArgs.Name, eventArgs.Guid, DateTime.UtcNow);
 
             EnsurePlayerExists(eventArgs.GameType, eventArgs.Guid, eventArgs.Name, eventArgs.ServerName);
         }
@@ -80,7 +78,8 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                     HandleInsurgencyStatusRconResponse(eventArgs);
                     break;
                 default:
-                    logger.Warning("[{serverName}] Invalid game type {gameType} for Status Rcon Response", eventArgs.ServerName, eventArgs.GameType);
+                    logger.Warning("[{serverName}] Invalid game type {gameType} for Status Rcon Response",
+                        eventArgs.ServerName, eventArgs.GameType);
                     break;
             }
         }
@@ -91,16 +90,20 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
             switch (eventArgs.GameType)
             {
                 case GameType.CallOfDuty2:
-                    regex = new Regex("^\\s*([0-9]+)\\s+([0-9-]+)\\s+([0-9]+)\\s+([0-9]+)\\s+(.*?)\\s+([0-9]+?)\\s*((?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])):?(-?[0-9]{1,5})\\s*(-?[0-9]{1,5})\\s+([0-9]+)$");
+                    regex = new Regex(
+                        "^\\s*([0-9]+)\\s+([0-9-]+)\\s+([0-9]+)\\s+([0-9]+)\\s+(.*?)\\s+([0-9]+?)\\s*((?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])):?(-?[0-9]{1,5})\\s*(-?[0-9]{1,5})\\s+([0-9]+)$");
                     break;
                 case GameType.CallOfDuty4:
-                    regex = new Regex("^\\s*([0-9]+)\\s+([0-9-]+)\\s+([0-9]+)\\s+([0-9a-f]+)\\s+(.*?)\\s+([0-9]+?)\\s*((?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])):?(-?[0-9]{1,5})\\s*(-?[0-9]{1,5})\\s+([0-9]+)$");
+                    regex = new Regex(
+                        "^\\s*([0-9]+)\\s+([0-9-]+)\\s+([0-9]+)\\s+([0-9a-f]+)\\s+(.*?)\\s+([0-9]+?)\\s*((?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])):?(-?[0-9]{1,5})\\s*(-?[0-9]{1,5})\\s+([0-9]+)$");
                     break;
                 case GameType.CallOfDuty5:
-                    regex = new Regex("^\\s*([0-9]+)\\s+([0-9-]+)\\s+([0-9]+)\\s+([0-9]+)\\s+(.*?)\\s+([0-9]+?)\\s*((?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])):?(-?[0-9]{1,5})\\s*(-?[0-9]{1,5})\\s+([0-9]+)$");
+                    regex = new Regex(
+                        "^\\s*([0-9]+)\\s+([0-9-]+)\\s+([0-9]+)\\s+([0-9]+)\\s+(.*?)\\s+([0-9]+?)\\s*((?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])):?(-?[0-9]{1,5})\\s*(-?[0-9]{1,5})\\s+([0-9]+)$");
                     break;
                 default:
-                    logger.Error("[{serverName}] Invalid game type {gameType} for Status Rcon Response", eventArgs.ServerName, eventArgs.GameType);
+                    logger.Error("[{serverName}] Invalid game type {gameType} for Status Rcon Response",
+                        eventArgs.ServerName, eventArgs.GameType);
                     throw new Exception($"Invalid game type {eventArgs.GameType} for Status Rcon Response");
             }
 
@@ -120,11 +123,13 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                     var name = match.Groups[5].ToString();
                     var ipAddress = match.Groups[7].ToString();
 
-                    if (eventArgs.MonitorPlayers) EnsurePlayerExists(eventArgs.GameType, guid, name, eventArgs.ServerName);
+                    if (eventArgs.MonitorPlayers)
+                        EnsurePlayerExists(eventArgs.GameType, guid, name, eventArgs.ServerName);
 
                     if (eventArgs.MonitorPlayerIPs)
                     {
-                        var player = context.Players.SingleOrDefault(p => p.Guid == guid && p.GameType == eventArgs.GameType);
+                        var player =
+                            context.Players.SingleOrDefault(p => p.Guid == guid && p.GameType == eventArgs.GameType);
 
                         if (player == null)
                             continue;
@@ -141,7 +146,8 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
 
         private void HandleInsurgencyStatusRconResponse(OnStatusRconResponse eventArgs)
         {
-            var regex = new Regex("^\\#\\s([0-9]+)\\s([0-9]+)\\s\\\"(.+)\\\"\\s([STEAM0-9:_]+)\\s+([0-9:]+)\\s([0-9]+)\\s([0-9]+)\\s([a-z]+)\\s([0-9]+)\\s((?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])):?(-?[0-9]{1,5})");
+            var regex = new Regex(
+                "^\\#\\s([0-9]+)\\s([0-9]+)\\s\\\"(.+)\\\"\\s([STEAM0-9:_]+)\\s+([0-9:]+)\\s([0-9]+)\\s([0-9]+)\\s([a-z]+)\\s([0-9]+)\\s((?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])):?(-?[0-9]{1,5})");
 
             var lines = eventArgs.ResponseData.Split('\n').Where(line => !string.IsNullOrWhiteSpace(line)).ToList();
 
@@ -159,11 +165,13 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                     var guid = match.Groups[4].ToString();
                     var ipAddress = match.Groups[10].ToString();
 
-                    if (eventArgs.MonitorPlayers) EnsurePlayerExists(eventArgs.GameType, guid, name, eventArgs.ServerName);
+                    if (eventArgs.MonitorPlayers)
+                        EnsurePlayerExists(eventArgs.GameType, guid, name, eventArgs.ServerName);
 
                     if (eventArgs.MonitorPlayerIPs)
                     {
-                        var player = context.Players.SingleOrDefault(p => p.Guid == guid && p.GameType == eventArgs.GameType);
+                        var player =
+                            context.Players.SingleOrDefault(p => p.Guid == guid && p.GameType == eventArgs.GameType);
 
                         if (player == null)
                             continue;
@@ -181,10 +189,10 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
         private void ReduceCaches(PortalContext context)
         {
             var livePlayerLocationCutOff = DateTime.UtcNow.AddDays(-1);
-            context.LivePlayerLocations.RemoveRange(context.LivePlayerLocations.Where(lpl => lpl.LastSeen < livePlayerLocationCutOff));
+            context.LivePlayerLocations.RemoveRange(
+                context.LivePlayerLocations.Where(lpl => lpl.LastSeen < livePlayerLocationCutOff));
             context.SaveChanges();
 
-            ipAddressCaching.ReduceCache();
             playerCaching.ReduceCache();
         }
 
@@ -196,10 +204,7 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                 return;
             }
 
-            if (playerCaching.PlayerInCache(gameType, guid, name))
-            {
-                return;
-            }
+            if (playerCaching.PlayerInCache(gameType, guid, name)) return;
 
             using (var context = contextProvider.GetContext())
             {
@@ -217,11 +222,13 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                     };
 
                     context.Players.Add(playerToAdd);
-                    logger.Information("[{serverName}] New player {name} with {guid} created under {gameType}", serverName, name, guid, gameType);
+                    logger.Information("[{serverName}] New player {name} with {guid} created under {gameType}",
+                        serverName, name, guid, gameType);
                 }
                 else
                 {
-                    var playerAlias = context.PlayerAliases.SingleOrDefault(pa => pa.Player.PlayerId == player.PlayerId && pa.Name == name);
+                    var playerAlias = context.PlayerAliases.SingleOrDefault(pa =>
+                        pa.Player.PlayerId == player.PlayerId && pa.Name == name);
 
                     if (playerAlias == null)
                     {
@@ -240,7 +247,9 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                         playerAlias.LastUsed = DateTime.UtcNow;
                     }
 
-                    if (player.Username != name) logger.Information("[{serverName}] New name {name} recorded for guid {guid} under {gameType}", serverName, name, guid, gameType);
+                    if (player.Username != name)
+                        logger.Information("[{serverName}] New name {name} recorded for guid {guid} under {gameType}",
+                            serverName, name, guid, gameType);
 
                     player.LastSeen = DateTime.UtcNow;
                     player.Username = name;
@@ -256,19 +265,12 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
         {
             try
             {
-                if (ipAddressCaching.IpAddressInCache(ipAddress))
+                var ipLocation = geoLocationClient.LookupAddress(ipAddress).Result;
+
+                if (ipLocation == null)
                 {
-                    logger.Debug("[{serverName}] Player address {ipAddress} already exists in local cache", serverName, ipAddress);
-                    return;
-                }
-
-                var ipLocation = geoLocationApiRepository.GetLocation(ipAddress).Result;
-
-                ipAddressCaching.AddToCache(ipAddress);
-
-                if (!ipLocation.IsDefault())
-                {
-                    var storedIpLocation = context.LivePlayerLocations.SingleOrDefault(lpl => lpl.IpAddress == ipAddress);
+                    var storedIpLocation =
+                        context.LivePlayerLocations.SingleOrDefault(lpl => lpl.IpAddress == ipAddress);
 
                     if (storedIpLocation == null)
                     {
@@ -296,7 +298,8 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
 
         private void UpdatePlayerIpAddress(PortalContext context, string ipAddress, Player2 player, string serverName)
         {
-            var playerIpAddress = context.PlayerIpAddresses.SingleOrDefault(pip => pip.Player.PlayerId == player.PlayerId && pip.Address == ipAddress);
+            var playerIpAddress = context.PlayerIpAddresses.SingleOrDefault(pip =>
+                pip.Player.PlayerId == player.PlayerId && pip.Address == ipAddress);
 
             if (playerIpAddress == null)
             {
@@ -316,7 +319,8 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
             }
 
             if (player.IpAddress != ipAddress)
-                logger.Information("[{serverName}] New ipAddress {ipAddress} recorded for {name} under {gameType}", serverName, ipAddress, player.Username, player.GameType);
+                logger.Information("[{serverName}] New ipAddress {ipAddress} recorded for {name} under {gameType}",
+                    serverName, ipAddress, player.Username, player.GameType);
 
             player.LastSeen = DateTime.UtcNow;
             player.IpAddress = ipAddress;

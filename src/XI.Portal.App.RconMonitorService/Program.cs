@@ -1,4 +1,5 @@
 ﻿using System;
+using FM.GeoLocation.Client;
 using Serilog;
 using Topshelf;
 using Topshelf.Unity;
@@ -59,8 +60,11 @@ namespace XI.Portal.App.RconMonitorService
             container.RegisterType<IRconClientFactory, RconClientFactory>();
             container.RegisterType<IRconMonitorFactory, RconMonitorFactory>();
             container.RegisterType<IGeoLocationApiRepository, GeoLocationApiRepository>();
-            container.RegisterType<IIpAddressCaching, IpAddressCaching>();
             container.RegisterType<IPlayerCaching, PlayerCaching>();
+
+            // FM.GeoLocation
+            container.RegisterType<IGeoLocationClientConfiguration, GeoLocationClientConfig>();
+            container.RegisterType<IGeoLocationClient, GeoLocationClient>();
 
             HostFactory.Run(x =>
             {
