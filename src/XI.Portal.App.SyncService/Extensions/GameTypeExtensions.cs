@@ -9,7 +9,7 @@ namespace XI.Portal.App.SyncService.Extensions
     public static class GameTypeExtensions
     {
         private static IConfigurationWrapper ConfigurationWrapper =>
-            UnityContainerBox.UnityContainer.Resolve<IConfigurationWrapper>();
+            UnityConfig.Container.Resolve<IConfigurationWrapper>();
 
         public static string DataPath(this GameType gameType)
         {
