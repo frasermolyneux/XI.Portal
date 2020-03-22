@@ -91,10 +91,6 @@
       <Project>{A667B4A5-35C2-4953-AB21-07DE8FF07CE5}</Project>
       <Name>XI.Portal.Data.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\XI.Portal.Library.GeoLocation\XI.Portal.Library.GeoLocation.csproj">
-      <Project>{F13A754A-6BAC-4E7E-AE23-0D513F64BA69}</Project>
-      <Name>XI.Portal.Library.GeoLocation</Name>
-    </ProjectReference>
     <ProjectReference Include="..\XI.Portal.Library.Logging\XI.Portal.Library.Logging.csproj">
       <Project>{38C09894-2C92-4517-9332-35415375E62A}</Project>
       <Name>XI.Portal.Library.Logging</Name>

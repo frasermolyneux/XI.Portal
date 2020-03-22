@@ -92,7 +92,6 @@
     <Compile Include="Forums\ForumsConfiguration.cs" />
     <Compile Include="Forums\ForumsConfigurationKeys.cs" />
     <Compile Include="GeoLocation\GeoLocationClientConfig.cs" />
-    <Compile Include="GeoLocation\GeoLocationConfigurationKeys.cs" />
     <Compile Include="Interfaces\IAwsSecretConfigurationProvider.cs" />
     <Compile Include="Interfaces\IAwsSecretsConfiguration.cs" />
     <Compile Include="Interfaces\IConfigurationProvider.cs" />
