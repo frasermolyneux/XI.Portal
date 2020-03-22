@@ -1,4 +1,5 @@
 ﻿using System;
+using FM.GeoLocation.Client;
 using Serilog;
 using Unity;
 using Unity.Lifetime;
@@ -8,6 +9,7 @@ using XI.Portal.Configuration.AwsSecrets;
 using XI.Portal.Configuration.Database;
 using XI.Portal.Configuration.Demos;
 using XI.Portal.Configuration.Forums;
+using XI.Portal.Configuration.GeoLocation;
 using XI.Portal.Configuration.Interfaces;
 using XI.Portal.Configuration.LogProxyPlugin;
 using XI.Portal.Configuration.Maps;
@@ -78,6 +80,10 @@ namespace XI.Portal.App.FileMonitorService
             container.RegisterType<IPlugin, LogProxyPlugin>();
             container.RegisterType<IPlugin, MapRotationPlugin>();
             container.RegisterType<IPlugin, ImAlivePlugin>();
+
+            // FM.GeoLocation
+            container.RegisterType<IGeoLocationClientConfiguration, GeoLocationClientConfig>();
+            container.RegisterType<IGeoLocationClient, GeoLocationClient>();
         }
     }
 }
