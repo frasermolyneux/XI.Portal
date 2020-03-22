@@ -8,7 +8,10 @@ pool:
 
 steps:
 - task: NuGetCommand@2
-  displayName: 'NuGet restore'
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+    nugetConfigPath: './src/nuget.config'
 
 - task: VSBuild@1
   displayName: 'Build solution **\*.sln Web'
