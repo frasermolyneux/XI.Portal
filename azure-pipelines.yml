@@ -10,7 +10,8 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
-    restoreSolution: '**/*.sln'
+    feedsToUse: 'config'
+    restoreSolution: './src/XI.Portal.sln'
     nugetConfigPath: './src/nuget.config'
 
 - task: VSBuild@1
