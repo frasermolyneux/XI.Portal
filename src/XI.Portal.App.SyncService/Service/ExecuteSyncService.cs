@@ -64,27 +64,34 @@ namespace XI.Portal.App.SyncService.Service
         {
             while (!token.IsCancellationRequested)
             {
-                using (var context = contextProvider.GetContext())
+                try
                 {
-                    var banFileMonitor = context.BanFileMonitors.Include(bfm => bfm.GameServer).OrderBy(bs => bs.LastSync).First();
-
-                    logger.Information($"Starting sync for {banFileMonitor.GameServer.Title} at {DateTime.UtcNow}");
-
-                    try
+                    using (var context = contextProvider.GetContext())
                     {
-                        banSyncCoordinator.ExecuteBanSync(banFileMonitor.BanFileMonitorId);
+                        var banFileMonitor = context.BanFileMonitors.Include(bfm => bfm.GameServer).OrderBy(bs => bs.LastSync).First();
+
+                        logger.Information($"Starting sync for {banFileMonitor.GameServer.Title} at {DateTime.UtcNow}");
+
+                        try
+                        {
+                            banSyncCoordinator.ExecuteBanSync(banFileMonitor.BanFileMonitorId);
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.Error(ex, "Failed to process BanSync");
+
+                            banFileMonitor.LastError = ex.Message;
+                        }
+
+                        logger.Information($"Completed sync for {banFileMonitor.GameServer.Title} at {DateTime.UtcNow}");
+
+                        banFileMonitor.LastSync = DateTime.UtcNow;
+                        context.SaveChanges();
                     }
-                    catch (Exception ex)
-                    {
-                        logger.Error(ex, "Failed to process BanSync");
-
-                        banFileMonitor.LastError = ex.Message;
-                    }
-
-                    logger.Information($"Completed sync for {banFileMonitor.GameServer.Title} at {DateTime.UtcNow}");
-
-                    banFileMonitor.LastSync = DateTime.UtcNow;
-                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception around main loop - possible network issue");
                 }
 
                 Thread.Sleep(TimeSpan.FromSeconds(60));
