@@ -72,34 +72,41 @@ namespace XI.Portal.App.ServerMonitorService
                     continue;
                 }
 
-                using (var context = contextProvider.GetContext())
+                try
                 {
-                    var serverMonitors = context.GameServers.Where(server => server.ShowOnPortalServerList && server.GameType != GameType.Unknown).ToList();
+                    using (var context = contextProvider.GetContext())
+                    {
+                        var serverMonitors = context.GameServers.Where(server => server.ShowOnPortalServerList && server.GameType != GameType.Unknown).ToList();
 
-                    foreach (var serverMonitor in serverMonitors)
-                        if (workerThreads.ContainsKey(serverMonitor.ServerId))
-                        {
-                            var workerThread = workerThreads[serverMonitor.ServerId];
+                        foreach (var serverMonitor in serverMonitors)
+                            if (workerThreads.ContainsKey(serverMonitor.ServerId))
+                            {
+                                var workerThread = workerThreads[serverMonitor.ServerId];
 
-                            if (workerThread != null && workerThread.IsAlive) continue;
-                            var thread = new Thread(() =>
-                                MonitorServer(cts.Token, serverMonitor.ServerId));
-                            thread.Start();
+                                if (workerThread != null && workerThread.IsAlive) continue;
+                                var thread = new Thread(() =>
+                                    MonitorServer(cts.Token, serverMonitor.ServerId));
+                                thread.Start();
 
-                            logger.Information("[{serverName}] Recreated worker thread for server", serverMonitor.Title);
+                                logger.Information("[{serverName}] Recreated worker thread for server", serverMonitor.Title);
 
-                            workerThreads[serverMonitor.ServerId] = thread;
-                        }
-                        else
-                        {
-                            var thread = new Thread(() =>
-                                MonitorServer(cts.Token, serverMonitor.ServerId));
-                            thread.Start();
+                                workerThreads[serverMonitor.ServerId] = thread;
+                            }
+                            else
+                            {
+                                var thread = new Thread(() =>
+                                    MonitorServer(cts.Token, serverMonitor.ServerId));
+                                thread.Start();
 
-                            logger.Information("[{serverName}] Created worker thread for server", serverMonitor.Title);
+                                logger.Information("[{serverName}] Created worker thread for server", serverMonitor.Title);
 
-                            workerThreads.Add(serverMonitor.ServerId, thread);
-                        }
+                                workerThreads.Add(serverMonitor.ServerId, thread);
+                            }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception around main loop - possible network issue");
                 }
 
                 lastLoop = DateTime.UtcNow;
