@@ -76,7 +76,8 @@ namespace XI.Portal.App.ServerMonitorService
                 {
                     using (var context = contextProvider.GetContext())
                     {
-                        var serverMonitors = context.GameServers.Where(server => server.ShowOnPortalServerList && server.GameType != GameType.Unknown).ToList();
+                        var serverMonitors = context.GameServers.Where(server =>
+                            server.ShowOnPortalServerList && server.GameType != GameType.Unknown).ToList();
 
                         foreach (var serverMonitor in serverMonitors)
                             if (workerThreads.ContainsKey(serverMonitor.ServerId))
@@ -88,7 +89,8 @@ namespace XI.Portal.App.ServerMonitorService
                                     MonitorServer(cts.Token, serverMonitor.ServerId));
                                 thread.Start();
 
-                                logger.Information("[{serverName}] Recreated worker thread for server", serverMonitor.Title);
+                                logger.Information("[{serverName}] Recreated worker thread for server",
+                                    serverMonitor.Title);
 
                                 workerThreads[serverMonitor.ServerId] = thread;
                             }
@@ -98,7 +100,8 @@ namespace XI.Portal.App.ServerMonitorService
                                     MonitorServer(cts.Token, serverMonitor.ServerId));
                                 thread.Start();
 
-                                logger.Information("[{serverName}] Created worker thread for server", serverMonitor.Title);
+                                logger.Information("[{serverName}] Created worker thread for server",
+                                    serverMonitor.Title);
 
                                 workerThreads.Add(serverMonitor.ServerId, thread);
                             }
@@ -115,71 +118,79 @@ namespace XI.Portal.App.ServerMonitorService
 
         private void MonitorServer(CancellationToken token, Guid serverMonitorId)
         {
-            using (var context = contextProvider.GetContext())
+            try
             {
-                try
+                var lastLoop = DateTime.MinValue;
+                while (!token.IsCancellationRequested)
                 {
-                    var lastLoop = DateTime.MinValue;
-                    while (!token.IsCancellationRequested)
+                    if (DateTime.UtcNow < lastLoop.AddSeconds(60))
                     {
-                        if (DateTime.UtcNow < lastLoop.AddSeconds(60))
-                        {
-                            Thread.Sleep(1000);
-                            continue;
-                        }
-
-                        var serverMonitor =
-                            context.GameServers.Single(monitor => monitor.ServerId == serverMonitorId);
-
-                        try
-                        {
-                            var gameServerInfo = new GameServerInfo(serverMonitor.Hostname, serverMonitor.QueryPort,
-                                serverMonitor.GameType);
-                            gameServerInfo.QueryServer();
-
-                            serverMonitor.LiveTitle = gameServerInfo.Name;
-                            serverMonitor.LiveMap = gameServerInfo.Map;
-                            serverMonitor.LiveMod = gameServerInfo.Mod;
-                            serverMonitor.LiveMaxPlayers = gameServerInfo.MaxPlayers;
-                            serverMonitor.LiveCurrentPlayers = gameServerInfo.NumPlayers;
-                            serverMonitor.LiveLastUpdated = DateTime.UtcNow;
-
-                            var liveServerPlayers =
-                                context.LivePlayers.Where(player =>
-                                    player.GameServer.ServerId == serverMonitor.ServerId);
-                            context.LivePlayers.RemoveRange(liveServerPlayers);
-
-                            foreach (LivePlayer player in gameServerInfo.Players)
-                            {
-                                player.GameServer = serverMonitor;
-                                context.LivePlayers.Add(player);
-                            }
-
-                            logger.Information("[{serverName}] Updated server live info with {map}, {mod} and {currentPlayers} players",
-                                serverMonitor.Title, gameServerInfo.Map, gameServerInfo.Mod, gameServerInfo.NumPlayers);
-                        }
-                        catch (Exception ex)
-                        {
-                            logger.Error(ex, "[{serverName}] Failed to get game server info", serverMonitor.Title);
-
-                            serverMonitor.LiveMap = "Unknown";
-                            serverMonitor.LiveMod = "Unknown";
-                            serverMonitor.LiveCurrentPlayers = 0;
-                            serverMonitor.LiveLastUpdated = DateTime.UtcNow;
-                        }
-                        finally
-                        {
-                            context.SaveChanges();
-                        }
-
-                        lastLoop = DateTime.UtcNow;
+                        Thread.Sleep(1000);
+                        continue;
                     }
+
+                    try
+                    {
+                        using (var context = contextProvider.GetContext())
+                        {
+                            var serverMonitor =
+                                context.GameServers.Single(monitor => monitor.ServerId == serverMonitorId);
+
+                            try
+                            {
+                                var gameServerInfo = new GameServerInfo(serverMonitor.Hostname, serverMonitor.QueryPort,
+                                    serverMonitor.GameType);
+                                gameServerInfo.QueryServer();
+
+                                serverMonitor.LiveTitle = gameServerInfo.Name;
+                                serverMonitor.LiveMap = gameServerInfo.Map;
+                                serverMonitor.LiveMod = gameServerInfo.Mod;
+                                serverMonitor.LiveMaxPlayers = gameServerInfo.MaxPlayers;
+                                serverMonitor.LiveCurrentPlayers = gameServerInfo.NumPlayers;
+                                serverMonitor.LiveLastUpdated = DateTime.UtcNow;
+
+                                var liveServerPlayers =
+                                    context.LivePlayers.Where(player =>
+                                        player.GameServer.ServerId == serverMonitor.ServerId);
+                                context.LivePlayers.RemoveRange(liveServerPlayers);
+
+                                foreach (LivePlayer player in gameServerInfo.Players)
+                                {
+                                    player.GameServer = serverMonitor;
+                                    context.LivePlayers.Add(player);
+                                }
+
+                                logger.Information(
+                                    "[{serverName}] Updated server live info with {map}, {mod} and {currentPlayers} players",
+                                    serverMonitor.Title, gameServerInfo.Map, gameServerInfo.Mod,
+                                    gameServerInfo.NumPlayers);
+                            }
+                            catch (Exception ex)
+                            {
+                                logger.Error(ex, "[{serverName}] Failed to get game server info", serverMonitor.Title);
+
+                                serverMonitor.LiveMap = "Unknown";
+                                serverMonitor.LiveMod = "Unknown";
+                                serverMonitor.LiveCurrentPlayers = 0;
+                                serverMonitor.LiveLastUpdated = DateTime.UtcNow;
+                            }
+                            finally
+                            {
+                                context.SaveChanges();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error(ex, $"[{serverMonitorId}] Failed to store servers latest state");
+                    }
+
+                    lastLoop = DateTime.UtcNow;
                 }
-                catch (Exception ex)
-                {
-                    logger.Error(ex, $"[{serverMonitorId}] Top level error monitoring");
-                    context.SaveChanges();
-                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, $"[{serverMonitorId}] Top level error monitoring");
             }
         }
     }
