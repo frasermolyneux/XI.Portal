@@ -55,11 +55,11 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="FM.GeoLocation.Client, Version=1.0.3693.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FM.GeoLocation.Client.1.0.3693\lib\netstandard2.0\FM.GeoLocation.Client.dll</HintPath>
+    <Reference Include="FM.GeoLocation.Client, Version=1.0.3697.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FM.GeoLocation.Client.1.0.3697\lib\netstandard2.0\FM.GeoLocation.Client.dll</HintPath>
     </Reference>
-    <Reference Include="FM.GeoLocation.Contract, Version=1.0.3693.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FM.GeoLocation.Contract.1.0.3693\lib\netstandard2.0\FM.GeoLocation.Contract.dll</HintPath>
+    <Reference Include="FM.GeoLocation.Contract, Version=1.0.3697.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FM.GeoLocation.Contract.1.0.3697\lib\netstandard2.0\FM.GeoLocation.Contract.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
