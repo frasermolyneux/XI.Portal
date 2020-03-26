@@ -44,10 +44,10 @@
                                     IP Address
                                 </li>
 
-                                @if (Model.Location != null)
+                                @if (Model.LookupAddressResponse?.Success == true)
                                 {
                                     <li class="list-group-item">
-                                        <span class="pull-right"> @Model.Location.Country / @Model.Location.City</span>
+                                        <span class="pull-right"> @Model.LookupAddressResponse.GeoLocationDto.CityName / @Model.LookupAddressResponse.GeoLocationDto.CountryName</span>
                                         Country/City
                                     </li>
                                 }
@@ -365,9 +365,9 @@
 @section Scripts {
     <script>
         function initMap() {
-            @if (Model.Location != null)
+            @if (Model.LookupAddressResponse?.Success == true)
             {
-                <text>var myLatLng = { lat: @Model.Location.Latitude, lng: @Model.Location.Longitude };
+                <text>var myLatLng = { lat: @Model.LookupAddressResponse.GeoLocationDto.Latitude, lng: @Model.LookupAddressResponse.GeoLocationDto.Longitude };
 
                 var map = new google.maps.Map(document.getElementById('map'),
                 {

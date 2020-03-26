@@ -217,18 +217,18 @@ namespace XI.Portal.Web.Controllers
                         model.RelatedIpAddresses.AddRange(relatedPlayersFromIp);
                     }
 
-                    GeoLocationDto playerLocation = null;
+                    LookupAddressResponse lookupAddressResponse = null;
                     try
                     {
-                        playerLocation = await geoLocationClient.LookupAddress(player.IpAddress);
+                        lookupAddressResponse = await geoLocationClient.LookupAddress(player.IpAddress);
                     }
                     catch (Exception)
                     {
                         // swallow
                     }
 
-                    if (playerLocation != null)
-                        model.Location = playerLocation;
+                    if (lookupAddressResponse != null)
+                        model.LookupAddressResponse = lookupAddressResponse;
 
                     return View(model);
                 }

@@ -265,9 +265,9 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
         {
             try
             {
-                var ipLocation = geoLocationClient.LookupAddress(ipAddress).Result;
+                var lookupAddressResponse = geoLocationClient.LookupAddress(ipAddress).Result;
 
-                if (ipLocation == null)
+                if (lookupAddressResponse?.Success == true)
                 {
                     var storedIpLocation =
                         context.LivePlayerLocations.SingleOrDefault(lpl => lpl.IpAddress == ipAddress);
@@ -278,8 +278,8 @@ namespace XI.Portal.Plugins.PlayerInfoPlugin
                         {
                             IpAddress = ipAddress,
                             LastSeen = DateTime.UtcNow,
-                            Lat = ipLocation.Latitude,
-                            Long = ipLocation.Longitude
+                            Lat = lookupAddressResponse.GeoLocationDto.Latitude,
+                            Long = lookupAddressResponse.GeoLocationDto.Longitude
                         };
 
                         context.LivePlayerLocations.Add(storedIpLocation);

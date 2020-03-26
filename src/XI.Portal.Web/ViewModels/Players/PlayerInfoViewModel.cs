@@ -7,7 +7,7 @@ namespace XI.Portal.Web.ViewModels.Players
     public class PlayerInfoViewModel
     {
         public Player2 Player { get; set; }
-        public GeoLocationDto Location { get; set; }
+        public LookupAddressResponse LookupAddressResponse { get; set; }
         public List<PlayerAlias> Aliases { get; set; }
         public List<PlayerIpAddress> IpAddresses { get; set; }
         public List<AdminAction> AdminActions { get; set; }
