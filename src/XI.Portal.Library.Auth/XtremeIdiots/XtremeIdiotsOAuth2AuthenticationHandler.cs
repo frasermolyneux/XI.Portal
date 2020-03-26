@@ -46,10 +46,10 @@ namespace XI.Portal.Library.Auth.XtremeIdiots
                 if (properties == null)
                     return null;
 
-                if (!ValidateCorrelationId(Options.CookieManager, properties, logger))
-                    return new AuthenticationTicket(null, properties);
+                //if (!ValidateCorrelationId(Options.CookieManager, properties, logger))
+                    //return new AuthenticationTicket(null, properties);
 
-                var requestPrefix = "https://" + Request.Host;
+                    var requestPrefix = "https://" + Request.Host;
                 var redirectUri = requestPrefix + Options.CallbackPath;
 
                 var tokenResponse = await httpClient.PostAsync(Options.TokenEndpoint, new FormUrlEncodedContent(
