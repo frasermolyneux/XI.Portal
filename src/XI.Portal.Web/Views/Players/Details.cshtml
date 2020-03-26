@@ -39,13 +39,16 @@
                                     <span class="pull-right"> @Model.Player.Username</span>
                                     Alias
                                 </li>
-                                <li class="list-group-item">
-                                    <span class="pull-right"> <a target="_blank" href="@GeoLocationUrls.LookupAddress(@Model.Player.IpAddress)">@Model.Player.IpAddress</a></span>
-                                    IP Address
-                                </li>
 
                                 @if (Model.LookupAddressResponse?.Success == true)
                                 {
+                                    <li class="list-group-item">
+                                        <span class="pull-right"> <a target="_blank" href="@GeoLocationUrls.LookupAddress(@Model.Player.IpAddress)">
+                                            <img src="~/Content/flags/@(Model.LookupAddressResponse.GeoLocationDto.CountryCode.ToLower()).png"/> @Model.Player.IpAddress
+                                        </a></span>
+                                        IP Address
+                                    </li>
+
                                     <li class="list-group-item">
                                         <span class="pull-right"> @Model.LookupAddressResponse.GeoLocationDto.CityName / @Model.LookupAddressResponse.GeoLocationDto.CountryName</span>
                                         Country/City
