@@ -181,7 +181,7 @@
                                     {
                                         <tr>
                                             <td>
-                                                @item.Address
+                                                <a target="_blank" href="@GeoLocationUrls.LookupAddress(@item.Address)">@item.Address</a>
                                             </td>
                                             <td>
                                                 @item.Added
@@ -215,7 +215,7 @@
                                                 @Html.ActionLink(item.Player.Username, "Details", "Players", new { id = item.Player.PlayerId }, new { })
                                             </td>
                                             <td>
-                                                @item.Address
+                                                <a target="_blank" href="@GeoLocationUrls.LookupAddress(@item.Address)">@item.Address</a>
                                             </td>
                                         </tr>
                                     }
